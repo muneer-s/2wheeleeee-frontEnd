@@ -1,12 +1,19 @@
+import UserHome from './Screen/Home/UserHome'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import UserLogin from './Screen/Login/UserLogin';
 
-import './App.css'
-import UserHome from './Components/Home/UserHome'
+
+
 function App() {
 
   return (
     <>
-      <UserHome/>
-    </>
+      <Router>
+        <Routes>
+          <Route path="/" element={<UserHome />} />
+          <Route path='/login' element={<UserLogin />} />
+        </Routes>
+      </Router>    </>
   )
 }
 

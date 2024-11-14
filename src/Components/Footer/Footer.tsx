@@ -1,10 +1,8 @@
-import React from 'react';
 
 const Footer = () => {
   return (
     <footer className="bg-black text-white py-10">
       <div className="container mx-auto text-center">
-        {/* Main Branding and Description */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2">2Wheeleee</h2>
           <p className="text-sm max-w-xl mx-auto">
@@ -15,9 +13,7 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Links Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-left">
-          {/* Our Links */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
           <div>
             <h4 className="text-lg font-semibold mb-3">Our Links</h4>
             <ul className="space-y-2">
@@ -28,7 +24,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Other Links */}
           <div>
             <h4 className="text-lg font-semibold mb-3">Other Links</h4>
             <ul className="space-y-2">
@@ -39,7 +34,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h4 className="text-lg font-semibold mb-3">Mail</h4>
             <p><a href="mailto:2wheeleee@gmail.com" className="hover:text-gray-400">2wheeleee@gmail.com</a></p>
@@ -48,7 +42,6 @@ const Footer = () => {
             <p>Pattambi, Palakkad, Kerala</p>
           </div>
 
-          {/* Call Now */}
           <div>
             <h4 className="text-lg font-semibold mb-3">Call Now</h4>
             <p><a href="tel:44002586324" className="hover:text-gray-400">4400-258-6324</a></p>

@@ -1,14 +1,16 @@
-import React from 'react';
+import { useNavigate } from "react-router-dom";
+
 
 const Header = () => {
+
+  const navigate = useNavigate();
+
   return (
     <header className="bg-white px-8 py-2 flex items-center justify-between shadow-md w-full mx-auto">
-      {/* Logo */}
       <div className="text-2xl font-bold text-sky-500">
-        2Wheeeee
+        2Wheleeee
       </div>
 
-      {/* Navigation and Button on the right */}
       <div className="flex items-center space-x-8">
         <nav>
           <ul className="flex space-x-8">
@@ -19,8 +21,7 @@ const Header = () => {
           </ul>
         </nav>
 
-        {/* Sign In Button */}
-        <button className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600">
+        <button className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600" onClick={()=>navigate('/login')} >
           Sign In
         </button>
       </div>
