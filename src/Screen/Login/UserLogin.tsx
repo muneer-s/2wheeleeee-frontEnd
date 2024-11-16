@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import loginBg from '../../assets/login-bg.png'; 
+// import loginBg from '../../assets/login-bg.png'; 
+import Lottie from 'lottie-react';
+import logAnime from '../../assets/anime/logAnime.json';
 
 const UserLogin: React.FC = () => {
     const navigate = useNavigate();
-
+    const [email,setEmail] = useState<string>('')
+    const [password,setPassword] = useState<string>('')
+  
     return (
-        <div className="h-screen flex items-center justify-center relative">
-            <div
+        <div className="min-h-screen flex items-center justify-center relative bg-blue-100">
+            {/* Optional Background Image */}
+            {/* <div
                 className="absolute inset-0 bg-cover bg-center opacity-50"
                 style={{ backgroundImage: `url(${loginBg})` }}
-            ></div>
+            ></div> */}
 
             <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-96">
                 <h2
@@ -19,6 +24,7 @@ const UserLogin: React.FC = () => {
                 >
                     Login
                 </h2>
+                <Lottie animationData={logAnime} loop={true} />
                 <button
                     className="absolute top-2 right-2 text-blue-700 font-bold"
                     onClick={() => navigate('/')}
@@ -70,6 +76,18 @@ const UserLogin: React.FC = () => {
                     />
                     Continue With Google
                 </button>
+
+                <div className="text-center mt-4">
+                    <p className="text-sm text-gray-700">
+                        Don't have an account?{' '}
+                        <button
+                            onClick={() => navigate('/register')}
+                            className="text-blue-500 hover:underline font-medium"
+                        >
+                            Register Now
+                        </button>
+                    </p>
+                </div>
             </div>
         </div>
     );
