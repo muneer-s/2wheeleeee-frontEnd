@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 // import loginBg from '../../assets/login-bg.png'; 
 import Lottie from 'lottie-react';
@@ -6,8 +6,8 @@ import logAnime from '../../assets/anime/logAnime.json';
 
 const UserLogin: React.FC = () => {
     const navigate = useNavigate();
-    const [email,setEmail] = useState<string>('')
-    const [password,setPassword] = useState<string>('')
+    //const [email,setEmail] = useState<string>('')
+    //const [password,setPassword] = useState<string>('')
   
     return (
         <div className="min-h-screen flex items-center justify-center relative bg-blue-100">

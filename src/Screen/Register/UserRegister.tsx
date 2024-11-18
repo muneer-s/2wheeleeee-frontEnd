@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const UserRegister: React.FC = () => {
@@ -36,15 +37,34 @@ const UserRegister: React.FC = () => {
     };
 
     // Submit handler
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+    
         if (validateForm()) {
-            // Handle registration logic (e.g., send data to backend)
-            console.log('User Registered:', { userName, email, password });
-
-            // Redirect after successful registration
-            navigate('/login');
+            try {
+                const response =await fetch('http://localhost:3000/api/userSignup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include', 
+                    body: JSON.stringify({ name:userName, email, password }),
+                });
+    
+                const data = await  response.json();
+                
+                if (response.ok) {
+                    toast.success(data.message)
+                    console.log('Registration Successful:', data.message);
+                    // Store user data in context/state if needed
+                    navigate('/otp');
+                } else {
+                    setErrors({ form: data.message });
+                    toast.error(data.message);
+                }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (err) {
+                setErrors({ form: 'An error occurred during registration' });
+                
+            }
         }
     };
 
