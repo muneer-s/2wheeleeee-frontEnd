@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { resendOtp, verifyOtp } from '../../Api/user';
-import { useNavigate } from 'react-router-dom';
-import { saveUser, setUserCredential } from '../../app/slice/AuthSlice';
+import { useNavigate,useSearchParams } from 'react-router-dom';
+import { saveUser } from '../../app/slice/AuthSlice';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/store';
 
 const OTPComponent: React.FC = () => {
+
+    const [searchParams] = useSearchParams();
+
+    const userId = searchParams.get('email');
+
     const [otp, setOTP] = useState<string>('');
-    const [seconds, setSeconds] = useState(300);
+    const [seconds, setSeconds] = useState(60);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -15,7 +20,7 @@ const OTPComponent: React.FC = () => {
     const { userData } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
-        if (userData) navigate('/user/home');
+        if (userData) navigate('/');
     }, [userData, navigate]);
 
     useEffect(() => {
@@ -25,7 +30,6 @@ const OTPComponent: React.FC = () => {
         }
     }, [seconds]);
 
-    const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
 
     const handleOTPChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -34,12 +38,17 @@ const OTPComponent: React.FC = () => {
 
     const handleVerify = async () => {
         try {
-            console.log("OTP:", otp);
-            const result = await verifyOtp(otp);
-            if (result?.data.data.success) {
-                dispatch(setUserCredential(result.data.data.token));
-                dispatch(saveUser(result.data.data.data));
-                navigate('/user/home');
+            console.log("OTP: ", otp);
+            console.log('userid : ',userId);
+            
+            
+           const result = await verifyOtp({otp,userId});
+
+           console.log("otp de verify result : ",result);
+           
+            if (result?.data.success) {
+                dispatch(saveUser(result.data.userId));
+                navigate('/');
             } else {
                 console.log("Invalid OTP or verification failed.");
             }
@@ -51,7 +60,7 @@ const OTPComponent: React.FC = () => {
     const resendOTP = async () => {
         try {
             await resendOtp();
-            setSeconds(300); // Reset countdown
+            setSeconds(60); // Reset countdown
         } catch (error) {
             console.error("Error resending OTP:", error);
         }
@@ -88,7 +97,7 @@ const OTPComponent: React.FC = () => {
                             </div>
                         ) : (
                             <div>
-                                OTP expires in {minutes} min {remainingSeconds} sec
+                                OTP expires in {remainingSeconds} sec
                             </div>
                         )}
                     </div>

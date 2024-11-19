@@ -11,7 +11,6 @@ const UserRegister: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-    // Validation function
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
 
@@ -53,9 +52,8 @@ const UserRegister: React.FC = () => {
                 
                 if (response.ok) {
                     toast.success(data.message)
-                    console.log('Registration Successful:', data.message);
-                    // Store user data in context/state if needed
-                    navigate('/otp');
+                    console.log('Registration Successful:', data);
+                    navigate(`/otp?email=${data.userId}`);
                 } else {
                     setErrors({ form: data.message });
                     toast.error(data.message);
@@ -63,6 +61,7 @@ const UserRegister: React.FC = () => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (err) {
                 setErrors({ form: 'An error occurred during registration' });
+                console.log('error respomese',err);
                 
             }
         }

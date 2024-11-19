@@ -4,10 +4,10 @@ import Api from "../service/axios.ts";
 
 
 
-const verifyOtp = async (otpnum: string) => {
+const verifyOtp = async (data: {otp:string,userId:string|null}) => {
     try {
-        const otp = parseInt(otpnum);
-        const result = await Api.post(userRoutes.verifyOtp, { otp });
+        const otp = parseInt(data.otp);
+        const result = await Api.post(userRoutes.verifyOtp, { otp,userId: data.userId });
         return result;
     } catch (error) {
         console.log(error as Error);

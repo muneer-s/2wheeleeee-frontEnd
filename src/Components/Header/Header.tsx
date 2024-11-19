@@ -1,7 +1,21 @@
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../app/store";
 
 
 const Header = () => {
+
+
+  const authState = useAppSelector((state) => state.auth);
+
+const userDetails = authState.user
+  
+  console.log('Auth state:', userDetails);
+  
+  const handleLogout = () => {
+    
+    navigate('/');
+  };
+  
 
   const navigate = useNavigate();
 
@@ -21,9 +35,27 @@ const Header = () => {
           </ul>
         </nav>
 
-        <button className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600" onClick={()=>navigate('/login')} >
-          Sign In
-        </button>
+        {userDetails ? (
+          <div className="flex items-center space-x-4">
+            {/* Optional: Display user's name or email */}
+            <span className="text-gray-700">
+              Welcome, {userDetails.name || userDetails.email}
+            </span>
+            <button 
+              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+              onClick={handleLogout}
+            >
+              Log Out
+            </button>
+          </div>
+        ) : (
+          <button 
+            className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600" 
+            onClick={() => navigate('/login')}
+          >
+            Sign In
+          </button>
+        )}
       </div>
     </header>
   );
