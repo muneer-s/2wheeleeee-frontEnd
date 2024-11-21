@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export interface AuthState {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    userData: any; // Replace `any` with a more specific type if possible
+    userData: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user?: any;    // Optional property `user` for saveUser reducer
+    user?: any;  
 }
 
 const initialState: AuthState = {

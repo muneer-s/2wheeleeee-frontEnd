@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { resendOtp, verifyOtp } from '../../Api/user';
+import { resendOtp, verifyOtp } from '../../../Api/user';
 import { useNavigate,useSearchParams } from 'react-router-dom';
-import { saveUser } from '../../app/slice/AuthSlice';
+import { saveUser } from '../../../app/slice/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/store';
+import { useAppSelector } from '../../../app/store';
 
 const OTPComponent: React.FC = () => {
 

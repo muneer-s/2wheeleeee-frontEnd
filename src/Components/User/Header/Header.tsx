@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/store";
+import { useAppSelector } from "../../../app/store";
 
 
 const Header = () => {
@@ -37,7 +37,6 @@ const userDetails = authState.user
 
         {userDetails ? (
           <div className="flex items-center space-x-4">
-            {/* Optional: Display user's name or email */}
             <span className="text-gray-700">
               Welcome, {userDetails.name || userDetails.email}
             </span>

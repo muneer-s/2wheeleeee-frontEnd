@@ -50,7 +50,6 @@ const Body = () => {
         </div>
       </div>
 
-      {/* About Us Section  */}
       <div className="flex bg-white py-12">
         
         <div className="w-1/2 flex justify-start items-center">
@@ -72,7 +71,6 @@ const Body = () => {
       </div>
 
 
-      {/* Feedback Section */}
       <div className="py-12 bg-white">
         <h2 className="text-3xl font-bold mb-6 text-sky-500">Feedback</h2>
         <h3 className="text-2xl font-bold mb-6">What Our Customers Say</h3>

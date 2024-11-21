@@ -35,7 +35,6 @@ const UserRegister: React.FC = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Submit handler
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
     
@@ -58,7 +57,7 @@ const UserRegister: React.FC = () => {
                     setErrors({ form: data.message });
                     toast.error(data.message);
                 }
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+             
             } catch (err) {
                 setErrors({ form: 'An error occurred during registration' });
                 console.log('error respomese',err);

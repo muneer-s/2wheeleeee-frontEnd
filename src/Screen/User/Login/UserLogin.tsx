@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 // import loginBg from '../../assets/login-bg.png'; 
 import Lottie from 'lottie-react';
-import logAnime from '../../assets/anime/logAnime.json';
+import logAnime from '../../../assets/anime/logAnime.json';
 
 const UserLogin: React.FC = () => {
     const navigate = useNavigate();
