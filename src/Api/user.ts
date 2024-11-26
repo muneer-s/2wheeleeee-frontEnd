@@ -4,10 +4,10 @@ import Api from "../service/axios.ts";
 
 
 
-const verifyOtp = async (data: {otp:string,userId:string|null}) => {
+const verifyOtp = async (data: { otp: string, userId: string | null }) => {
     try {
         const otp = parseInt(data.otp);
-        const result = await Api.post(userRoutes.verifyOtp, { otp,userId: data.userId });
+        const result = await Api.post(userRoutes.verifyOtp, { otp, userId: data.userId });
         return result;
     } catch (error) {
         console.log(error as Error);
@@ -15,16 +15,30 @@ const verifyOtp = async (data: {otp:string,userId:string|null}) => {
     }
 }
 
-const resendOtp = async () => {
+const resendOtp = async ({ email }: { email: string }) => {
     try {
-        await Api.get(userRoutes.resendOtp);
+        const response = await Api.post(userRoutes.resendOtp, { email });
+        return response.data;
     } catch (error) {
         console.log(error as Error);
     }
 }
 
 
+
+const login = async (credentials: { email: string; password: string }) => {
+    try {
+        const result = await Api.post(userRoutes.login, credentials);
+        return result.data
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+
+
 export {
     verifyOtp,
-    resendOtp
+    resendOtp,
+    login
 }

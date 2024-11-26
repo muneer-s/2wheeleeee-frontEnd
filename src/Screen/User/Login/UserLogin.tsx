@@ -1,21 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import loginBg from '../../assets/login-bg.png'; 
 import Lottie from 'lottie-react';
 import logAnime from '../../../assets/anime/logAnime.json';
+import { login } from '../../../Api/user';
+
+
+
 
 const UserLogin: React.FC = () => {
     const navigate = useNavigate();
-    //const [email,setEmail] = useState<string>('')
-    //const [password,setPassword] = useState<string>('')
-  
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setLoading(true)
+        try {
+            const response = await login({ email, password })
+            console.log('login response : ', response)
+
+            // if (response?.success) {
+            //     navigate('/');
+            // } else {
+            //     setError(response?.message || 'Login failed');
+            // }
+
+            if(response && response.user){
+                const { token } = response.user;
+                localStorage.setItem('authToken', token); // Save the token
+                navigate('/');
+            }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error ) {
+            setError('Something went wrong. Please try again.');
+            console.log('catch error')
+            
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center relative bg-blue-100">
-            {/* Optional Background Image */}
-            {/* <div
-                className="absolute inset-0 bg-cover bg-center opacity-50"
-                style={{ backgroundImage: `url(${loginBg})` }}
-            ></div> */}
+
 
             <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-96">
                 <h2
@@ -32,16 +62,22 @@ const UserLogin: React.FC = () => {
                     ✕
                 </button>
 
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                    {error && <p className="text-red-500 text-center">{error}</p>}
+
                     <div>
                         <label htmlFor="email" className="block font-medium">
                             Enter your email:
                         </label>
+
                         <input
                             id="email"
                             type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter Your Email Address"
                             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
                         />
                     </div>
 
@@ -52,17 +88,23 @@ const UserLogin: React.FC = () => {
                         <input
                             id="password"
                             type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter Your Password"
                             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
                         />
                     </div>
 
                     <button
                         type="submit"
+                        disabled={loading}
+
                         className="w-full text-white py-2 rounded hover:bg-blue-700 transition"
                         style={{ backgroundColor: '#00A3FF' }}
                     >
-                        Login
+                        {loading ? 'Logging in...' : 'Login'}
+
                     </button>
                 </form>
 

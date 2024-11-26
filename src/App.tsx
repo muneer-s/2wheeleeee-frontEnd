@@ -6,12 +6,14 @@ import Otp from './Screen/User/Otp/Otp';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import HostHome from './Screen/Host/HostHome/HostHome';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
   return (
     <>
       <Provider store={store}>
+        <Toaster/>
         <Router>
           <Routes>
             <Route path="/" element={<UserHome />} />

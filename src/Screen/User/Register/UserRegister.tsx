@@ -46,10 +46,13 @@ const UserRegister: React.FC = () => {
                     credentials: 'include', 
                     body: JSON.stringify({ name:userName, email, password }),
                 });
-    
-                const data = await  response.json();
+
+                console.log('response : ',response);
                 
-                if (response.ok) {
+                const data = await  response.json();
+                console.log('response data : ',data);
+                
+                if (data.success) {
                     toast.success(data.message)
                     console.log('Registration Successful:', data);
                     navigate(`/otp?email=${data.userId}`);
