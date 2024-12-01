@@ -8,9 +8,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-    userData: localStorage.getItem('userInfo') 
-        ? JSON.parse(localStorage.getItem('userInfo') as string) 
-        : null,
+    userData: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo') as string) : null,
 };
 
 export const authSlice = createSlice({

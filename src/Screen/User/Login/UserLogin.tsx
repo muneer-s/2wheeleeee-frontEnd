@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import logAnime from '../../../assets/anime/logAnime.json';
 import { login } from '../../../Api/user';
-
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../app/store';
+import { saveUser } from '../../../app/slice/AuthSlice';
 
 
 
 const UserLogin: React.FC = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
@@ -22,17 +26,28 @@ const UserLogin: React.FC = () => {
             const response = await login({ email, password })
             console.log('login response : ', response)
 
-            // if (response?.success) {
+            if (response?.success && response.user) {
+                const user = {
+                    email: response.user.email,
+                    name: response.user.name,
+                    profile_picture: response.user.profile_picture,
+                };
+                dispatch(saveUser(user))
+                toast.success('Logged in successfully');
+
+                navigate('/');
+            } else {
+                toast.error("Login failed")
+                setError(response?.message || 'Invalid email or password');
+            }
+
+            // if(response && response.user){
+            //     toast.success("logged in successfully")
+            //     const { token } = response.user;
+            //     localStorage.setItem('authToken', token); // Save the token
             //     navigate('/');
-            // } else {
-            //     setError(response?.message || 'Login failed');
             // }
 
-            if(response && response.user){
-                const { token } = response.user;
-                localStorage.setItem('authToken', token); // Save the token
-                navigate('/');
-            }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error ) {
             setError('Something went wrong. Please try again.');

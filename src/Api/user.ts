@@ -36,9 +36,20 @@ const login = async (credentials: { email: string; password: string }) => {
     }
 }
 
+const logout = async (Credential:{email:string})=>{
+    try {
+        const result = await Api.put(userRoutes.logout,Credential)
+        return result
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 export {
     verifyOtp,
     resendOtp,
-    login
+    login,
+    logout
 }

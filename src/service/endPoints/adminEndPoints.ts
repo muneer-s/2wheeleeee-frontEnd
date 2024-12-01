@@ -1,14 +1,14 @@
 const adminRoutes={
-    singIn:'/api/admin/login',
-    logout:'/api/admin/logout',
-    userListingPage:'/api/admin/userListingPage',
-    userBlock:'/api/admin/userBlock',
-    userUnblock:'/api/admin/userunBlock',
-    hostListingPage:'/api/admin/hostListingPage',
-    hostBlock:'/api/admin/hostBlock',
-    hostUnblock:'/api/admin/hostUnblock',
-    hostVerify:'/api/admin/hostVerify',
-    userVerify:'/api/admin/userVerify',
+    login:'/admin/login',
+    logout:'/admin/logout',
+    userListingPage:'/admin/userListingPage',
+    userBlock:'/admin/userBlock',
+    userUnblock:'/admin/userunBlock',
+    hostListingPage:'/admin/hostListingPage',
+    hostBlock:'/admin/hostBlock',
+    hostUnblock:'/admin/hostUnblock',
+    hostVerify:'/admin/hostVerify',
+    userVerify:'/admin/userVerify',
 }
 
 export default adminRoutes

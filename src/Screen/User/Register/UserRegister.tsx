@@ -37,21 +37,21 @@ const UserRegister: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-    
+
         if (validateForm()) {
             try {
-                const response =await fetch('http://localhost:3000/api/userSignup', {
+                const response = await fetch('http://localhost:3000/api/user/userSignup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include', 
-                    body: JSON.stringify({ name:userName, email, password }),
+                    credentials: 'include',
+                    body: JSON.stringify({ name: userName, email, password }),
                 });
 
-                console.log('response : ',response);
-                
-                const data = await  response.json();
-                console.log('response data : ',data);
-                
+                console.log('response : ', response);
+
+                const data = await response.json();
+                console.log('response data : ', data);
+
                 if (data.success) {
                     toast.success(data.message)
                     console.log('Registration Successful:', data);
@@ -60,11 +60,11 @@ const UserRegister: React.FC = () => {
                     setErrors({ form: data.message });
                     toast.error(data.message);
                 }
-             
+
             } catch (err) {
                 setErrors({ form: 'An error occurred during registration' });
-                console.log('error respomese',err);
-                
+                console.log('error respomese', err);
+
             }
         }
     };
@@ -93,9 +93,8 @@ const UserRegister: React.FC = () => {
                             placeholder="Enter Your Username"
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
-                            className={`w-full px-3 py-2 border ${
-                                errors.userName ? 'border-red-500' : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                            className={`w-full px-3 py-2 border ${errors.userName ? 'border-red-500' : 'border-gray-300'
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {errors.userName && <p className="text-red-500 text-sm">{errors.userName}</p>}
                     </div>
@@ -110,9 +109,8 @@ const UserRegister: React.FC = () => {
                             placeholder="Enter Your Email Address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className={`w-full px-3 py-2 border ${
-                                errors.email ? 'border-red-500' : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                            className={`w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                     </div>
@@ -127,9 +125,8 @@ const UserRegister: React.FC = () => {
                             placeholder="Enter Your Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className={`w-full px-3 py-2 border ${
-                                errors.password ? 'border-red-500' : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                            className={`w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                     </div>
@@ -144,9 +141,8 @@ const UserRegister: React.FC = () => {
                             placeholder="Confirm Your Password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className={`w-full px-3 py-2 border ${
-                                errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                            className={`w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {errors.confirmPassword && (
                             <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
