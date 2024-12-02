@@ -7,7 +7,13 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import HostHome from './Screen/Host/HostHome/HostHome';
 import { Toaster } from 'react-hot-toast';
-import AdminLogin from './Screen/Admin/AdminLogin'
+import AdminLogin from './Screen/Admin/AdminLogin/AdminLogin'
+import AdminDashboard from './Screen/Admin/AdminDashboard/AdminDashboard';
+import AdminProtectedRoute from './Components/Admin/AdminProtectedRoute';
+import AdminUserList from './Screen/Admin/AdminUserList/AdminUserList';
+import AdminHostList from './Screen/Admin/AdminHostList/AdminHostList';
+
+
 
 
 function App() {
@@ -30,6 +36,11 @@ function App() {
 
             {/* admin side */}
             <Route path='/adminLogin' element={<AdminLogin/>}/>
+            
+            <Route path="/adminDashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>}/>
+            <Route path="/adminUserList" element={<AdminProtectedRoute><AdminUserList /></AdminProtectedRoute>}/>
+            <Route path="/adminHostList" element={<AdminProtectedRoute><AdminHostList /></AdminProtectedRoute>}/>
+
           </Routes>
         </Router>
       </Provider>

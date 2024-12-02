@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../Api/admin'; // Assume you have a separate API for admin
+import { login } from '../../../Api/admin'; // Assume you have a separate API for admin
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-// import { AppDispatch } from '../../../app/store';
-// import { saveAdmin } from '../../../app/slice/AdminAuthSlice'; // Admin-specific slice
+
+import { AppDispatch, useAppSelector } from '../../../app/store';
+import { setAdminCredential } from '../../../app/slice/AuthSlice';
 
 const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
-    // const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
+
+
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { adminData } = useAppSelector((state) => state.auth);
+
+console.log('admin data : ' ,adminData);
+
+    useEffect(() => {
+        if (adminData) {
+          navigate('/adminDashboard');
+        }
+      }, [adminData])
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         console.log(email);
@@ -22,25 +37,24 @@ const AdminLogin: React.FC = () => {
         setError(null);
         setLoading(true);
         try {
-            const response = await login({ email, password }); // Admin-specific login API call
+            const response = await login({ email, password }); 
             console.log('Admin login response:', response);
+            console.log(response.token);
 
-            if (response?.success && response.admin) {
-                // const admin = {
-                //     email: response.admin.email,
-                //     name: response.admin.name,
-                //     role: response.admin.role,
-                // };
-                // dispatch(saveAdmin(admin));
-                // toast.success('Admin logged in successfully');
-
-                // navigate('/admin/dashboard'); // Navigate to the admin dashboard
+            if (response?.success && response.token) {
+                // localStorage.setItem('adminInfo',response.admin.email)
+                // localStorage.setItem('adminToken', response.token); 
+                // localStorage.setItem('refreshToken', response.refreshToken); 
+                dispatch(setAdminCredential(response.token))
+                toast.success('Admin logged in successfully');
+                navigate('/adminDashboard'); 
             } else {
                 toast.error('Login failed');
                 setError(response?.message || 'Invalid email or password');
             }
         } catch (error) {
             setError('Something went wrong. Please try again.');
+            toast.error("Invalid email or password")
             console.error('Admin login error:', error);
         } finally {
             setLoading(false);
