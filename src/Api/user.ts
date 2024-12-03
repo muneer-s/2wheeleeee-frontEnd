@@ -46,10 +46,22 @@ const logout = async (Credential:{email:string})=>{
     }
 }
 
+const getProfile = async ()=>{
+    try {
+        const result = await Api.get(userRoutes.getProfile)
+        return result
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 export {
     verifyOtp,
     resendOtp,
     login,
-    logout
+    logout,
+    getProfile
 }

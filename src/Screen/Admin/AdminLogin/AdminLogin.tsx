@@ -42,9 +42,6 @@ console.log('admin data : ' ,adminData);
             console.log(response.token);
 
             if (response?.success && response.token) {
-                // localStorage.setItem('adminInfo',response.admin.email)
-                // localStorage.setItem('adminToken', response.token); 
-                // localStorage.setItem('refreshToken', response.refreshToken); 
                 dispatch(setAdminCredential(response.token))
                 toast.success('Admin logged in successfully');
                 navigate('/adminDashboard'); 

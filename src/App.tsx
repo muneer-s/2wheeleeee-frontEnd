@@ -12,7 +12,8 @@ import AdminDashboard from './Screen/Admin/AdminDashboard/AdminDashboard';
 import AdminProtectedRoute from './Components/Admin/AdminProtectedRoute';
 import AdminUserList from './Screen/Admin/AdminUserList/AdminUserList';
 import AdminHostList from './Screen/Admin/AdminHostList/AdminHostList';
-
+import ProfilePage from './Screen/User/Profile/ProfilePage';
+import UserProtectedRoute from './Components/User/UserProtectedRoute';
 
 
 
@@ -26,12 +27,14 @@ function App() {
         <Router>
           <Routes>
             {/* user side */}
-            <Route path="/" element={<UserHome />} />
+            <Route path="/" element={<UserProtectedRoute><UserHome /></UserProtectedRoute>} />
+            <Route path="/profilePage" element={<UserProtectedRoute><ProfilePage /></UserProtectedRoute>} />
+            <Route path="/hostHome" element={<UserProtectedRoute><HostHome /></UserProtectedRoute>} />
+
+            {/* User Public routes */}
             <Route path='/login' element={<UserLogin />} />
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} />
-            <Route path='/hostHome' element={ <HostHome />} />
-
 
 
             {/* admin side */}

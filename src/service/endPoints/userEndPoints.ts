@@ -4,7 +4,8 @@ const userRoutes={
     logout:'/user/logout',
     verifyOtp: "/user/verifyOtp",
     resendOtp:"/user/resendOtp",
-    login:"/user/login"
+    login:"/user/login",
+    getProfile:"/user/getProfile"
     
 
     

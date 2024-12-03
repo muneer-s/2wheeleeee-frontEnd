@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { resendOtp, verifyOtp } from '../../../Api/user';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { saveUser } from '../../../app/slice/AuthSlice';
+import { saveUser, setUserCredential } from '../../../app/slice/AuthSlice';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../app/store';
 import toast from 'react-hot-toast';
@@ -51,7 +51,8 @@ const OTPComponent: React.FC = () => {
             console.log("otp de verify result : ", result);
 
             if (result?.data.success) {
-                dispatch(saveUser(result.data.userId));
+                dispatch(saveUser(result.data.userData));
+                dispatch(setUserCredential(result.data.userAccessToken))
                 navigate('/');
             } else {
                 console.log("Invalid OTP or verification failed.");

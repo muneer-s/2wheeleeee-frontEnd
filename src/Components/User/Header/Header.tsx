@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { userLogout } from "../../../app/slice/AuthSlice";
 import toast from "react-hot-toast";
 import { logout } from "../../../Api/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import defaultDp from '../../../assets/defaultDP.png'
 
 const Header = () => {
@@ -14,19 +14,29 @@ const Header = () => {
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
 
-  //console.log('Auth state:', userDetails);
+  const { userData } = useAppSelector((state) => state.auth)
+  console.log('userdataaaaaaaaaaaaa:', userData);
+  useEffect(() => {
+    if (userData) navigate('/');
+  }, [userData]);
 
-  const [dropDownOpen,setDropdownOpen] = useState(false)
+
+
+  
+  console.log('Auth state:', userDetails);
+
+  const [dropDownOpen, setDropdownOpen] = useState(false)
 
   const handleLogout = async () => {
+    const email = userDetails.email
+    const response = await logout({ email })
 
-    //const email = userDetails.email
-    //     const response = await logout({email})
-    // console.log('logout response : ',response);
+    if (response?.data.success) {
+      dispatch(userLogout());
+      navigate('/');
+      toast.success("Logged out successfully.")
+    }
 
-    dispatch(userLogout());
-    navigate('/');
-    toast.success("Logged out successfully.")
   };
 
   return (
@@ -45,48 +55,48 @@ const Header = () => {
 
         {userDetails ? (
           <div className="relative">
-          <div
-            className="flex items-center space-x-2 cursor-pointer"
-            onClick={() => setDropdownOpen(!dropDownOpen)}
-          >
-            <img
-              src={userDetails.profilePhoto || defaultDp}
-              alt="Profile"
-              className="w-10 h-10 rounded-full border"
-            />
-            <span className="text-gray-700">{userDetails.name}</span>
-          </div>
-          {dropDownOpen && (
-            <div className="absolute right-0 mt-2 bg-white border shadow-lg rounded-md w-48">
-              <ul className="py-2">
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => navigate("/profile")}
-                >
-                  Profile
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => navigate("/hostHome")}
-                >
-                  Host
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => navigate("/orders")}
-                >
-                  Orders
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </li>
-              </ul>
+            <div
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() => setDropdownOpen(!dropDownOpen)}
+            >
+              <img
+                src={userDetails.profilePhoto || defaultDp}
+                alt="Profile"
+                className="w-10 h-10 rounded-full border"
+              />
+              <span className="text-gray-700">{userDetails.name}</span>
             </div>
-          )}
-        </div>
+            {dropDownOpen && (
+              <div className="absolute right-0 mt-2 bg-white border shadow-lg rounded-md w-48">
+                <ul className="py-2">
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => navigate("/profile")}
+                  >
+                    Profile
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => navigate("/hostHome")}
+                  >
+                    Host
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => navigate("/orders")}
+                  >
+                    Orders
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         ) : (
           <button
             className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600"

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import logAnime from '../../../assets/anime/logAnime.json';
 import { login } from '../../../Api/user';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../app/store';
+import { AppDispatch, useAppSelector } from '../../../app/store';
 import { saveUser } from '../../../app/slice/AuthSlice';
-
+import { setUserCredential } from '../../../app/slice/AuthSlice';
 
 
 const UserLogin: React.FC = () => {
@@ -18,6 +18,18 @@ const UserLogin: React.FC = () => {
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
 
+    const { userData } = useAppSelector((state) => state.auth)
+    console.log('userdataaa login page:', userData);
+    
+
+    const authState = useAppSelector((state) => state.auth);
+    const userDetails = authState.user
+
+    useEffect(() => {
+        if (userData && userDetails) navigate('/');
+    }, [userData,userDetails]);
+
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -25,6 +37,7 @@ const UserLogin: React.FC = () => {
         try {
             const response = await login({ email, password })
             console.log('login response : ', response)
+            console.log('login response : ', response.userAccessToken)
 
             if (response?.success && response.user) {
                 const user = {
@@ -33,26 +46,21 @@ const UserLogin: React.FC = () => {
                     profile_picture: response.user.profile_picture,
                 };
                 dispatch(saveUser(user))
+                dispatch(setUserCredential(response.userAccessToken))
                 toast.success('Logged in successfully');
-
                 navigate('/');
             } else {
                 toast.error("Login failed")
                 setError(response?.message || 'Invalid email or password');
             }
 
-            // if(response && response.user){
-            //     toast.success("logged in successfully")
-            //     const { token } = response.user;
-            //     localStorage.setItem('authToken', token); // Save the token
-            //     navigate('/');
-            // }
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error ) {
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
             setError('Something went wrong. Please try again.');
             console.log('catch error')
-            
+
         } finally {
             setLoading(false);
         }

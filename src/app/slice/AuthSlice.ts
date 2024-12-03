@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface AuthState {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     userData: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user?: any; 
     adminData:any; 
 }
@@ -32,15 +30,13 @@ export const authSlice = createSlice({
         },
         userLogout: (state) => {
             state.userData = null;
-            state.user = undefined;
+            state.user = null;
             localStorage.removeItem('userInfo');
             localStorage.removeItem('userAddress');
         },
         adminLogout: (state) => {
             state.adminData = null;
             localStorage.removeItem('adminInfo');
-            // localStorage.removeItem('adminToken');
-            // localStorage.removeItem('refreshToken');
         },
     },
 })
