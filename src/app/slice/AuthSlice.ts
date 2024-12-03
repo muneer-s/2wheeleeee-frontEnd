@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export interface AuthState {
-    userData: any;
-    user?: any; 
-    adminData:any; 
-}
 
-const initialState: AuthState = {
+const initialState = {
     adminData: localStorage.getItem('adminInfo') ? JSON.parse(localStorage.getItem('adminInfo') as string) : null,
     userData: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo') as string) : null,
+    user: localStorage.getItem('userAddress') ? JSON.parse(localStorage.getItem('userAddress') as any) : null,
 };
 
 export const authSlice = createSlice({
@@ -38,6 +34,7 @@ export const authSlice = createSlice({
             state.adminData = null;
             localStorage.removeItem('adminInfo');
         },
+        
     },
 })
 
@@ -47,6 +44,9 @@ export const {
     adminLogout,
     setUserCredential,
     userLogout,
-    saveUser } = authSlice.actions
+    saveUser,
+    
+
+} = authSlice.actions
 
 export default authSlice.reducer;

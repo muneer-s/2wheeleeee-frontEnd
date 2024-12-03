@@ -12,3 +12,5 @@ const AdminProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) 
 };
 
 export default AdminProtectedRoute;
+
+

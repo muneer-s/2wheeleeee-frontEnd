@@ -1,52 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { getProfile } from "../../../Api/user";
+import { useAppSelector } from "../../../app/store";
 
 
 export interface UserData {
     _id: string;
     name: string;
     email: string;
+    password: string;
+    phoneNumber: number;
     isBlocked: boolean;
-    aboutInfo: string;
-    headLine: string;
-    location: string;
-    role: string;
-    cover_image: string;
+    isVerified: boolean;
     profile_picture: string;
+    dateOfBirth: Date;
+    address: string | null;
+    isUser: boolean;
+    lisence_number: number;
+    lisence_Exp_Date: Date;
+    lisence_picture_front: string;
+    lisence_picture_back: string;
 }
 
 
+
 const UserProfile: React.FC = () => {
-    const [profileImage, setProfileImage] = useState<File | null>(null);
-
     const [userProfile, setUserProfile] = useState<UserData | null>(null);
+    const [pic, setPic] = useState<string>("");
 
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] || null;
-        setProfileImage(file);
-    };
+    const authState = useAppSelector((state) => state.auth);
+  
+  const userEmail = authState.user.email
+  console.log(userEmail);
+  
+  
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getProfile(userEmail);
+                console.log('user profile : ',response);
+                console.log('user profile : ',response?.data.userDetails);
+                
+
+                    setUserProfile(response?.data.userDetails);
+                    setPic(response?.data.userDetails?.profile_picture || "/default-avatar.png");
+                } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        fetchData();
+    }, [userEmail])
+
+
+    console.log('profile ethiii');
 
 
 
-    // const dispatch = useDispatch()
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await getProfile();
-    //             if (response) {
-    //                 setUserProfile(response.data);
-    //                 setPic(response.data?.profile_picture);
-    //             }
-    //             dispatch(changeAbout(userProfile?.aboutInfo));
-    //         } catch (error) {
-    //             console.error('Error:', error);
-    //         }
-    //     }
-    //     fetchData();
-    // }, [updateScreen])
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-sky-200 to-white flex justify-center items-center">
@@ -67,7 +78,7 @@ const UserProfile: React.FC = () => {
                         <div className="flex items-center justify-center mb-8">
                             <div className="relative">
                                 <img
-                                    src={profileImage ? URL.createObjectURL(profileImage) : "/default-avatar.png"}
+                                    src={"/default-avatar.png"}
                                     alt="Profile"
                                     className="w-24 h-24 rounded-full object-cover border border-gray-300"
                                 />
@@ -77,12 +88,18 @@ const UserProfile: React.FC = () => {
                                 >
                                     Edit
                                 </button>
+                                
                                 <input
                                     type="file"
                                     id="profileImageInput"
                                     className="hidden"
                                     accept="image/*"
-                                    onChange={handleImageUpload}
+                                    onChange={(e) => {
+                                        if (e.target.files && e.target.files[0]) {
+                                            const file = e.target.files[0];
+                                            setPic(URL.createObjectURL(file)); 
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>
@@ -94,21 +111,29 @@ const UserProfile: React.FC = () => {
                                 <input
                                     type="text"
                                     placeholder="Name"
+                                    value={userProfile?.name || ''}
                                     className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                 />
                                 <input
                                     type="email"
                                     placeholder="Email"
+                                    value={userProfile?.email || ""}
                                     className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                 />
                                 <input
                                     type="text"
                                     placeholder="Phone Number"
+                                    value={userProfile?.phoneNumber?.toString() || ""}
                                     className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                 />
                                 <input
                                     type="date"
                                     placeholder="DOB"
+                                    value={
+                                        userProfile?.dateOfBirth
+                                          ? new Date(userProfile.dateOfBirth).toISOString().split("T")[0]
+                                          : ""
+                                      }
                                     className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                 />
                                 <select className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200">

@@ -46,9 +46,11 @@ const logout = async (Credential:{email:string})=>{
     }
 }
 
-const getProfile = async ()=>{
+const getProfile = async (email: string)=>{
     try {
-        const result = await Api.get(userRoutes.getProfile)
+        
+        const result = await Api.get(`${userRoutes.getProfile}?email=${email}`);
+
         return result
         
     } catch (error) {

@@ -14,17 +14,17 @@ const Header = () => {
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
 
-  const { userData } = useAppSelector((state) => state.auth)
-  console.log('userdataaaaaaaaaaaaa:', userData);
-  useEffect(() => {
-    if (userData) navigate('/');
-  }, [userData]);
 
+  // const { userData } = useAppSelector((state) => state.auth)
+
+  // console.log('userdataaaaaaaaaaaaa:', userData);
+  // useEffect(() => {
+  //   if (userData) navigate('/');
+  // }, [userData]);
 
 
   
   console.log('Auth state:', userDetails);
-
   const [dropDownOpen, setDropdownOpen] = useState(false)
 
   const handleLogout = async () => {
@@ -71,7 +71,7 @@ const Header = () => {
                 <ul className="py-2">
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate("/profilePage")}
                   >
                     Profile
                   </li>
