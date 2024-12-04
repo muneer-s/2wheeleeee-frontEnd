@@ -70,8 +70,8 @@ const UserRegister: React.FC = () => {
     };
 
     return (
-        <div className="h-full flex items-center justify-center relative">
-            <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-96">
+        <div className="h-full flex items-center justify-center relative bg-blue-10">
+            <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-96" style={{ marginTop: '80px' }} >
                 <h2 className="text-center text-2xl font-bold mb-4" style={{ color: '#00A3FF' }}>
                     Register
                 </h2>

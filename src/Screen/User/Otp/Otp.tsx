@@ -53,6 +53,7 @@ const OTPComponent: React.FC = () => {
             if (result?.data.success) {
                 dispatch(saveUser(result.data.userData));
                 dispatch(setUserCredential(result.data.userAccessToken))
+                toast.success('Logged in successfully');
                 navigate('/');
             } else {
                 console.log("Invalid OTP or verification failed.");
@@ -63,7 +64,7 @@ const OTPComponent: React.FC = () => {
     };
 
     const resendOTP = async () => {
-        const email = userId || ''; // Default to an empty string if userId is null
+        const email = userId || ''; 
 
         if (!email) {
             toast.error("Email is missing. Please try again.");
@@ -71,10 +72,10 @@ const OTPComponent: React.FC = () => {
         }
         try {
 
-            const result = await resendOtp({ email }); // Pass the email here
+            const result = await resendOtp({ email }); 
             if (result.success) {
                 console.log('OTP resent successfully');
-                setSeconds(60); // Reset the countdown timer
+                setSeconds(60); 
             } else {
                 console.error("Failed to resend OTP:", result.message);
             }

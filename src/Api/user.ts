@@ -29,33 +29,38 @@ const resendOtp = async ({ email }: { email: string }) => {
 const login = async (credentials: { email: string; password: string }) => {
     try {
         const result = await Api.post(userRoutes.login, credentials);
+        console.log('result verindo : ', result)
         return result.data
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
-
+        if (error.response && error.response.data) {
+            throw error.response.data;
+        } else {
+            throw { message: 'Network error or server unavailable' };
+        }
     }
 }
 
-const logout = async (Credential:{email:string})=>{
+const logout = async (Credential: { email: string }) => {
     try {
-        const result = await Api.put(userRoutes.logout,Credential)
+        const result = await Api.put(userRoutes.logout, Credential)
         return result
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
-const getProfile = async (email: string)=>{
+const getProfile = async (email: string) => {
     try {
-        
+
         const result = await Api.get(`${userRoutes.getProfile}?email=${email}`);
 
         return result
-        
+
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 

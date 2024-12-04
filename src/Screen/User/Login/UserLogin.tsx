@@ -20,16 +20,16 @@ const UserLogin: React.FC = () => {
 
     const { userData } = useAppSelector((state) => state.auth)
     console.log('userdataaa login page:', userData);
-    
+
 
     const authState = useAppSelector((state) => state.auth);
     const userDetails = authState.user
 
     useEffect(() => {
         if (userData && userDetails) navigate('/');
-    }, [userData,userDetails]);
+    }, [userData, userDetails]);
 
-    
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -50,34 +50,24 @@ const UserLogin: React.FC = () => {
                 toast.success('Logged in successfully');
                 navigate('/');
             } else {
-                toast.error("Login failed")
+                toast.error(response?.message || 'Login failed');
                 setError(response?.message || 'Invalid email or password');
             }
-
-
-
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            setError('Something went wrong. Please try again.');
-            console.log('catch error')
-
+        } catch (err: any) {
+            setError(err.message || 'An error occurred during login');
+            toast.error('login Failed');
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center relative bg-blue-100">
-
-
-            <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-96">
-                <h2
-                    className="text-center text-2xl font-bold mb-4"
-                    style={{ color: '#00A3FF' }}
-                >
-                    Login
-                </h2>
+        <div className="min-h-screen flex items-center justify-evenly relative bg-blue-100">
+            <div className='w-1/2'>
                 <Lottie animationData={logAnime} loop={true} />
+            </div>
+            <div className="relative z-10 bg-blue-200 p-8  rounded-lg shadow-lg w-96 ">
+                <h2 className="text-center text-2xl font-bold mb-4" style={{ color: '#00A3FF' }} >Login</h2>
                 <button
                     className="absolute top-2 right-2 text-blue-700 font-bold"
                     onClick={() => navigate('/')}
@@ -86,7 +76,8 @@ const UserLogin: React.FC = () => {
                 </button>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    {error && <p className="text-red-500 text-center">{error}</p>}
+
+                    {error && (<p className="text-red-500 text-center">{error}</p>)}
 
                     <div>
                         <label htmlFor="email" className="block font-medium">

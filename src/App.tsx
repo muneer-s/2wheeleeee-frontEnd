@@ -28,6 +28,9 @@ function App() {
             <Route path='/login' element={<UserLogin />} />
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} />
+
+
+            
             <Route path='/hostHome' element={ <HostHome />} />
             <Route path='/profilePage' element={<ProfilePage/>} />
 
