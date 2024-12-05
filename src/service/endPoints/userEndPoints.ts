@@ -5,7 +5,8 @@ const userRoutes={
     verifyOtp: "/user/verifyOtp",
     resendOtp:"/user/resendOtp",
     login:"/user/login",
-    getProfile:"/user/getProfile"
+    getProfile:"/user/getProfile",
+    editUser : '/user/editUser',
     
 
     
