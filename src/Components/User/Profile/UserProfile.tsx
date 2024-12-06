@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { edituser, getProfile } from "../../../Api/user";
 import { useAppSelector } from "../../../app/store";
+import toast from "react-hot-toast";
 
 
 export interface UserData {
@@ -51,6 +52,11 @@ const UserProfile: React.FC = () => {
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
 
+        if (!userProfile) {
+            setErrors({ userProfile: "User profile is required." });
+            return false;
+        }
+
         if (!userProfile?.name) newErrors.name = "Name is required.";
 
         if (!userProfile?.phoneNumber || !/^[0-9]{10}$/.test(userProfile.phoneNumber.toString())) {
@@ -66,9 +72,7 @@ const UserProfile: React.FC = () => {
 
         if (!userProfile?.address) newErrors.address = "Address is required.";
 
-        if (!userProfile?.password) {
-            newErrors.password = "Password is required.";
-        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}/.test(userProfile.password)) {
+        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}/.test(userProfile.password)) {
             newErrors.password = "Password must include uppercase, lowercase, number, and special character.";
         }
 
@@ -84,15 +88,29 @@ const UserProfile: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (validateForm() && userProfile ) {
-            console.log("Form is valid, submitting data...", userProfile);
+        if (!validateForm()) {
+            console.log("Form is invalid, showing errors...");
+            return;
+        }
+
+        if (!userProfile) {
+            console.error("User profile data is missing.");
+            return;
+        }
+        console.log("Form is valid, submitting data...");
+
+        try {
             const response = await edituser(userEmail, userProfile);
             console.log("Profile updated successfully", response);
-
-            // Submit form logic here
-        } else {
-            console.log("Form is invalid, showing errors...");
+            toast.success("Profile updated successfully!");
+        } catch (error: any) {
+            console.error("An error occurred while updating the profile:", error);
+            alert(
+                error?.response?.data?.message ||
+                "An error occurred while updating the profile. Please try again later."
+            );
         }
+
     };
 
 
@@ -161,6 +179,8 @@ const UserProfile: React.FC = () => {
                                         type="email"
                                         placeholder="Email"
                                         value={userProfile?.email || ""}
+                                        onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value } as UserData)}
+
                                         className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                     />
 
@@ -216,7 +236,7 @@ const UserProfile: React.FC = () => {
                                     <input
                                         type="password"
                                         placeholder="Password"
-                                        value={userProfile?.password || ""}
+                                        // value={userProfile?.password || ""}
                                         onChange={(e) => setUserProfile({ ...userProfile, password: e.target.value } as UserData)}
                                         className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.password ? 'border-red-500' : ''}`}
                                     />

@@ -20,11 +20,17 @@ const UserRegister: React.FC = () => {
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             newErrors.email = 'Enter a valid email address.';
         }
+
+
         if (!password) {
             newErrors.password = 'Password is required.';
         } else if (password.length < 6) {
             newErrors.password = 'Password must be at least 6 characters long.';
+        }else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(password)) {
+            newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
         }
+
+
         if (!confirmPassword) {
             newErrors.confirmPassword = 'Confirm Password is required.';
         } else if (password !== confirmPassword) {
@@ -55,7 +61,7 @@ const UserRegister: React.FC = () => {
                 if (data.success) {
                     toast.success(data.message)
                     console.log('Registration Successful:', data);
-                    navigate(`/otp?email=${data.userId}`);
+                    navigate(`/otp?email=${data.email}`);
                 } else {
                     setErrors({ form: data.message });
                     toast.error(data.message);

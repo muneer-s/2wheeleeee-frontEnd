@@ -44,6 +44,7 @@ const UserLogin: React.FC = () => {
                     email: response.user.email,
                     name: response.user.name,
                     profile_picture: response.user.profile_picture,
+                    userId :response.user.userId
                 };
                 dispatch(saveUser(user))
                 dispatch(setUserCredential(response.userAccessToken))
