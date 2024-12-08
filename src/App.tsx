@@ -13,6 +13,7 @@ import AdminProtectedRoute from './Components/Admin/AdminProtectedRoute';
 import AdminUserList from './Screen/Admin/AdminUserList/AdminUserList';
 import AdminHostList from './Screen/Admin/AdminHostList/AdminHostList';
 import ProfilePage from './Screen/User/Profile/ProfilePage';
+import AdminSingleUserPage from './Screen/Admin/SingleUserPage/AdminSingleUserPage';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
             <Route path="/adminDashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>}/>
             <Route path="/adminUserList" element={<AdminProtectedRoute><AdminUserList /></AdminProtectedRoute>}/>
             <Route path="/adminHostList" element={<AdminProtectedRoute><AdminHostList /></AdminProtectedRoute>}/>
+            <Route path="/usersinglepage/:id" element={<AdminProtectedRoute><AdminSingleUserPage/></AdminProtectedRoute>} />
 
           </Routes>
         </Router>

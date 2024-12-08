@@ -22,9 +22,38 @@ const logout = async ()=>{
     }
 }
 
+const getAllUsers = async()=>{
+    try {
+        const result = await Api.get(adminRoutes.getAllUsers)
+        return result
+    } catch (error) {
+        console.error('Error in getAllUsers:', error);
+        throw error;
+    }
+}
+
+const getSingleUser = async(id:string)=>{
+    try {
+        const result = await Api.get(`${adminRoutes.getSingleUser}/${id}`);
+        return result
+
+
+
+        // await Api.get(`${adminRoutes.getSingleUser}/${id}`);
+
+
+        return result
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 
 export {
     login,
-    logout
+    logout,
+    getAllUsers,
+    getSingleUser
 }

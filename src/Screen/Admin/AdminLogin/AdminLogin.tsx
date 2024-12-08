@@ -20,31 +20,31 @@ const AdminLogin: React.FC = () => {
 
     const { adminData } = useAppSelector((state) => state.auth);
 
-console.log('admin data : ' ,adminData);
+    console.log('admin data : ', adminData);
 
     useEffect(() => {
         if (adminData) {
-          navigate('/adminDashboard');
+            navigate('/adminDashboard');
         }
-      }, [adminData])
+    }, [adminData])
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         console.log(email);
         console.log(password);
-        
+
         e.preventDefault();
         setError(null);
         setLoading(true);
         try {
-            const response = await login({ email, password }); 
+            const response = await login({ email, password });
             console.log('Admin login response:', response);
             console.log(response.token);
 
             if (response?.success && response.token) {
                 dispatch(setAdminCredential(response.token))
                 toast.success('Admin logged in successfully');
-                navigate('/adminDashboard'); 
+                navigate('/adminDashboard');
             } else {
                 toast.error('Login failed');
                 setError(response?.message || 'Invalid email or password');
