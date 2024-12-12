@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { edituser, getProfile } from "../../../Api/user";
+import { edituser, edituserDocuments, getProfile } from "../../../Api/user";
 import { useAppSelector } from "../../../app/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -8,7 +8,6 @@ type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
 
 
 import { UserData } from "../../../Interfaces/Interfaces";
-
 
 
 const UserProfile: React.FC = () => {
@@ -92,15 +91,15 @@ const UserProfile: React.FC = () => {
         }
 
         try {
-            const result  = await edituser(userEmail, userProfile);
-            console.log('-------',result?.data.user);
+            const result = await edituser(userEmail, userProfile);
+            console.log('-------', result?.data.user);
             const user = {
                 email: result?.data.user.email,
                 name: result?.data.user.name,
                 profile_picture: result?.data.user.profile_picture,
-                userId :result?.data.user.userId
+                userId: result?.data.user.userId
             };
-            
+
             dispatch(saveUser(user))
             toast.success("Profile updated successfully!");
         } catch (error: any) {
@@ -120,7 +119,7 @@ const UserProfile: React.FC = () => {
         setPic(fileURL)
     }
 
-    const handleImageUpload = ( e: ChangeEvent<HTMLInputElement>, setImage: SetImageFunction) => {
+    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, setImage: SetImageFunction) => {
         const file = e.target.files?.[0];
 
         if (file) {
@@ -132,8 +131,63 @@ const UserProfile: React.FC = () => {
         }
     };
 
+    const validateFormDocuments = () => {
+        const newErrors: { [key: string]: string } = {};
+
+        if (!userProfile) {
+            setErrors({ userProfile: "User profile is required." });
+            return false;
+        }
+
+        if (!userProfile?.license_number) newErrors.license_number = "License Number is required.";
+
+        if (!userProfile?.license_Exp_Date) {
+            newErrors.license_Exp_Date = "License Expiration Date is required.";
+        } else {
+            // Parse the expiration date and compare with the current date
+            const today = new Date();
+            const expirationDate = new Date(userProfile.license_Exp_Date);
+    
+            if (expirationDate < today) {
+                newErrors.license_Exp_Date = "License Expiration Date is expired.";
+            }
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+
+
+
+
     const handleSubmitDocuments = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!validateFormDocuments()) {
+            console.log("Form is invalid, showing errors...");
+            return;
+        }
+
+        if (!userProfile) {
+            console.error("User profile data is missing.");
+            return;
+        }
+
+        try {
+            await edituserDocuments(userId, userProfile);
+            toast.success("Documents updated successfully!");
+        } catch (error: any) {
+            console.error("An error occurred while updating the profile:", error);
+            alert(
+                error?.response?.data?.message ||
+                "An error occurred while updating the profile. Please try again later."
+            );
+        }
+
+
+
+
     }
 
 
@@ -274,22 +328,28 @@ const UserProfile: React.FC = () => {
                                     <input
                                         type="text"
                                         placeholder="Driving Licence No."
-                                        value={userProfile?.lisence_number || ""}
-                                        onChange={(e) => setUserProfile({ ...userProfile, lisence_number: e.target.value } as UserData)}
+                                        value={userProfile?.license_number || ""}
+                                        onChange={(e) => setUserProfile({ ...userProfile, license_number: e.target.value } as UserData)}
                                         className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                     />
+                                    {errors.license_number && <p className="text-red-500 text-sm">{errors.license_number}</p>}
+
 
 
                                     <input
                                         type="date"
                                         placeholder="Exp Date"
                                         value={
-                                            userProfile?.lisence_Exp_Date
-                                                ? new Date(userProfile.lisence_Exp_Date).toISOString().split("T")[0]
+                                            userProfile?.license_Exp_Date
+                                                ? new Date(userProfile.license_Exp_Date).toISOString().split("T")[0]
                                                 : ""
                                         }
+                                        onChange={(e) => setUserProfile({ ...userProfile, license_Exp_Date: new Date(e.target.value) } as UserData)}
                                         className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                     />
+                                    {errors.license_Exp_Date && <p className="text-red-500 text-sm">{errors.license_Exp_Date}</p>}
+
+
                                     {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
 
                                     <div className="space-y-4">

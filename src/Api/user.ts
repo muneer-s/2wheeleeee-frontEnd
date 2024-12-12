@@ -78,6 +78,17 @@ const edituser = async(email:string,updatedDetails: Partial<UserData>)=>{
     }
 }
 
+const edituserDocuments = async(userId:string,updatedDetails: Partial<UserData>)=>{
+    try {
+        console.log("hi muneer");
+        
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 export {
     verifyOtp,
@@ -85,5 +96,6 @@ export {
     login,
     logout,
     getProfile,
-    edituser
+    edituser,
+    edituserDocuments
 }
