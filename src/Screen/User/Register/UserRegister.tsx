@@ -15,6 +15,7 @@ const UserRegister: React.FC = () => {
         const newErrors: { [key: string]: string } = {};
 
         if (!userName.trim()) newErrors.userName = 'Username is required.';
+        
         if (!email.trim()) {
             newErrors.email = 'Email is required.';
         } else if (!/\S+@\S+\.\S+/.test(email)) {

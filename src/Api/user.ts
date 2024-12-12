@@ -2,23 +2,7 @@ import errorHandler from "./errorHandler.ts";
 import userRoutes from "../service/endPoints/userEndPoints";
 import Api from "../service/axios.ts";
 
-export interface UserData {
-    _id: string;
-    name: string;
-    email: string;
-    password: string;
-    phoneNumber: number;
-    isBlocked: boolean;
-    isVerified: boolean;
-    profile_picture: File| string |null;
-    dateOfBirth: Date;
-    address: string | null;
-    isUser: boolean;
-    lisence_number: number;
-    lisence_Exp_Date: Date;
-    lisence_picture_front: string;
-    lisence_picture_back: string;
-}
+import { UserData } from "../Interfaces/Interfaces.ts";
 
 const verifyOtp = async (data: { otp: string, userId: string | null }) => {
     try {

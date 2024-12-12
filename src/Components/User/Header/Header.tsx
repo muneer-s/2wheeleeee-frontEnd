@@ -13,6 +13,8 @@ const Header = () => {
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
+  console.log("userdetails : ",userDetails);
+  
 
 
   // const { userData } = useAppSelector((state) => state.auth)
@@ -60,7 +62,7 @@ const Header = () => {
               onClick={() => setDropdownOpen(!dropDownOpen)}
             >
               <img
-                src={userDetails.profilePhoto || defaultDp}
+                src={userDetails.profilePhoto || userDetails.profile_picture || defaultDp}
                 alt="Profile"
                 className="w-10 h-10 rounded-full border"
               />

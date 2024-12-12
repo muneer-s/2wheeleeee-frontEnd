@@ -2,26 +2,12 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { edituser, getProfile } from "../../../Api/user";
 import { useAppSelector } from "../../../app/store";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { authSlice, saveUser } from "../../../app/slice/AuthSlice";
 type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
 
 
-export interface UserData {
-    _id: string;
-    name: string;
-    email: string;
-    password: string;
-    phoneNumber: number;
-    isBlocked: boolean;
-    isVerified: boolean;
-    profile_picture: File | string | null;
-    dateOfBirth: Date;
-    address: string | null;
-    isUser: boolean;
-    lisence_number: number;
-    lisence_Exp_Date: Date;
-    lisence_picture_front: string;
-    lisence_picture_back: string;
-}
+import { UserData } from "../../../Interfaces/Interfaces";
 
 
 
@@ -37,6 +23,9 @@ const UserProfile: React.FC = () => {
 
     const authState = useAppSelector((state) => state.auth);
     const userEmail = authState.user.email
+    const userId = authState.user.userId
+
+    let dispatch = useDispatch()
 
 
     useEffect(() => {
@@ -76,13 +65,13 @@ const UserProfile: React.FC = () => {
 
         if (!userProfile?.address) newErrors.address = "Address is required.";
 
-        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}/.test(userProfile.password)) {
-            newErrors.password = "Password must include uppercase, lowercase, number, and special character.";
-        }
+        // if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}/.test(userProfile.password)) {
+        //     newErrors.password = "Password must include uppercase, lowercase, number, and special character.";
+        // }
 
-        if (confirmPassword !== userProfile?.password) {
-            newErrors.confirmPassword = "Passwords do not match.";
-        }
+        // if (confirmPassword !== userProfile?.password) {
+        //     newErrors.confirmPassword = "Passwords do not match.";
+        // }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -103,7 +92,16 @@ const UserProfile: React.FC = () => {
         }
 
         try {
-            await edituser(userEmail, userProfile);
+            const result  = await edituser(userEmail, userProfile);
+            console.log('-------',result?.data.user);
+            const user = {
+                email: result?.data.user.email,
+                name: result?.data.user.name,
+                profile_picture: result?.data.user.profile_picture,
+                userId :result?.data.user.userId
+            };
+            
+            dispatch(saveUser(user))
             toast.success("Profile updated successfully!");
         } catch (error: any) {
             console.error("An error occurred while updating the profile:", error);
@@ -133,6 +131,10 @@ const UserProfile: React.FC = () => {
             reader.readAsDataURL(file);
         }
     };
+
+    const handleSubmitDocuments = async (e: React.FormEvent) => {
+        e.preventDefault();
+    }
 
 
     const renderContent = () => {
@@ -257,11 +259,6 @@ const UserProfile: React.FC = () => {
                                             }
                                         }}
                                     />
-
-
-
-
-
                                     <button
                                         type="submit"
                                         className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600"
@@ -272,12 +269,13 @@ const UserProfile: React.FC = () => {
                             {/* User Verify Section */}
                             <div>
                                 <h2 className="text-lg font-semibold text-gray-800 mb-4">User Verify Section</h2>
-                                <form className="space-y-4">
+                                <form className="space-y-4" onSubmit={handleSubmitDocuments}>
 
                                     <input
                                         type="text"
                                         placeholder="Driving Licence No."
                                         value={userProfile?.lisence_number || ""}
+                                        onChange={(e) => setUserProfile({ ...userProfile, lisence_number: e.target.value } as UserData)}
                                         className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                     />
 
@@ -336,11 +334,11 @@ const UserProfile: React.FC = () => {
                                                         accept="image/*"
                                                         onChange={(e) => handleImageUpload(e, setBackImage)}
                                                         className="block w-full text-sm text-gray-500 
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-violet-50 file:text-violet-700
-                hover:file:bg-violet-100"
+                                                        file:mr-4 file:py-2 file:px-4
+                                                        file:rounded-full file:border-0
+                                                        file:text-sm file:font-semibold
+                                                        file:bg-violet-50 file:text-violet-700
+                                                        hover:file:bg-violet-100"
                                                     />
                                                 </div>
                                                 {backImage && (
