@@ -9,11 +9,12 @@ import HostHome from './Screen/Host/HostHome/HostHome';
 import { Toaster } from 'react-hot-toast';
 import AdminLogin from './Screen/Admin/AdminLogin/AdminLogin'
 import AdminDashboard from './Screen/Admin/AdminDashboard/AdminDashboard';
-import AdminProtectedRoute from './Components/Admin/AdminProtectedRoute';
+import AdminProtectedRoute from './Middleware/AdminProtectedRoute';
 import AdminUserList from './Screen/Admin/AdminUserList/AdminUserList';
 import AdminHostList from './Screen/Admin/AdminHostList/AdminHostList';
 import ProfilePage from './Screen/User/Profile/ProfilePage';
-import AdminSingleUserPage from './Screen/Admin/SingleUserPage/AdminSingleUserPage';
+import AdminSingleUserPage from './Screen/Admin/SingleUserPage/SingleUserPage'
+
 
 function App() {
 

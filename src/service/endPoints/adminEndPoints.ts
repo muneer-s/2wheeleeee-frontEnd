@@ -3,6 +3,7 @@ const adminRoutes={
     logout:'/admin/logout',
     getAllUsers:'/admin/getAllUsers',
     getSingleUser:'/admin/getSingleUser',
+    toggleIsUser: '/admin/userVerify',
 
 
    

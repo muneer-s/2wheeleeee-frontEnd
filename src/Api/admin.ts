@@ -36,13 +36,17 @@ const getSingleUser = async(id:string)=>{
     try {
         const result = await Api.get(`${adminRoutes.getSingleUser}/${id}`);
         return result
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
 
-
-        // await Api.get(`${adminRoutes.getSingleUser}/${id}`);
-
-
-        return result
+const toggleIsUser = async(id:string)=>{
+    try {
+        const result = await Api.put(`${adminRoutes.toggleIsUser}/${id}`)
+        return result  
     } catch (error) {
         console.log(error);
         
@@ -55,5 +59,6 @@ export {
     login,
     logout,
     getAllUsers,
-    getSingleUser
+    getSingleUser,
+    toggleIsUser
 }

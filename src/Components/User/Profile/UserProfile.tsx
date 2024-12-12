@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { edituser, getProfile } from "../../../Api/user";
 import { useAppSelector } from "../../../app/store";
 import toast from "react-hot-toast";
+type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
 
 
 export interface UserData {
@@ -12,7 +13,7 @@ export interface UserData {
     phoneNumber: number;
     isBlocked: boolean;
     isVerified: boolean;
-    profile_picture: string;
+    profile_picture: File | string | null;
     dateOfBirth: Date;
     address: string | null;
     isUser: boolean;
@@ -26,11 +27,13 @@ export interface UserData {
 
 const UserProfile: React.FC = () => {
     const [userProfile, setUserProfile] = useState<UserData | null>(null);
-    const [pic, setPic] = useState<string>("");
+    const [pic, setPic] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<string>("Personal Details"); // New state for active tab
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+    const [frontImage, setFrontImage] = useState<string | null>(null);
+    const [backImage, setBackImage] = useState<string | null>(null);
 
     const authState = useAppSelector((state) => state.auth);
     const userEmail = authState.user.email
@@ -41,13 +44,14 @@ const UserProfile: React.FC = () => {
             try {
                 const response = await getProfile(userEmail);
                 setUserProfile(response?.data.userDetails);
-                setPic(response?.data.userDetails?.profile_picture || "/default-avatar.png");
+                setPic(response?.data.userDetails?.profile_picture || "");
             } catch (error) {
                 console.error('Error:', error);
             }
         }
         fetchData();
     }, [userEmail]);
+
 
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
@@ -97,11 +101,9 @@ const UserProfile: React.FC = () => {
             console.error("User profile data is missing.");
             return;
         }
-        console.log("Form is valid, submitting data...");
 
         try {
-            const response = await edituser(userEmail, userProfile);
-            console.log("Profile updated successfully", response);
+            await edituser(userEmail, userProfile);
             toast.success("Profile updated successfully!");
         } catch (error: any) {
             console.error("An error occurred while updating the profile:", error);
@@ -114,9 +116,23 @@ const UserProfile: React.FC = () => {
     };
 
 
+    const setNewProfile = (profileFile: File) => {
+        const fileURL = URL.createObjectURL(profileFile);
+        setUserProfile({ ...userProfile, profile_picture: profileFile } as UserData)
+        setPic(fileURL)
+    }
 
+    const handleImageUpload = ( e: ChangeEvent<HTMLInputElement>, setImage: SetImageFunction) => {
+        const file = e.target.files?.[0];
 
-
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
 
     const renderContent = () => {
@@ -132,31 +148,11 @@ const UserProfile: React.FC = () => {
                             <div className="flex items-center justify-center mb-8">
                                 <div className="relative">
                                     <img
-                                        src={"/default-avatar.png"}
+                                        src={pic ? pic : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4n9vUNCLmnEJ5pKIl0VUwTPofdPGIXPf2pA&s'}
                                         alt="Profile"
                                         className="w-24 h-24 rounded-full object-cover border border-gray-300"
                                     />
-                                    <button
-                                        onClick={() => document.getElementById("profileImageInput")?.click()}
-                                        className="absolute bottom-0 right-0 bg-gray-800 text-white rounded-full p-2 hover:bg-gray-600"
-                                    >
-                                        Edit
-                                    </button>
 
-
-
-                                    <input
-                                        type="file"
-                                        id="profileImageInput"
-                                        className="hidden"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            if (e.target.files && e.target.files[0]) {
-                                                const file = e.target.files[0];
-                                                setPic(URL.createObjectURL(file));
-                                            }
-                                        }}
-                                    />
                                 </div>
                             </div>
 
@@ -171,8 +167,6 @@ const UserProfile: React.FC = () => {
                                         className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.name ? 'border-red-500' : ''}`}
                                     />
                                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-
-
 
 
                                     <input
@@ -192,7 +186,6 @@ const UserProfile: React.FC = () => {
                                         value={userProfile?.phoneNumber?.toString() || ""}
                                         onChange={(e) => {
                                             const input = e.target.value;
-                                            // Allow updating the field even if input is empty
                                             setUserProfile({
                                                 ...userProfile,
                                                 phoneNumber: input === "" ? undefined : parseInt(input, 10),
@@ -255,6 +248,17 @@ const UserProfile: React.FC = () => {
                                     {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
 
 
+                                    <input
+                                        type="file"
+                                        placeholder="profile image"
+                                        onChange={(e) => {
+                                            if (e.target.files && e.target.files[0]) {
+                                                setNewProfile(e.target.files[0]); // Pass the File object to your state
+                                            }
+                                        }}
+                                    />
+
+
 
 
 
@@ -269,34 +273,100 @@ const UserProfile: React.FC = () => {
                             <div>
                                 <h2 className="text-lg font-semibold text-gray-800 mb-4">User Verify Section</h2>
                                 <form className="space-y-4">
+
                                     <input
                                         type="text"
                                         placeholder="Driving Licence No."
+                                        value={userProfile?.lisence_number || ""}
                                         className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                     />
+
+
                                     <input
                                         type="date"
                                         placeholder="Exp Date"
+                                        value={
+                                            userProfile?.lisence_Exp_Date
+                                                ? new Date(userProfile.lisence_Exp_Date).toISOString().split("T")[0]
+                                                : ""
+                                        }
                                         className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
                                     />
-                                    <div className="flex justify-between">
-                                        <label className="flex flex-col items-center bg-gray-100 border border-gray-300 rounded-lg p-4 cursor-pointer hover:bg-gray-200">
-                                            <span className="text-gray-700">Front</span>
-                                            <input type="file" className="hidden" />
-                                        </label>
-                                        <label className="flex flex-col items-center bg-gray-100 border border-gray-300 rounded-lg p-4 cursor-pointer hover:bg-gray-200">
-                                            <span className="text-gray-700">Back</span>
-                                            <input type="file" className="hidden" />
-                                        </label>
+                                    {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
+
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between space-x-4">
+                                            {/* Front Image Upload */}
+                                            <div className="flex-1">
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Front Image
+                                                </label>
+                                                <div className="flex items-center space-x-4">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, setFrontImage)}
+                                                        className="block w-full text-sm text-gray-500 
+                                                        file:mr-4 file:py-2 file:px-4
+                                                        file:rounded-full file:border-0
+                                                        file:text-sm file:font-semibold
+                                                         file:bg-violet-50 file:text-violet-700
+                                                        hover:file:bg-violet-100"
+                                                    />
+                                                </div>
+                                                {frontImage && (
+                                                    <div className="mt-2 border rounded-lg overflow-hidden">
+                                                        <img
+                                                            src={frontImage}
+                                                            alt="Front"
+                                                            className="w-full h-40 object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Back Image Upload */}
+                                            <div className="flex-1">
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Back Image
+                                                </label>
+                                                <div className="flex items-center space-x-4">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleImageUpload(e, setBackImage)}
+                                                        className="block w-full text-sm text-gray-500 
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-violet-50 file:text-violet-700
+                hover:file:bg-violet-100"
+                                                    />
+                                                </div>
+                                                {backImage && (
+                                                    <div className="mt-2 border rounded-lg overflow-hidden">
+                                                        <img
+                                                            src={backImage}
+                                                            alt="Back"
+                                                            className="w-full h-40 object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button
-                                        type="submit"
-                                        className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600"
-                                    >
+
+
+                                    <button type="submit" className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600">
                                         Save
                                     </button>
                                 </form>
                             </div>
+
+
+
+
+
                         </div>
 
                     </div>

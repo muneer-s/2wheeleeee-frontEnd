@@ -10,7 +10,7 @@ export interface UserData {
     phoneNumber: number;
     isBlocked: boolean;
     isVerified: boolean;
-    profile_picture: string;
+    profile_picture: File| string |null;
     dateOfBirth: Date;
     address: string | null;
     isUser: boolean;
@@ -82,7 +82,11 @@ const getProfile = async (email: string) => {
 
 const edituser = async(email:string,updatedDetails: Partial<UserData>)=>{
     try {
-        const result = Api.put(userRoutes.editUser,{ email, ...updatedDetails })
+        const result = await Api.put(userRoutes.editUser,{ email, ...updatedDetails },{
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
         return result
     } catch (error) {
         console.log(error);

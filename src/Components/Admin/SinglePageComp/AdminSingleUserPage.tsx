@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getSingleUser } from '../../../Api/admin';
+import { getSingleUser, toggleIsUser } from '../../../Api/admin';
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import {
   Grid,
   Box,
   Divider,
+  Button,
 } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
@@ -32,6 +33,7 @@ const AdminSingleUserPage = () => {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<User | null>(null);
 
+
   useEffect(() => {
     if (!id) {
       console.error('User ID is missing');
@@ -54,6 +56,41 @@ const AdminSingleUserPage = () => {
 
     fetchUser();
   }, [id]);
+
+
+
+
+
+  const handleToggleIsUser = async () => {
+    if (!user) return;
+
+    const originalIsUser = user.isUser;
+    setUser((prevUser) =>
+      prevUser ? { ...prevUser, isUser: !prevUser.isUser } : null
+    );
+
+    try {
+      const response = await toggleIsUser(user._id);
+      console.log('-=-=-=-=-=-=-=-=-=', response);
+
+      if (!response || !response.data) {
+        throw new Error('Unexpected response structure');
+      }
+
+      // if (response && response.data) {
+      //   setUser((prevUser) =>
+      //     prevUser ? { ...prevUser, isUser: !prevUser.isUser } : null
+      //   );
+      // } else {
+      //   console.error('Unexpected response structure:', response);
+      // }
+    } catch (error) {
+      console.error('Error toggling isUser field:', error);
+      setUser((prevUser) =>
+        prevUser ? { ...prevUser, isUser: originalIsUser } : null
+      );
+    }
+  };
 
   if (!user) {
     return <p>Loading user data...</p>;
@@ -98,7 +135,6 @@ const AdminSingleUserPage = () => {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-
               <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Verified:</strong>{' '}
                 {user.isVerified ? (
@@ -107,7 +143,6 @@ const AdminSingleUserPage = () => {
                   <CancelOutlinedIcon color="error" sx={{ marginLeft: 1 }} />
                 )}
               </Typography>
-
               <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Blocked:</strong>{' '}
                 {user.isBlocked ? (
@@ -116,19 +151,29 @@ const AdminSingleUserPage = () => {
                   <CancelOutlinedIcon color="error" sx={{ marginLeft: 1 }} />
                 )}
               </Typography>
-
-              <Typography variant="body1">
+              <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Is User :</strong> {user.isUser ? 'Approved' : 'Pending'}
+                <Button
+                  variant="contained"
+                  color={user.isUser ? 'error' : 'primary'}
+                  size="small"
+                  sx={{ marginLeft: 2 }}
+                  onClick={handleToggleIsUser}
+                >
+                  {user.isUser ? 'Revoke' : 'Approve'}
+                </Button>
               </Typography>
-
-
             </Grid>
             <Divider sx={{ width: '100%', marginY: 2 }} />
             <Grid item xs={6}>
               <img
                 src={user.lisence_picture_front || 'https://via.placeholder.com/300x200'}
                 alt="License Front"
-                style={{ width: '100%', borderRadius: '10px', boxShadow: '2px 2px 5px rgba(0,0,0,0.3)' }}
+                style={{
+                  width: '100%',
+                  borderRadius: '10px',
+                  boxShadow: '2px 2px 5px rgba(0,0,0,0.3)',
+                }}
               />
               <Typography align="center" variant="caption" color="text.secondary">
                 License Front
@@ -138,7 +183,11 @@ const AdminSingleUserPage = () => {
               <img
                 src={user.lisence_picture_back || 'https://via.placeholder.com/300x200'}
                 alt="License Back"
-                style={{ width: '100%', borderRadius: '10px', boxShadow: '2px 2px 5px rgba(0,0,0,0.3)' }}
+                style={{
+                  width: '100%',
+                  borderRadius: '10px',
+                  boxShadow: '2px 2px 5px rgba(0,0,0,0.3)',
+                }}
               />
               <Typography align="center" variant="caption" color="text.secondary">
                 License Back
