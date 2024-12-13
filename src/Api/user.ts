@@ -78,10 +78,27 @@ const edituser = async(email:string,updatedDetails: Partial<UserData>)=>{
     }
 }
 
-const edituserDocuments = async(userId:string,updatedDetails: Partial<UserData>)=>{
+// const edituserDocuments = async (formData: FormData) => {
+//     try {
+//         const result = await Api.put(userRoutes.editUserDocuments, formData, {
+//             headers: {
+//                 "Content-Type": "multipart/form-data",
+//             },
+//         });
+//         return result;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
+
+const edituserDocuments = async(formData:FormData)=>{
     try {
-        console.log("hi muneer");
-        
+        const result = await Api.put(userRoutes.editUserDocuments,formData,{
+            headers:{
+                "Content-Type": "multipart/form-data",
+            }
+        })
+        return result
         
     } catch (error) {
         console.log(error);

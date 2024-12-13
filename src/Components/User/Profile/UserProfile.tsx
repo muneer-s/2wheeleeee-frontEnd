@@ -17,12 +17,13 @@ const UserProfile: React.FC = () => {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-    const [frontImage, setFrontImage] = useState<string | null>(null);
-    const [backImage, setBackImage] = useState<string | null>(null);
+    const [frontImage, setFrontImage] = useState<File | null>(null);
+    const [backImage, setBackImage] = useState<File | null>(null);
 
     const authState = useAppSelector((state) => state.auth);
     const userEmail = authState.user.email
     const userId = authState.user.userId
+
 
     let dispatch = useDispatch()
 
@@ -31,6 +32,8 @@ const UserProfile: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await getProfile(userEmail);
+                console.log(11111,userProfile);
+                
                 setUserProfile(response?.data.userDetails);
                 setPic(response?.data.userDetails?.profile_picture || "");
             } catch (error) {
@@ -92,7 +95,6 @@ const UserProfile: React.FC = () => {
 
         try {
             const result = await edituser(userEmail, userProfile);
-            console.log('-------', result?.data.user);
             const user = {
                 email: result?.data.user.email,
                 name: result?.data.user.name,
@@ -119,15 +121,23 @@ const UserProfile: React.FC = () => {
         setPic(fileURL)
     }
 
-    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, setImage: SetImageFunction) => {
-        const file = e.target.files?.[0];
+    // const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, setImage: SetImageFunction) => {
 
+    //     const file = e.target.files?.[0];
+
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setImage(reader.result as string);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, setImage: React.Dispatch<React.SetStateAction<File | null>>) => {
+        const file = e.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            setImage(file); // Save the File object
         }
     };
 
@@ -147,7 +157,7 @@ const UserProfile: React.FC = () => {
             // Parse the expiration date and compare with the current date
             const today = new Date();
             const expirationDate = new Date(userProfile.license_Exp_Date);
-    
+
             if (expirationDate < today) {
                 newErrors.license_Exp_Date = "License Expiration Date is expired.";
             }
@@ -175,7 +185,29 @@ const UserProfile: React.FC = () => {
         }
 
         try {
-            await edituserDocuments(userId, userProfile);
+            const formData = new FormData();
+
+            // Append text fields
+            formData.append("userId", userId);
+            formData.append("license_number", userProfile.license_number || "");
+            formData.append("license_Exp_Date", userProfile.license_Exp_Date?.toISOString() || "");
+
+            // Append files if available
+            if (frontImage) {
+                formData.append("frontImage", frontImage);
+            }
+            if (backImage) {
+                formData.append("backImage", backImage);
+            }
+
+            console.log("Submitting form data...");
+            console.log([...formData.entries()]); // Debugging: Log all form data
+
+
+            // Call the API
+            const result = await edituserDocuments(formData);
+            console.log("result : ", result);
+
             toast.success("Documents updated successfully!");
         } catch (error: any) {
             console.error("An error occurred while updating the profile:", error);
@@ -184,10 +216,6 @@ const UserProfile: React.FC = () => {
                 "An error occurred while updating the profile. Please try again later."
             );
         }
-
-
-
-
     }
 
 
@@ -375,7 +403,7 @@ const UserProfile: React.FC = () => {
                                                 {frontImage && (
                                                     <div className="mt-2 border rounded-lg overflow-hidden">
                                                         <img
-                                                            src={frontImage}
+                                                            src={URL.createObjectURL(frontImage)}
                                                             alt="Front"
                                                             className="w-full h-40 object-cover"
                                                         />
@@ -404,7 +432,7 @@ const UserProfile: React.FC = () => {
                                                 {backImage && (
                                                     <div className="mt-2 border rounded-lg overflow-hidden">
                                                         <img
-                                                            src={backImage}
+                                                            src={URL.createObjectURL(backImage)}
                                                             alt="Back"
                                                             className="w-full h-40 object-cover"
                                                         />

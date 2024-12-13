@@ -7,6 +7,7 @@ const userRoutes={
     login:"/user/login",
     getProfile:"/user/getProfile",
     editUser : '/user/editUser',
+    editUserDocuments:'/user/editUserDocuments',
     
 
     
