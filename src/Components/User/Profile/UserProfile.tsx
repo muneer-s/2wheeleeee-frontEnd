@@ -13,7 +13,7 @@ import { UserData } from "../../../Interfaces/Interfaces";
 const UserProfile: React.FC = () => {
     const [userProfile, setUserProfile] = useState<UserData | null>(null);
     const [pic, setPic] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<string>("Personal Details"); // New state for active tab
+    const [activeTab, setActiveTab] = useState<string>("Personal Details");
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
@@ -32,8 +32,6 @@ const UserProfile: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await getProfile(userEmail);
-                console.log(11111,userProfile);
-                
                 setUserProfile(response?.data.userDetails);
                 setPic(response?.data.userDetails?.profile_picture || "");
             } catch (error) {
@@ -67,13 +65,6 @@ const UserProfile: React.FC = () => {
 
         if (!userProfile?.address) newErrors.address = "Address is required.";
 
-        // if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}/.test(userProfile.password)) {
-        //     newErrors.password = "Password must include uppercase, lowercase, number, and special character.";
-        // }
-
-        // if (confirmPassword !== userProfile?.password) {
-        //     newErrors.confirmPassword = "Passwords do not match.";
-        // }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -120,19 +111,6 @@ const UserProfile: React.FC = () => {
         setUserProfile({ ...userProfile, profile_picture: profileFile } as UserData)
         setPic(fileURL)
     }
-
-    // const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, setImage: SetImageFunction) => {
-
-    //     const file = e.target.files?.[0];
-
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onloadend = () => {
-    //             setImage(reader.result as string);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, setImage: React.Dispatch<React.SetStateAction<File | null>>) => {
         const file = e.target.files?.[0];
@@ -187,10 +165,15 @@ const UserProfile: React.FC = () => {
         try {
             const formData = new FormData();
 
+            const licenseExpDate =
+                typeof userProfile.license_Exp_Date === "string"
+                    ? new Date(userProfile.license_Exp_Date)
+                    : userProfile.license_Exp_Date;
+
             // Append text fields
             formData.append("userId", userId);
             formData.append("license_number", userProfile.license_number || "");
-            formData.append("license_Exp_Date", userProfile.license_Exp_Date?.toISOString() || "");
+            formData.append("license_Exp_Date", licenseExpDate?.toISOString() || "");
 
             // Append files if available
             if (frontImage) {
@@ -200,15 +183,17 @@ const UserProfile: React.FC = () => {
                 formData.append("backImage", backImage);
             }
 
-            console.log("Submitting form data...");
-            console.log([...formData.entries()]); // Debugging: Log all form data
+            //console.log([...formData.entries()]); 
 
 
             // Call the API
             const result = await edituserDocuments(formData);
-            console.log("result : ", result);
+            if (result?.statusText == "OK") {
+                toast.success("Documents updated successfully!");
+            } else {
+                toast.error("Documents updation Failed!")
+            }
 
-            toast.success("Documents updated successfully!");
         } catch (error: any) {
             console.error("An error occurred while updating the profile:", error);
             alert(
@@ -348,7 +333,7 @@ const UserProfile: React.FC = () => {
                                 </form>
                             </div>
 
-                            {/* User Verify Section */}
+                            {/*---------------------------------------------------- User Verify Section ----------------------------------------------------*/}
                             <div>
                                 <h2 className="text-lg font-semibold text-gray-800 mb-4">User Verify Section</h2>
                                 <form className="space-y-4" onSubmit={handleSubmitDocuments}>
@@ -400,15 +385,27 @@ const UserProfile: React.FC = () => {
                                                         hover:file:bg-violet-100"
                                                     />
                                                 </div>
-                                                {frontImage && (
+                                                {frontImage ? (
                                                     <div className="mt-2 border rounded-lg overflow-hidden">
                                                         <img
-                                                            src={URL.createObjectURL(frontImage)}
+                                                            src={frontImage instanceof File ? URL.createObjectURL(frontImage) : ""}
                                                             alt="Front"
                                                             className="w-full h-40 object-cover"
                                                         />
                                                     </div>
-                                                )}
+                                                ) : userProfile?.license_picture_front ? (
+                                                    <div className="mt-2 border rounded-lg overflow-hidden">
+                                                        <img
+                                                            src={
+                                                                typeof userProfile.license_picture_front === "string"
+                                                                    ? userProfile.license_picture_front
+                                                                    : ""
+                                                            } alt="Front License"
+                                                            className="w-full h-40 object-cover"
+                                                        />
+                                                    </div>
+                                                ) : null}
+
                                             </div>
 
                                             {/* Back Image Upload */}
@@ -429,15 +426,26 @@ const UserProfile: React.FC = () => {
                                                         hover:file:bg-violet-100"
                                                     />
                                                 </div>
-                                                {backImage && (
+                                                {backImage ? (
                                                     <div className="mt-2 border rounded-lg overflow-hidden">
                                                         <img
-                                                            src={URL.createObjectURL(backImage)}
+                                                            src={backImage instanceof File ? URL.createObjectURL(backImage) : ""}
                                                             alt="Back"
                                                             className="w-full h-40 object-cover"
                                                         />
                                                     </div>
-                                                )}
+                                                ) : userProfile?.license_picture_back ? (
+                                                    <div className="mt-2 border rounded-lg overflow-hidden">
+                                                        <img
+                                                            src={
+                                                                typeof userProfile.license_picture_back === "string"
+                                                                    ? userProfile.license_picture_back
+                                                                    : ""
+                                                            } alt="Back License"
+                                                            className="w-full h-40 object-cover"
+                                                        />
+                                                    </div>
+                                                ) : null}
                                             </div>
                                         </div>
                                     </div>

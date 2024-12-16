@@ -14,6 +14,8 @@ import AdminUserList from './Screen/Admin/AdminUserList/AdminUserList';
 import AdminHostList from './Screen/Admin/AdminHostList/AdminHostList';
 import ProfilePage from './Screen/User/Profile/ProfilePage';
 import AdminSingleUserPage from './Screen/Admin/SingleUserPage/SingleUserPage'
+import HostRegisterPage from './Screen/Host/HostBikeList/HostBikeList';
+import HostBikeRegisterpage from './Screen/Host/BikeRegister/HostBikeRegisterpage';
 
 
 function App() {
@@ -35,6 +37,15 @@ function App() {
             
             <Route path='/hostHome' element={ <HostHome />} />
             <Route path='/profilePage' element={<ProfilePage/>} />
+            <Route path='/hostList' element={<HostRegisterPage/>} />
+            <Route path='/hostBikeRegister' element={<HostBikeRegisterpage/>} />
+
+
+
+
+
+
+
 
 
             {/* admin side */}
