@@ -25,8 +25,8 @@ interface User {
   isBlocked: boolean;
   isUser: boolean;
   isVerified: boolean;
-  lisence_picture_front: string;
-  lisence_picture_back: string;
+  license_picture_front: string;
+  license_picture_back: string;
 }
 
 const AdminSingleUserPage = () => {
@@ -151,6 +151,7 @@ const AdminSingleUserPage = () => {
                   <CancelOutlinedIcon color="error" sx={{ marginLeft: 1 }} />
                 )}
               </Typography>
+
               <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Is User :</strong> {user.isUser ? 'Approved' : 'Pending'}
                 <Button
@@ -163,11 +164,12 @@ const AdminSingleUserPage = () => {
                   {user.isUser ? 'Revoke' : 'Approve'}
                 </Button>
               </Typography>
+              
             </Grid>
             <Divider sx={{ width: '100%', marginY: 2 }} />
             <Grid item xs={6}>
               <img
-                src={user.lisence_picture_front || 'https://via.placeholder.com/300x200'}
+                src={user.license_picture_front || 'https://via.placeholder.com/300x200'}
                 alt="License Front"
                 style={{
                   width: '100%',
@@ -181,7 +183,7 @@ const AdminSingleUserPage = () => {
             </Grid>
             <Grid item xs={6}>
               <img
-                src={user.lisence_picture_back || 'https://via.placeholder.com/300x200'}
+                src={user.license_picture_back || 'https://via.placeholder.com/300x200'}
                 alt="License Back"
                 style={{
                   width: '100%',

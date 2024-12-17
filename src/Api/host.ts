@@ -6,7 +6,7 @@ const saveBikeDetails = async (data: FormData) => {
     try {
         const response = await Api.post(hostRoutes.saveBikeDetails, data, {
             headers: {
-                "Content-Type": "multipart/form-data", // Ensure FormData is handled correctly
+                "Content-Type": "multipart/form-data", 
             },
         });
         return response;
@@ -14,6 +14,16 @@ const saveBikeDetails = async (data: FormData) => {
         console.log(error as Error);
     }
 }
+
+
+
+
+
+
+
+
+
+
 export{
-    saveBikeDetails
+    saveBikeDetails,
 }

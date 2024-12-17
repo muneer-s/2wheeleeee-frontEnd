@@ -132,7 +132,6 @@ const UserProfile: React.FC = () => {
         if (!userProfile?.license_Exp_Date) {
             newErrors.license_Exp_Date = "License Expiration Date is required.";
         } else {
-            // Parse the expiration date and compare with the current date
             const today = new Date();
             const expirationDate = new Date(userProfile.license_Exp_Date);
 
@@ -170,7 +169,6 @@ const UserProfile: React.FC = () => {
                     ? new Date(userProfile.license_Exp_Date)
                     : userProfile.license_Exp_Date;
 
-            // Append text fields
             formData.append("userId", userId);
             formData.append("license_number", userProfile.license_number || "");
             formData.append("license_Exp_Date", licenseExpDate?.toISOString() || "");
@@ -186,7 +184,6 @@ const UserProfile: React.FC = () => {
             //console.log([...formData.entries()]); 
 
 
-            // Call the API
             const result = await edituserDocuments(formData);
             if (result?.statusText == "OK") {
                 toast.success("Documents updated successfully!");
@@ -295,7 +292,7 @@ const UserProfile: React.FC = () => {
 
 
 
-                                    <input
+                                    {/* <input
                                         type="password"
                                         placeholder="Password"
                                         // value={userProfile?.password || ""}
@@ -314,7 +311,7 @@ const UserProfile: React.FC = () => {
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.confirmPassword ? 'border-red-500' : ''}`}
                                     />
-                                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+                                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>} */}
 
 
                                     <input

@@ -53,6 +53,28 @@ const toggleIsUser = async(id:string)=>{
     }
 }
 
+const getAllBikeDetails = async ()=>{
+    try {
+        const result = await Api.get(adminRoutes.getAllBikeDetails)
+        return result
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+const verifyHost = async(id:string)=>{
+    try {
+        const result = await Api.put(`${adminRoutes.verifyHost}/${id}`)
+        return result  
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 
 export {
@@ -60,5 +82,7 @@ export {
     logout,
     getAllUsers,
     getSingleUser,
-    toggleIsUser
+    toggleIsUser,
+    getAllBikeDetails,
+    verifyHost
 }

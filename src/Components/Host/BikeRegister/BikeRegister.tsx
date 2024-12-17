@@ -4,6 +4,7 @@ import { saveBikeDetails } from "../../../Api/host";
 import { BikeData } from "../../../Interfaces/BikeInterface";
 import { RootState } from "../../../app/store";
 import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 
@@ -29,6 +30,7 @@ const BikeRegister = () => {
 
     const [rcImagePreview, setRcImagePreview] = useState<string | null>(null);
     const [insuranceImagePreview, setInsuranceImagePreview] = useState<string | null>(null);
+    const navigate = useNavigate()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -68,48 +70,44 @@ const BikeRegister = () => {
         setFormData({ ...formData, [key]: null });
         setPreview(null);
     };
+
     
-    // Remove RC Image
-    // const handleRemoveRcImage = () => {
-    //     setFormData({ ...formData, rcImage: null });
-    //     setRcImagePreview(null);
-    // };
 
-    // // Remove Insurance Image
-    // const handleRemoveInsuranceImage = () => {
-    //     setFormData({ ...formData, insuranceImage: null });
-    //     setInsuranceImagePreview(null);
-    // };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        let isValid = true;
 
-    const handleSubmit = async () => {
 
         if (!formData.companyName.trim()) {
             toast.error("Company name is required.");
-            return;
+            isValid = false;
         }
         if (!formData.modelName.trim()) {
             toast.error("Model name is required.");
-            return;
+            isValid = false;
         }
         if (!formData.rentAmount.trim() || isNaN(Number(formData.rentAmount))) {
             toast.error("Rent amount must be a valid number.");
-            return;
+            isValid = false;
         }
         if (!formData.fuelType || formData.fuelType === "Select Fuel Type") {
             toast.error("Please select a fuel type (Petrol or Electric).");
-            return;
+            isValid = false;
+            
         }
         if (formData.images.length === 0) {
             toast.error("Please upload at least one image.");
-            return;
+            isValid = false;
         }
         if (formData.images.length > 4) {
             toast.error("You can upload a maximum of 4 images.");
-            return;
+            isValid = false;
+
         }
         if (!formData.registerNumber.trim()) {
             toast.error("Register number is required.");
-            return;
+            isValid = false;
+
         }
 
 
@@ -118,28 +116,43 @@ const BikeRegister = () => {
 
         if (!formData.insuranceExpDate.trim()) {
             toast.error("Insurance expiry date is required.");
-            return;
+            isValid = false;
+
         }
-        if (formData.insuranceExpDate) {
+        if (formData.insuranceExpDate.trim()) {
             const insuranceExpDate = new Date(formData.insuranceExpDate);
-            if (insuranceExpDate < today) {
+            if (insuranceExpDate <= today) {
                 toast.error("Insurance expiry date cannot be earlier than today.");
-                return;
+                isValid = false;
             }
         }
 
         if (!formData.polutionExpDate.trim()) {
             toast.error("Pollution expiry date is required.");
-            return;
-        } 
-        if(formData.polutionExpDate) {
+            isValid = false;
+
+        }
+        if (formData.polutionExpDate.trim()) {
             const polutionExpDate = new Date(formData.polutionExpDate);
-            if (polutionExpDate < today) {
+            if (polutionExpDate <= today) {
                 toast.error("Pollution expiry date cannot be earlier than today.");
-                return;
+                isValid = false;
             }
         }
 
+        if(!formData.rcImage){
+            toast.error("Please upload the Rc Image..")
+            isValid=false
+        }
+
+        if(!formData.insuranceImage){
+            toast.error("Please upload the Insurance Image..")
+            isValid=false
+        }
+
+        if (!isValid) {
+            return;
+        }
 
         const submissionData = new FormData();
 
@@ -154,6 +167,7 @@ const BikeRegister = () => {
         formData.images.forEach((image) => {
             submissionData.append(`images`, image);
         });
+
         if (formData.rcImage) submissionData.append("rcImage", formData.rcImage);
         if (formData.insuranceImage) submissionData.append("insuranceImage", formData.insuranceImage);
 
@@ -167,9 +181,7 @@ const BikeRegister = () => {
 
             if (response?.status === 200) {
                 toast.success("Bike details registered successfully!");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
+                navigate('/hostSuccessPage')
             } else {
                 toast.error("Failed to register bike details. Try again.");
             }

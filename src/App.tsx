@@ -16,7 +16,8 @@ import ProfilePage from './Screen/User/Profile/ProfilePage';
 import AdminSingleUserPage from './Screen/Admin/SingleUserPage/SingleUserPage'
 import HostRegisterPage from './Screen/Host/HostBikeList/HostBikeList';
 import HostBikeRegisterpage from './Screen/Host/BikeRegister/HostBikeRegisterpage';
-
+import Success from './Screen/Host/Success/SuccessScreen';
+import HostSingleView from './Screen/Admin/AdminHostSingleView/HostSingleView';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route path='/profilePage' element={<ProfilePage/>} />
             <Route path='/hostList' element={<HostRegisterPage/>} />
             <Route path='/hostBikeRegister' element={<HostBikeRegisterpage/>} />
+            <Route path='/hostSuccessPage' element={<Success />} />
 
 
 
@@ -55,6 +57,9 @@ function App() {
             <Route path="/adminUserList" element={<AdminProtectedRoute><AdminUserList /></AdminProtectedRoute>}/>
             <Route path="/adminHostList" element={<AdminProtectedRoute><AdminHostList /></AdminProtectedRoute>}/>
             <Route path="/usersinglepage/:id" element={<AdminProtectedRoute><AdminSingleUserPage/></AdminProtectedRoute>} />
+
+            <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView/></AdminProtectedRoute>} />
+
 
           </Routes>
         </Router>

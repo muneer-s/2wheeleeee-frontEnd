@@ -4,6 +4,9 @@ const adminRoutes={
     getAllUsers:'/admin/getAllUsers',
     getSingleUser:'/admin/getSingleUser',
     toggleIsUser: '/admin/userVerify',
+    getAllBikeDetails:'/admin/getAllBikeDetails',
+    verifyHost:'/admin/verifyHost',
+
 
 
    
@@ -11,13 +14,3 @@ const adminRoutes={
 
 export default adminRoutes
 
-
-
-
-// userBlock:'/admin/userBlock',
-// userUnblock:'/admin/userunBlock',
-// hostListingPage:'/admin/hostListingPage',
-// hostBlock:'/admin/hostBlock',
-// hostUnblock:'/admin/hostUnblock',
-// hostVerify:'/admin/hostVerify',
-// userVerify:'/admin/userVerify',
