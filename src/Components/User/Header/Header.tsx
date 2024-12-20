@@ -13,20 +13,7 @@ const Header = () => {
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
-  console.log("userdetails : ",userDetails);
   
-
-
-  // const { userData } = useAppSelector((state) => state.auth)
-
-  // console.log('userdataaaaaaaaaaaaa:', userData);
-  // useEffect(() => {
-  //   if (userData) navigate('/');
-  // }, [userData]);
-
-
-  
-  console.log('Auth state:', userDetails);
   const [dropDownOpen, setDropdownOpen] = useState(false)
 
   const handleLogout = async () => {

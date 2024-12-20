@@ -1,6 +1,6 @@
 import hostRoutes from "../service/endPoints/hostEndPoints.ts";
 import Api from "../service/axios.ts";
-import { BikeData } from "../Interfaces/BikeInterface.ts";
+//import { BikeData } from "../Interfaces/BikeInterface.ts";
 
 const saveBikeDetails = async (data: FormData) => {
     try {
@@ -14,12 +14,6 @@ const saveBikeDetails = async (data: FormData) => {
         console.log(error as Error);
     }
 }
-
-
-
-
-
-
 
 
 

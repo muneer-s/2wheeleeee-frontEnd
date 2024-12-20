@@ -5,24 +5,24 @@ const login = async (credentials: { email: string; password: string }) => {
     try {
         const result = await Api.post(adminRoutes.login, credentials);
         return result.data
-        
+
     } catch (error) {
         console.log(error);
 
     }
 }
 
-const logout = async ()=>{
+const logout = async () => {
     try {
         const result = await Api.get(adminRoutes.logout)
         return result
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
-const getAllUsers = async()=>{
+const getAllUsers = async () => {
     try {
         const result = await Api.get(adminRoutes.getAllUsers)
         return result
@@ -32,46 +32,46 @@ const getAllUsers = async()=>{
     }
 }
 
-const getSingleUser = async(id:string)=>{
+const getSingleUser = async (id: string) => {
     try {
         const result = await Api.get(`${adminRoutes.getSingleUser}/${id}`);
         return result
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
 
-const toggleIsUser = async(id:string)=>{
+const toggleIsUser = async (id: string) => {
     try {
         const result = await Api.put(`${adminRoutes.toggleIsUser}/${id}`)
-        return result  
+        return result
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
-const getAllBikeDetails = async ()=>{
+const getAllBikeDetails = async () => {
     try {
         const result = await Api.get(adminRoutes.getAllBikeDetails)
         return result
-        
+
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
 
-const verifyHost = async(id:string)=>{
+const verifyHost = async (id: string) => {
     try {
         const result = await Api.put(`${adminRoutes.verifyHost}/${id}`)
-        return result  
+        return result
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 

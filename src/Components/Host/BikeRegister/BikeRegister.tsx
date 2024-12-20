@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
 import { BikeData } from "../../../Interfaces/BikeInterface";
-import { RootState } from "../../../app/store";
-import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useAppSelector } from "../../../app/store";
+import {  useNavigate } from "react-router-dom";
 
 
 
 
 const BikeRegister = () => {
 
-    const user = useSelector((state: RootState) => state.auth.user);
-    const userId = user?.userId;
-
+    const authState = useAppSelector((state) => state.auth);
+    const userDetails = authState.user
+    console.log("222",userDetails);
+    
 
     const [formData, setFormData] = useState({
         companyName: "",
@@ -86,10 +86,11 @@ const BikeRegister = () => {
             toast.error("Model name is required.");
             isValid = false;
         }
-        if (!formData.rentAmount.trim() || isNaN(Number(formData.rentAmount))) {
-            toast.error("Rent amount must be a valid number.");
+        if (!formData.rentAmount.trim() || isNaN(Number(formData.rentAmount))  || Number(formData.rentAmount) <= 0 ) {
+            toast.error("Rent amount must be a valid number greater than 0.");
             isValid = false;
         }
+
         if (!formData.fuelType || formData.fuelType === "Select Fuel Type") {
             toast.error("Please select a fuel type (Petrol or Electric).");
             isValid = false;
@@ -171,13 +172,10 @@ const BikeRegister = () => {
         if (formData.rcImage) submissionData.append("rcImage", formData.rcImage);
         if (formData.insuranceImage) submissionData.append("insuranceImage", formData.insuranceImage);
 
-        if (userId) {
-            submissionData.append("userId", userId);
-        }
+        
 
         try {
             const response = await saveBikeDetails(submissionData);
-            console.log('bike -------', response);
 
             if (response?.status === 200) {
                 toast.success("Bike details registered successfully!");

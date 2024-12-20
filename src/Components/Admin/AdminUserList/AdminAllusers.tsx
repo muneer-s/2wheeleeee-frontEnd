@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAllUsers } from '../../../Api/admin';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-// Define the structure of the user object
 interface User {
   _id: string;
   name: string;
@@ -21,12 +21,13 @@ const AdminAllusers = () => {
         const response = await getAllUsers();
 
         if (response && response.data) {
-          console.log('USER LIST IN ADMIN SIDE', response.data.usersList);
-          setUserList(response.data.usersList); // Store the users list in state
+          //console.log('USER LIST IN ADMIN SIDE', response.data.usersList);
+          setUserList(response.data.usersList);
         } else {
           console.error('Unexpected response structure:', response);
         }
       } catch (error) {
+        toast.error("Error In Fetching users ")
         console.error('Error fetching users:', error);
       }
     };
@@ -44,57 +45,64 @@ const AdminAllusers = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ marginBottom: '20px' }}>All Users</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {userList.length > 0 ? (
-          userList.map((user) => (
-            
-            <div
-              key={user._id} // Use the unique _id from the backend
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '20px',
-                backgroundColor: 'yellow',
-                borderRadius: '10px',
-                padding: '15px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <img
-                src={user.profile_picture || 'https://via.placeholder.com/100'} // Use profile picture or a placeholder
-                alt={user.name}
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                }}
-              />
-              <div>
-                <h3 style={{ margin: 0, fontSize: '18px', color: '#333' }}>{user.name}</h3>
-                <p style={{ margin: '5px 0', fontSize: '14px', color: '#777' }}>
-                  Email: {user.email}
-                </p>
-                <p style={{ margin: '5px 0', fontSize: '14px', color: '#777' }}>
-                  Date of Birth: {new Date(user.dateOfBirth).toLocaleDateString()}
-                </p>
-              </div>
-
-              <div>
-                <button onClick={()=>handleViewUser(user._id)}>view</button>
-              </div>
-
-            </div>
-
-
-
-
-          ))
-        ) : (
-          <p>No users found.</p>
-        )}
-      </div>
+      <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>All Users</h2>
+      <table style={{ width: '100%', borderCollapse: 'collapse', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        <thead>
+          <tr style={{ backgroundColor: '#4CAF50', color: 'white' }}>
+            <th style={{ padding: '10px', textAlign: 'left' }}>Profile Picture</th>
+            <th style={{ padding: '10px', textAlign: 'left' }}>Name</th>
+            <th style={{ padding: '10px', textAlign: 'left' }}>Email</th>
+            <th style={{ padding: '10px', textAlign: 'left' }}>Date of Birth</th>
+            <th style={{ padding: '10px', textAlign: 'center' }}>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {userList.length > 0 ? (
+            userList.map((user) => (
+              <tr key={user._id} style={{ borderBottom: '1px solid #ddd' }}>
+                <td style={{ padding: '10px' }}>
+                  <img
+                    src={user.profile_picture || 'https://via.placeholder.com/50'}
+                    alt={user.name}
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </td>
+                <td style={{ padding: '10px', color: '#333' }}>{user.name}</td>
+                <td style={{ padding: '10px', color: '#555' }}>{user.email}</td>
+                <td style={{ padding: '10px', color: '#555' }}>
+                  {new Date(user.dateOfBirth).toLocaleDateString()}
+                </td>
+                <td style={{ padding: '10px', textAlign: 'center' }}>
+                  <button
+                    onClick={() => handleViewUser(user._id)}
+                    style={{
+                      padding: '5px 10px',
+                      backgroundColor: '#2196F3',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5} style={{ padding: '20px', textAlign: 'center', color: '#777' }}>
+                No users found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

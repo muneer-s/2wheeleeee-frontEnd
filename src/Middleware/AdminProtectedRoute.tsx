@@ -5,9 +5,7 @@ import { useAppSelector } from '../app/store';
 const AdminProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const { adminData } = useAppSelector((state) => state.auth);
   console.log('aaaaaaa',adminData);
-  
 
-  // Redirect to login if admin is not authenticated
   return adminData ? children : <Navigate to="/adminLogin" />;
 };
 

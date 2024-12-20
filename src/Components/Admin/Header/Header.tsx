@@ -16,7 +16,6 @@ const AdminHeader: React.FC = () => {
     const handleLogout = async () => {
         try {
                 const response = await logout();
-                console.log('log out response: ',response);
 
                 if (response?.data?.success) {
                     dispatch(adminLogout());
@@ -25,7 +24,7 @@ const AdminHeader: React.FC = () => {
                 } else {
                     toast.error('Failed to log out');
                 }
-            //}
+            
         } catch (error) {
             console.error('Error during logout:', error);
             toast.error('An error occurred while logging out');

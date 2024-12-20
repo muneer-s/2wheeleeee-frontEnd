@@ -18,7 +18,8 @@ import HostRegisterPage from './Screen/Host/HostBikeList/HostBikeList';
 import HostBikeRegisterpage from './Screen/Host/BikeRegister/HostBikeRegisterpage';
 import Success from './Screen/Host/Success/SuccessScreen';
 import HostSingleView from './Screen/Admin/AdminHostSingleView/HostSingleView';
-
+import UserProtecteRoute from './Middleware/UserProtectRoute';
+import ForgotPasswordScreen from './Screen/User/ForgotPassword/ForgotPasswordScreen';
 function App() {
 
   return (
@@ -33,14 +34,16 @@ function App() {
             <Route path='/login' element={<UserLogin />} />
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} />
+            <Route path='/forgotPassword' element={<ForgotPasswordScreen/>} />
+            
 
 
             
-            <Route path='/hostHome' element={ <HostHome />} />
-            <Route path='/profilePage' element={<ProfilePage/>} />
-            <Route path='/hostList' element={<HostRegisterPage/>} />
-            <Route path='/hostBikeRegister' element={<HostBikeRegisterpage/>} />
-            <Route path='/hostSuccessPage' element={<Success />} />
+            <Route path='/hostHome' element={ <UserProtecteRoute><HostHome /></UserProtecteRoute>} />
+            <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage/></UserProtecteRoute>} />
+            <Route path='/hostList' element={<UserProtecteRoute><HostRegisterPage/></UserProtecteRoute>} />
+            <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage/></UserProtecteRoute>} />
+            <Route path='/hostSuccessPage' element={<UserProtecteRoute><Success /></UserProtecteRoute>} />
 
 
 

@@ -17,6 +17,7 @@ const UserProfile: React.FC = () => {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+
     const [frontImage, setFrontImage] = useState<File | null>(null);
     const [backImage, setBackImage] = useState<File | null>(null);
 
@@ -32,8 +33,14 @@ const UserProfile: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await getProfile(userEmail);
+                console.log(1, response);
+
                 setUserProfile(response?.data.userDetails);
                 setPic(response?.data.userDetails?.profile_picture || "");
+
+                if (response?.data.message == false) {
+                    toast.error(response.data.message)
+                }
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -52,6 +59,10 @@ const UserProfile: React.FC = () => {
 
         if (!userProfile?.name) newErrors.name = "Name is required.";
 
+        if (!userProfile?.email) {
+            newErrors.email = "Email is required."
+        }
+
         if (!userProfile?.phoneNumber || !/^[0-9]{10}$/.test(userProfile.phoneNumber.toString())) {
             newErrors.phoneNumber = "Phone number must be 10 digits.";
         }
@@ -63,7 +74,9 @@ const UserProfile: React.FC = () => {
             if (age < 18) newErrors.dateOfBirth = "User must be at least 18 years old.";
         }
 
-        if (!userProfile?.address) newErrors.address = "Address is required.";
+        if (!userProfile?.address?.trim()) newErrors.address = "Address is required.";
+
+        if (!userProfile?.profile_picture) newErrors.profile_picture = "Profile Picture is required"
 
 
         setErrors(newErrors);
@@ -225,104 +238,101 @@ const UserProfile: React.FC = () => {
                             {/* Basic Details Section */}
                             <div className="mb-8">
                                 <form className="space-y-4" onSubmit={handleSubmit}>
-                                    <input
-                                        type="text"
-                                        placeholder="Name"
-                                        value={userProfile?.name || ''}
-                                        onChange={(e) => setUserProfile({ ...userProfile, name: e.target.value } as UserData)}
-                                        className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.name ? 'border-red-500' : ''}`}
-                                    />
+
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Name</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Name"
+                                            value={userProfile?.name || ''}
+                                            onChange={(e) => setUserProfile({ ...userProfile, name: e.target.value } as UserData)}
+                                            className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.name ? 'border-red-500' : ''}`}
+                                        />
+                                    </div>
                                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
 
-                                    <input
-                                        type="email"
-                                        placeholder="Email"
-                                        value={userProfile?.email || ""}
-                                        onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value } as UserData)}
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Email</label>
+                                        <input
+                                            type="email"
+                                            placeholder="Email"
+                                            value={userProfile?.email || ""}
+                                            onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value } as UserData)}
+                                            className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.email ? 'border-red-500' : ''}`}
+                                        />
+                                    </div>
+                                    {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
-                                        className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
-                                    />
 
 
-
-                                    <input
-                                        type="text"
-                                        placeholder="Phone Number"
-                                        value={userProfile?.phoneNumber?.toString() || ""}
-                                        onChange={(e) => {
-                                            const input = e.target.value;
-                                            setUserProfile({
-                                                ...userProfile,
-                                                phoneNumber: input === "" ? undefined : parseInt(input, 10),
-                                            } as UserData);
-                                        }}
-                                        className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.phoneNumber ? 'border-red-500' : ''}`}
-                                    />
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Phone Number</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Phone Number"
+                                            value={userProfile?.phoneNumber?.toString() || ""}
+                                            onChange={(e) => {
+                                                const input = e.target.value;
+                                                setUserProfile({
+                                                    ...userProfile,
+                                                    phoneNumber: input === "" ? undefined : parseInt(input, 10),
+                                                } as UserData);
+                                            }}
+                                            className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.phoneNumber ? 'border-red-500' : ''}`}
+                                        />
+                                    </div>
                                     {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber}</p>}
 
 
 
-
-
-                                    <input
-                                        type="date"
-                                        placeholder="DOB"
-                                        value={
-                                            userProfile?.dateOfBirth
-                                                ? new Date(userProfile.dateOfBirth).toISOString().split("T")[0]
-                                                : ""
-                                        }
-                                        onChange={(e) => setUserProfile({ ...userProfile, dateOfBirth: new Date(e.target.value) } as UserData)}
-                                        className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.dateOfBirth ? 'border-red-500' : ''}`}
-                                    />
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">DOB</label>
+                                        <input
+                                            type="date"
+                                            placeholder="DOB"
+                                            value={
+                                                userProfile?.dateOfBirth
+                                                    ? new Date(userProfile.dateOfBirth).toISOString().split("T")[0]
+                                                    : ""
+                                            }
+                                            onChange={(e) => setUserProfile({ ...userProfile, dateOfBirth: new Date(e.target.value) } as UserData)}
+                                            className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+                                        />
+                                    </div>
                                     {errors.dateOfBirth && <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>}
 
 
 
-
-                                    <input
-                                        type="text"
-                                        placeholder="Address"
-                                        value={userProfile?.address || ""}
-                                        onChange={(e) => setUserProfile({ ...userProfile, address: e.target.value } as UserData)}
-                                        className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.address ? 'border-red-500' : ''}`}
-                                    />
-                                    {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
-
-
-
-                                    {/* <input
-                                        type="password"
-                                        placeholder="Password"
-                                        // value={userProfile?.password || ""}
-                                        onChange={(e) => setUserProfile({ ...userProfile, password: e.target.value } as UserData)}
-                                        className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.password ? 'border-red-500' : ''}`}
-                                    />
-                                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Address</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Address"
+                                            value={userProfile?.address || ""}
+                                            onChange={(e) => setUserProfile({ ...userProfile, address: e.target.value } as UserData)}
+                                            className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.address ? 'border-red-500' : ''}`}
+                                        />
+                                        {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
+                                    </div>
 
 
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Profile Image</label>
+                                        <input
+                                            type="file"
+                                            placeholder="profile image"
+                                            onChange={(e) => {
+                                                if (e.target.files && e.target.files[0]) {
+                                                    setNewProfile(e.target.files[0]); // Pass the File object to your state
+                                                }
+                                            }}
+                                        />
+                                        {errors.profile_picture && <p className="text-red-500 text-sm">{errors.profile_picture}</p>}
+                                    </div>
 
 
-                                    <input
-                                        type="password"
-                                        placeholder="Confirm Password"
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className={`w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200 ${errors.confirmPassword ? 'border-red-500' : ''}`}
-                                    />
-                                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>} */}
 
-
-                                    <input
-                                        type="file"
-                                        placeholder="profile image"
-                                        onChange={(e) => {
-                                            if (e.target.files && e.target.files[0]) {
-                                                setNewProfile(e.target.files[0]); // Pass the File object to your state
-                                            }
-                                        }}
-                                    />
                                     <button
                                         type="submit"
                                         className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600"
@@ -335,30 +345,33 @@ const UserProfile: React.FC = () => {
                                 <h2 className="text-lg font-semibold text-gray-800 mb-4">User Verify Section</h2>
                                 <form className="space-y-4" onSubmit={handleSubmitDocuments}>
 
-                                    <input
-                                        type="text"
-                                        placeholder="Driving Licence No."
-                                        value={userProfile?.license_number || ""}
-                                        onChange={(e) => setUserProfile({ ...userProfile, license_number: e.target.value } as UserData)}
-                                        className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
-                                    />
-                                    {errors.license_number && <p className="text-red-500 text-sm">{errors.license_number}</p>}
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Driving Licence No</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Driving Licence No."
+                                            value={userProfile?.license_number || ""}
+                                            onChange={(e) => setUserProfile({ ...userProfile, license_number: e.target.value } as UserData)}
+                                            className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
+                                        />
+                                        {errors.license_number && <p className="text-red-500 text-sm">{errors.license_number}</p>}
+                                    </div>
 
-
-
-                                    <input
-                                        type="date"
-                                        placeholder="Exp Date"
-                                        value={
-                                            userProfile?.license_Exp_Date
-                                                ? new Date(userProfile.license_Exp_Date).toISOString().split("T")[0]
-                                                : ""
-                                        }
-                                        onChange={(e) => setUserProfile({ ...userProfile, license_Exp_Date: new Date(e.target.value) } as UserData)}
-                                        className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
-                                    />
-                                    {errors.license_Exp_Date && <p className="text-red-500 text-sm">{errors.license_Exp_Date}</p>}
-
+                                    <div className="mb-4">
+                                        <label className="block text-gray-500 mb-0.5">Driving Licence Exp Date</label>
+                                        <input
+                                            type="date"
+                                            placeholder="Exp Date"
+                                            value={
+                                                userProfile?.license_Exp_Date
+                                                    ? new Date(userProfile.license_Exp_Date).toISOString().split("T")[0]
+                                                    : ""
+                                            }
+                                            onChange={(e) => setUserProfile({ ...userProfile, license_Exp_Date: new Date(e.target.value) } as UserData)}
+                                            className="w-full border border-gray-300 rounded p-2 focus:ring focus:ring-sky-200"
+                                        />
+                                        {errors.license_Exp_Date && <p className="text-red-500 text-sm">{errors.license_Exp_Date}</p>}
+                                    </div>
 
                                     {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
 
@@ -451,6 +464,16 @@ const UserProfile: React.FC = () => {
                                     <button type="submit" className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600">
                                         Save
                                     </button>
+
+                                    <div className="items-center flex justify-center my-4">
+                                        {userProfile?.isUser ? (
+                                            <span style={{ color: 'green', fontWeight: 'bold' }}>Admin Approved</span>
+                                        ) : (
+                                            <span style={{ color: 'red', fontWeight: 'bold' }}>Please wait for admin approval</span>
+                                        )}
+                                    </div>
+
+
                                 </form>
                             </div>
 

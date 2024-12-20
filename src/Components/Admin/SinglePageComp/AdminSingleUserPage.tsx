@@ -65,6 +65,7 @@ const AdminSingleUserPage = () => {
     if (!user) return;
 
     const originalIsUser = user.isUser;
+
     setUser((prevUser) =>
       prevUser ? { ...prevUser, isUser: !prevUser.isUser } : null
     );
@@ -76,14 +77,7 @@ const AdminSingleUserPage = () => {
       if (!response || !response.data) {
         throw new Error('Unexpected response structure');
       }
-
-      // if (response && response.data) {
-      //   setUser((prevUser) =>
-      //     prevUser ? { ...prevUser, isUser: !prevUser.isUser } : null
-      //   );
-      // } else {
-      //   console.error('Unexpected response structure:', response);
-      // }
+      
     } catch (error) {
       console.error('Error toggling isUser field:', error);
       setUser((prevUser) =>
@@ -164,7 +158,7 @@ const AdminSingleUserPage = () => {
                   {user.isUser ? 'Revoke' : 'Approve'}
                 </Button>
               </Typography>
-              
+
             </Grid>
             <Divider sx={{ width: '100%', marginY: 2 }} />
             <Grid item xs={6}>

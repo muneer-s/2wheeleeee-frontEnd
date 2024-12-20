@@ -51,6 +51,18 @@ const logout = async (Credential: { email: string }) => {
     }
 }
 
+const forgotPassword = async( email: string )=>{
+    try {
+
+        const result = await Api.post(userRoutes.forgotPassword,{email})
+        return result
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
 const getProfile = async (email: string) => {
     try {
 
@@ -64,9 +76,9 @@ const getProfile = async (email: string) => {
     }
 }
 
-const edituser = async(email:string,updatedDetails: Partial<UserData>)=>{
+const edituser = async (email: string, updatedDetails: Partial<UserData>) => {
     try {
-        const result = await Api.put(userRoutes.editUser,{ email, ...updatedDetails },{
+        const result = await Api.put(userRoutes.editUser, { email, ...updatedDetails }, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -74,22 +86,22 @@ const edituser = async(email:string,updatedDetails: Partial<UserData>)=>{
         return result
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
-const edituserDocuments = async(formData:FormData)=>{
+const edituserDocuments = async (formData: FormData) => {
     try {
-        const result = await Api.put(userRoutes.editUserDocuments,formData,{
-            headers:{
+        const result = await Api.put(userRoutes.editUserDocuments, formData, {
+            headers: {
                 "Content-Type": "multipart/form-data",
             }
         })
         return result
-        
+
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
@@ -101,5 +113,6 @@ export {
     logout,
     getProfile,
     edituser,
-    edituserDocuments
+    edituserDocuments,
+    forgotPassword
 }

@@ -2,13 +2,11 @@ import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slice/AuthSlice';
 import { TypedUseSelectorHook } from 'react-redux';
 import { useSelector } from 'react-redux';
-// import commonReducer from './slice/CommonSlice';
 
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-        // common: commonReducer
     },
 })
 

@@ -44,7 +44,7 @@ const UserLogin: React.FC = () => {
                     email: response.user.email,
                     name: response.user.name,
                     profile_picture: response.user.profile_picture,
-                    userId :response.user.userId
+                    userId: response.user.userId
                 };
                 dispatch(saveUser(user))
                 dispatch(setUserCredential(response.userAccessToken))
@@ -122,6 +122,8 @@ const UserLogin: React.FC = () => {
 
                     </button>
                 </form>
+                <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p>
+
 
                 <div className="text-center my-4">OR</div>
 
