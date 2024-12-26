@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
@@ -13,18 +13,17 @@ const AdminHeader: React.FC = () => {
     const dispatch = useDispatch();
 
 
+
     const handleLogout = async () => {
         try {
-                const response = await logout();
-
-                if (response?.data?.success) {
-                    dispatch(adminLogout());
-                    navigate('/adminLogin');
-                    toast.success('Logged out successfully');
-                } else {
-                    toast.error('Failed to log out');
-                }
-            
+            const response = await logout();
+            if (response?.data?.success) {
+                dispatch(adminLogout());
+                navigate('/adminLogin');
+                toast.success('Logged out successfully');
+            } else {
+                toast.error('Failed to log out');
+            }
         } catch (error) {
             console.error('Error during logout:', error);
             toast.error('An error occurred while logging out');

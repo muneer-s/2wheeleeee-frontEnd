@@ -22,9 +22,9 @@ const logout = async () => {
     }
 }
 
-const getAllUsers = async () => {
+const getAllUsers = async (query:string) => {
     try {
-        const result = await Api.get(adminRoutes.getAllUsers)
+        const result = await Api.get(`${adminRoutes.getAllUsers}${query}`);
         return result
     } catch (error) {
         console.error('Error in getAllUsers:', error);
@@ -53,6 +53,15 @@ const toggleIsUser = async (id: string) => {
     }
 }
 
+const userBlockUnBlock = async (id: string) => {
+    try {
+        const result = await Api.put(`${adminRoutes.userBlockUnBlock}/${id}`)
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+
 const getAllBikeDetails = async () => {
     try {
         const result = await Api.get(adminRoutes.getAllBikeDetails)
@@ -75,6 +84,16 @@ const verifyHost = async (id: string) => {
     }
 }
 
+const checkBlockedStatus = async (email: string) => {
+    try {
+        const response = await Api.post(adminRoutes.checkBlockedStatus, { email });
+        return response;
+    } catch (error) {
+        console.error('Error checking blocked status:', error);
+        throw error;
+    }
+}
+
 
 
 export {
@@ -84,5 +103,7 @@ export {
     getSingleUser,
     toggleIsUser,
     getAllBikeDetails,
-    verifyHost
+    verifyHost,
+    userBlockUnBlock,
+    checkBlockedStatus
 }

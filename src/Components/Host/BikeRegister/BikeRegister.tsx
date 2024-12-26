@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
 import { BikeData } from "../../../Interfaces/BikeInterface";
-import {  useAppSelector } from "../../../app/store";
-import {  useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../app/store";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -12,8 +12,8 @@ const BikeRegister = () => {
 
     const authState = useAppSelector((state) => state.auth);
     const userDetails = authState.user
-    console.log("222",userDetails);
-    
+    console.log("222", userDetails);
+
 
     const [formData, setFormData] = useState({
         companyName: "",
@@ -30,11 +30,17 @@ const BikeRegister = () => {
 
     const [rcImagePreview, setRcImagePreview] = useState<string | null>(null);
     const [insuranceImagePreview, setInsuranceImagePreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    // const [errors, setErrors] = useState({}); // State for errors
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+
     const navigate = useNavigate()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
     // Handle file input change (limit to 4 files and preview)
@@ -55,6 +61,8 @@ const BikeRegister = () => {
             setFormData({ ...formData, insuranceImage: files[0] });
             setInsuranceImagePreview(URL.createObjectURL(files[0]));
         }
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+
     };
 
 
@@ -71,89 +79,86 @@ const BikeRegister = () => {
         setPreview(null);
     };
 
-    
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        let isValid = true;
+    const validateForm = () => {
 
+        // const newErrors = {};
 
-        if (!formData.companyName.trim()) {
-            toast.error("Company name is required.");
-            isValid = false;
-        }
-        if (!formData.modelName.trim()) {
-            toast.error("Model name is required.");
-            isValid = false;
-        }
-        if (!formData.rentAmount.trim() || isNaN(Number(formData.rentAmount))  || Number(formData.rentAmount) <= 0 ) {
-            toast.error("Rent amount must be a valid number greater than 0.");
-            isValid = false;
+        const newErrors: { [key: string]: string } = {};
+
+        if (!formData.companyName.trim()) newErrors.companyName = "Company name is required";
+
+        if (!formData.modelName.trim()) newErrors.modelName = "Model name is required";
+
+        if (!formData.rentAmount.trim() || isNaN(Number(formData.rentAmount)) || Number(formData.rentAmount) <= 0) {
+            newErrors.rentAmount = "Rent amount must be a valid number greater than 0."
         }
 
         if (!formData.fuelType || formData.fuelType === "Select Fuel Type") {
-            toast.error("Please select a fuel type (Petrol or Electric).");
-            isValid = false;
-            
+            newErrors.fuelType = "Please select a fuel type (Petrol or Electric)."
+
         }
         if (formData.images.length === 0) {
-            toast.error("Please upload at least one image.");
-            isValid = false;
+            newErrors.images = "Please upload at least one image."
         }
         if (formData.images.length > 4) {
-            toast.error("You can upload a maximum of 4 images.");
-            isValid = false;
+            newErrors.images = "You can upload a maximum of 4 images."
 
         }
+
         if (!formData.registerNumber.trim()) {
-            toast.error("Register number is required.");
-            isValid = false;
-
+            newErrors.registerNumber = "Register number is required."
+        } else if (!/^[0-9/]+$/.test(formData.registerNumber.trim())) {
+            newErrors.registerNumber = "Register number must contain only numbers and '/'."
         }
+
 
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         if (!formData.insuranceExpDate.trim()) {
-            toast.error("Insurance expiry date is required.");
-            isValid = false;
+            newErrors.insuranceExpDate = "Insurance expiry date is required."
 
         }
         if (formData.insuranceExpDate.trim()) {
             const insuranceExpDate = new Date(formData.insuranceExpDate);
             if (insuranceExpDate <= today) {
-                toast.error("Insurance expiry date cannot be earlier than today.");
-                isValid = false;
+                newErrors.insuranceExpDate = "Insurance expiry date cannot be earlier than today."
             }
         }
 
         if (!formData.polutionExpDate.trim()) {
-            toast.error("Pollution expiry date is required.");
-            isValid = false;
+            newErrors.polutionExpDate = "Pollution expiry date is required."
 
         }
         if (formData.polutionExpDate.trim()) {
             const polutionExpDate = new Date(formData.polutionExpDate);
             if (polutionExpDate <= today) {
-                toast.error("Pollution expiry date cannot be earlier than today.");
-                isValid = false;
+                newErrors.polutionExpDate = "Pollution expiry date cannot be earlier than today."
             }
         }
 
-        if(!formData.rcImage){
-            toast.error("Please upload the Rc Image..")
-            isValid=false
+        if (!formData.rcImage) {
+            newErrors.rcImage = "Please upload the Rc Image.."
         }
 
-        if(!formData.insuranceImage){
-            toast.error("Please upload the Insurance Image..")
-            isValid=false
+        if (!formData.insuranceImage) {
+            newErrors.insuranceImage = "Please upload the Insurance Image.."
+        }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return; // Don't proceed if there are validation errors
         }
 
-        if (!isValid) {
-            return;
-        }
+
 
         const submissionData = new FormData();
 
@@ -172,7 +177,8 @@ const BikeRegister = () => {
         if (formData.rcImage) submissionData.append("rcImage", formData.rcImage);
         if (formData.insuranceImage) submissionData.append("insuranceImage", formData.insuranceImage);
 
-        
+
+        setIsSubmitting(true);
 
         try {
             const response = await saveBikeDetails(submissionData);
@@ -186,10 +192,14 @@ const BikeRegister = () => {
         } catch (error) {
             toast.error("An error occurred while submitting the data.");
             console.error("Error:", error);
+        } finally {
+            setIsSubmitting(false);
         }
 
     }
-
+    const renderError = (field: string) => {
+        return errors[field] && <p className="text-red-500 text-sm mt-1">{errors[field]}</p>;
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center">
@@ -207,6 +217,8 @@ const BikeRegister = () => {
                             placeholder="Enter Company Name"
                             className="w-full mt-1 p-2 border rounded"
                         />
+                        {renderError("companyName")}
+
                     </div>
 
                     {/* Model */}
@@ -219,6 +231,8 @@ const BikeRegister = () => {
                             placeholder="Enter Model Name"
                             className="w-full mt-1 p-2 border rounded"
                         />
+                        {renderError("modelName")}
+
                     </div>
 
                     {/* Rent Amount */}
@@ -231,6 +245,8 @@ const BikeRegister = () => {
                             onChange={handleInputChange}
                             className="w-full mt-1 p-2 border rounded"
                         />
+                        {renderError("rentAmount")}
+
                     </div>
 
                     {/* Fuel Type */}
@@ -245,6 +261,8 @@ const BikeRegister = () => {
                             <option value="Petrol">Petrol</option>
                             <option value="Electric">Electric</option>
                         </select>
+                        {renderError("fuelType")}
+
                     </div>
 
                     {/* Bike Images */}
@@ -258,6 +276,8 @@ const BikeRegister = () => {
                             className="w-full mt-1"
                             accept="image/*"
                         />
+                        {renderError("images")}
+
 
                         {/* Image Preview */}
                         <div className="mt-4 flex flex-wrap gap-4">
@@ -297,6 +317,8 @@ const BikeRegister = () => {
                             onChange={handleInputChange}
                             className="w-full mt-1 p-2 border rounded"
                         />
+                        {renderError("registerNumber")}
+
                     </div>
 
                     {/* Insurance Exp Date */}
@@ -308,6 +330,8 @@ const BikeRegister = () => {
                             onChange={handleInputChange}
                             className="w-full mt-1 p-2 border rounded"
                         />
+                        {renderError("insuranceExpDate")}
+
                     </div>
 
                     {/* Pollution Exp Date */}
@@ -319,6 +343,8 @@ const BikeRegister = () => {
                             onChange={handleInputChange}
                             className="w-full mt-1 p-2 border rounded"
                         />
+                        {renderError("polutionExpDate")}
+
                     </div>
 
                     {/* Upload RC Image */}
@@ -330,6 +356,8 @@ const BikeRegister = () => {
                             onChange={handleFileChange}
                             className="w-full mt-1"
                         />
+                        {renderError("rcImage")}
+
                         {rcImagePreview && (
                             <div className="mt-4 relative w-24 h-24">
                                 <img src={rcImagePreview} alt="RC Preview" className="w-full h-full object-cover rounded" />
@@ -355,6 +383,8 @@ const BikeRegister = () => {
                             onChange={handleFileChange}
                             className="w-full mt-1"
                         />
+                        {renderError("insuranceImage")}
+
                         {insuranceImagePreview && (
                             <div className="mt-4 relative w-24 h-24">
                                 <img src={insuranceImagePreview} alt="Insurance Preview" className="w-full h-full object-cover rounded" />
@@ -376,9 +406,12 @@ const BikeRegister = () => {
                 <div className="text-center">
                     <button
                         onClick={handleSubmit}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                        className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                        disabled={isSubmitting}
+
                     >
-                        Submit
+                        {isSubmitting ? "Submiting..." : "Submit"}
+
                     </button>
                 </div>
             </div>

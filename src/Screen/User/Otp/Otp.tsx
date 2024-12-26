@@ -65,6 +65,8 @@ const OTPComponent: React.FC = () => {
 
     const resendOTP = async () => {
         const email = userId || ''; 
+        console.log(11,email);
+        
 
         if (!email) {
             toast.error("Email is missing. Please try again.");
@@ -73,15 +75,21 @@ const OTPComponent: React.FC = () => {
         try {
 
             const result = await resendOtp({ email }); 
-            if (result.success) {
+            console.log(22,result);
+            
+            if (result?.success) {
                 console.log('OTP resent successfully');
+                toast.success("OTP resent successfully")
                 setSeconds(60); 
             } else {
                 console.error("Failed to resend OTP:", result.message);
+                toast.error(result.message || "Failed to resend OTP.");
+
             }
         }
         catch (error) {
             console.error("Error resending OTP:", error);
+            toast.error("An error occurred while resending the OTP.");
         }
 
     };
@@ -117,7 +125,7 @@ const OTPComponent: React.FC = () => {
                             </div>
                         ) : (
                             <div>
-                                OTP expires in {remainingSeconds} sec
+                                OTP expires in {seconds} sec
                             </div>
                         )}
                     </div>

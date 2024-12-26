@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getSingleUser, toggleIsUser } from '../../../Api/admin';
+import { getSingleUser, toggleIsUser, userBlockUnBlock } from '../../../Api/admin';
 import {
   Card,
   CardContent,
@@ -77,7 +77,7 @@ const AdminSingleUserPage = () => {
       if (!response || !response.data) {
         throw new Error('Unexpected response structure');
       }
-      
+
     } catch (error) {
       console.error('Error toggling isUser field:', error);
       setUser((prevUser) =>
@@ -85,6 +85,37 @@ const AdminSingleUserPage = () => {
       );
     }
   };
+
+
+  const handleToggleIsBlocked = async () => {
+    if (!user) return;
+
+    const originalIsBlocked = user.isBlocked;
+
+    // Temporarily update the state
+    setUser((prevUser) =>
+      prevUser ? { ...prevUser, isBlocked: !prevUser.isBlocked } : null
+    );
+
+    try {
+
+      const response = await userBlockUnBlock(user?._id)
+      console.log('Block/Unblock Response:', response);
+
+      // if (!response || !response.data) {
+      //   throw new Error('Unexpected response structure');
+      // }
+
+
+    } catch (error) {
+      console.error('Error toggling block/unblock:', error);
+
+      // Revert the state in case of an error
+      setUser((prevUser) =>
+        prevUser ? { ...prevUser, isBlocked: originalIsBlocked } : null
+      );
+    }
+  }
 
   if (!user) {
     return <p>Loading user data...</p>;
@@ -116,6 +147,7 @@ const AdminSingleUserPage = () => {
               </Typography>
             </Grid>
             <Divider sx={{ width: '100%', marginY: 2 }} />
+
             <Grid item xs={6}>
               <Typography variant="body1">
                 <strong>Phone Number:</strong> {user.phoneNumber}
@@ -127,16 +159,19 @@ const AdminSingleUserPage = () => {
                 <strong>Date of Birth:</strong>{' '}
                 {new Date(user.dateOfBirth).toLocaleDateString()}
               </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" display="flex" alignItems="center">
+              {/* </Grid>
+
+            <Grid item xs={6}> */}
+
+              {/* <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Verified:</strong>{' '}
                 {user.isVerified ? (
                   <CheckCircleOutlineIcon color="success" sx={{ marginLeft: 1 }} />
                 ) : (
                   <CancelOutlinedIcon color="error" sx={{ marginLeft: 1 }} />
                 )}
-              </Typography>
+              </Typography> */}
+
               <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Blocked:</strong>{' '}
                 {user.isBlocked ? (
@@ -146,8 +181,11 @@ const AdminSingleUserPage = () => {
                 )}
               </Typography>
 
-              <Typography variant="body1" display="flex" alignItems="center">
-                <strong>Is User :</strong> {user.isUser ? 'Approved' : 'Pending'}
+              <Divider sx={{ width: '100%', marginY: 2 }} />
+
+
+              <Typography variant="body1" display="flex" alignItems="center" sx={{ marginBottom: 2 }} >
+                <strong>Is User Verify :</strong> {user.isUser ? 'Approved' : 'Pending'}
                 <Button
                   variant="contained"
                   color={user.isUser ? 'error' : 'primary'}
@@ -156,6 +194,20 @@ const AdminSingleUserPage = () => {
                   onClick={handleToggleIsUser}
                 >
                   {user.isUser ? 'Revoke' : 'Approve'}
+                </Button>
+              </Typography>
+
+
+              <Typography variant="body1" display="flex" alignItems="center">
+                <strong>Is User Blocked :</strong> {user.isBlocked ? 'Blockend' : 'Not Blocked'}
+                <Button
+                  variant="contained"
+                  color={user.isBlocked ? 'primary' : 'error'}
+                  size="small"
+                  sx={{ marginLeft: 2 }}
+                  onClick={handleToggleIsBlocked}
+                >
+                  {user.isBlocked ? 'UnBlock' : 'Block'}
                 </Button>
               </Typography>
 

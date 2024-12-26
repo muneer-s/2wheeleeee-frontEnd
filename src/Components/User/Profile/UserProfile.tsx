@@ -15,7 +15,7 @@ const UserProfile: React.FC = () => {
     const [pic, setPic] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<string>("Personal Details");
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 
     const [frontImage, setFrontImage] = useState<File | null>(null);
@@ -97,6 +97,9 @@ const UserProfile: React.FC = () => {
             return;
         }
 
+        setIsSubmitting(true); // Disable the button
+
+
         try {
             const result = await edituser(userEmail, userProfile);
             const user = {
@@ -114,6 +117,8 @@ const UserProfile: React.FC = () => {
                 error?.response?.data?.message ||
                 "An error occurred while updating the profile. Please try again later."
             );
+        } finally {
+            setIsSubmitting(false); // Re-enable the button
         }
 
     };
@@ -173,6 +178,8 @@ const UserProfile: React.FC = () => {
             console.error("User profile data is missing.");
             return;
         }
+        setIsSubmitting(true); // Disable the button
+
 
         try {
             const formData = new FormData();
@@ -210,6 +217,8 @@ const UserProfile: React.FC = () => {
                 error?.response?.data?.message ||
                 "An error occurred while updating the profile. Please try again later."
             );
+        } finally {
+            setIsSubmitting(false); // Re-enable the button
         }
     }
 
@@ -335,8 +344,9 @@ const UserProfile: React.FC = () => {
 
                                     <button
                                         type="submit"
-                                        className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600"
-                                    >Save</button>
+                                        className={`w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                                        disabled={isSubmitting}
+                                    >{isSubmitting ? "Saving..." : "Save"}</button>
                                 </form>
                             </div>
 
@@ -461,8 +471,12 @@ const UserProfile: React.FC = () => {
                                     </div>
 
 
-                                    <button type="submit" className="w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600">
-                                        Save
+                                    <button type="submit"
+                                        className={`w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600 ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? "Saving..." : "Save"}
+
                                     </button>
 
                                     <div className="items-center flex justify-center my-4">

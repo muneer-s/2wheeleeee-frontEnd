@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { logout } from "../../../Api/user";
 import { useEffect, useState } from "react";
 import defaultDp from '../../../assets/defaultDP.png'
+import { checkBlockedStatus } from "../../../Api/admin";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -27,6 +28,29 @@ const Header = () => {
     }
 
   };
+
+
+useEffect(()=>{
+  const checkIfBlocked = async()=>{
+    if(userDetails?.email){
+      try {
+
+        const email = userDetails.email
+        const response = await checkBlockedStatus(email)
+        
+        if(response?.data?.isBlocked){
+          toast.error("Your account has been blocked by the admin.")
+          handleLogout()
+        }
+        
+      } catch (error) {
+        console.error("Error checking blocked status:", error);
+      }
+    }
+  };
+  checkIfBlocked();
+},[userDetails,navigate])
+
 
   return (
     <header className="bg-white px-8 py-2 flex items-center justify-between shadow-md w-full mx-auto">

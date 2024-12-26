@@ -6,9 +6,8 @@ const adminRoutes={
     toggleIsUser: '/admin/userVerify',
     getAllBikeDetails:'/admin/getAllBikeDetails',
     verifyHost:'/admin/verifyHost',
-
-
-
+    userBlockUnBlock:'/admin/userBlockUnBlock',
+    checkBlockedStatus:'/admin/checkBlockedStatus',
    
 }
 

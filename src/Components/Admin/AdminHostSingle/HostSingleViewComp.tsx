@@ -2,8 +2,8 @@ import { useLocation } from "react-router-dom";
 import { verifyHost } from "../../../Api/admin";
 import { useState } from "react";
 import { BikeData } from "../../../Interfaces/BikeInterface";
-import Zoom from "react-medium-image-zoom";
-import "react-medium-image-zoom/dist/styles.css";
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 
 
 const HostSingleViewComp = () => {
@@ -24,12 +24,12 @@ const HostSingleViewComp = () => {
 
   const handleVerifyHost = async () => {
     try {
-      const result = await verifyHost(bike._id); // Assuming `bike._id` is the unique ID
+      const result = await verifyHost(bike._id);
       console.log("1010101----", result);
 
 
       if (result?.status === 200) {
-        setIsHostVerified((prev: BikeData) => !prev); // Toggle the verification status
+        setIsHostVerified((prev: BikeData) => !prev);
       }
     } catch (error) {
       console.error("Error verifying host:", error);
@@ -142,24 +142,26 @@ const HostSingleViewComp = () => {
 
 
           {/* Document Images */}
-          <div className="mt-6 place-items-center">
+          <div className="mt-6 place-items-center h-auto w-auto">
             <p className="text-gray-600 font-semibold">RC Image:</p>
             <Zoom>
               <img
                 src={bike.rcImage}
                 alt="RC Document"
-                className="w-auto h-auto object-cover rounded-lg shadow-sm mt-2"
+                className="w-auto h-96 object-cover rounded-lg shadow-sm mt-2"
               />
             </Zoom>
+
 
             <p className="text-gray-600 font-semibold mt-4">Insurance Image:</p>
             <Zoom>
               <img
                 src={bike.insuranceImage}
                 alt="Insurance Document"
-                className="w-auto h-auto object-cover rounded-lg shadow-sm mt-2"
+                className="w-auto h-96 object-cover rounded-lg shadow-sm mt-2"
               />
             </Zoom>
+
 
           </div>
         </div>
