@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAllBikeDetails } from "../../../Api/admin";
+import { getAllBikeDetails, logout } from "../../../Api/admin";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 interface UserDetails {
     _id: string;
@@ -41,7 +42,8 @@ const AdminHostComp = () => {
                     console.log("Bike List in Admin Side:", response.data);
                     setBikeList(response.data.bikeList);
                 } else {
-                    console.error("Unexpected response structure:", response);
+                    // toast.error(` errorr : ${response?.data.message}`)
+                    console.error("Unexpected response structure:", response?.data);
                 }
             } catch (error) {
                 console.error("Error fetching bike details:", error);
@@ -52,7 +54,6 @@ const AdminHostComp = () => {
     }, []);
 
     const singlePageView = (bike: BikeInterface) => {
-        // pass bike and user details as state
         navigate('/singleBikeViewPage', { state: { bike } });
     }
 

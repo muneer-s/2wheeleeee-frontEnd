@@ -174,7 +174,13 @@ const UserProfile: React.FC = () => {
             return;
         }
 
-        if (!userProfile) {
+        if (
+            !userProfile?.dateOfBirth ||
+            !userProfile?.phoneNumber ||
+            !userProfile?.address ||
+            !userProfile?.profile_picture
+        ) {
+            toast.error("User profile is not complete. Please fill in the basic details first.");
             console.error("User profile data is missing.");
             return;
         }
@@ -205,6 +211,7 @@ const UserProfile: React.FC = () => {
 
 
             const result = await edituserDocuments(formData);
+            
             if (result?.statusText == "OK") {
                 toast.success("Documents updated successfully!");
             } else {
@@ -490,10 +497,6 @@ const UserProfile: React.FC = () => {
 
                                 </form>
                             </div>
-
-
-
-
 
                         </div>
 

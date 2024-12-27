@@ -20,6 +20,7 @@ import Success from './Screen/Host/Success/SuccessScreen';
 import HostSingleView from './Screen/Admin/AdminHostSingleView/HostSingleView';
 import UserProtecteRoute from './Middleware/UserProtectRoute';
 import ForgotPasswordScreen from './Screen/User/ForgotPassword/ForgotPasswordScreen';
+import WaitingPage from './Screen/Host/WaitingPage/WaitingPage';
 function App() {
 
   return (
@@ -44,6 +45,7 @@ function App() {
             <Route path='/hostList' element={<UserProtecteRoute><HostRegisterPage/></UserProtecteRoute>} />
             <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage/></UserProtecteRoute>} />
             <Route path='/hostSuccessPage' element={<UserProtecteRoute><Success /></UserProtecteRoute>} />
+            <Route path='/hostWaitingPage' element={<UserProtecteRoute><WaitingPage/></UserProtecteRoute>} />
 
 
 

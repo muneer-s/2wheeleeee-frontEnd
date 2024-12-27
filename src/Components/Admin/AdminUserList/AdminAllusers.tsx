@@ -26,7 +26,7 @@ const AdminAllusers = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 500); // 500ms delay
+    }, 500);
 
     return () => {
       clearTimeout(handler);
@@ -49,19 +49,16 @@ const AdminAllusers = () => {
         });
 
         const response = await getAllUsers(`?${queryParams.toString()}`);
-        console.log(222,response);
-        
+        console.log(222, response);
+
 
         if (response && response.data) {
           setUserList(response.data.usersList);
           setTotalPages(response.data.totalPages);
-        } else {
-          toast.error("response")
-          console.log(response);
-          
-          // logout()
         }
       } catch (error: any) {
+        // toast.error(error.response.message)
+        toast.error('Error fetching users...')
         console.error('Error fetching users:', error);
 
       }
@@ -101,7 +98,7 @@ const AdminAllusers = () => {
 
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px',background: 'linear-gradient(to bottom, white, skyblue)',minHeight: '100vh',}}>
       <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>All Users</h2>
 
 
@@ -113,7 +110,7 @@ const AdminAllusers = () => {
           alignItems: 'center',
           marginBottom: '20px',
           marginTop: '20px',
-          backgroundColor: 'greenyellow'
+          background: 'linear-gradient(to bottom, white, skyblue)',
         }}
       >
 
@@ -148,11 +145,11 @@ const AdminAllusers = () => {
           alignItems: 'center',
           marginBottom: '20px',
           marginTop: '20px',
-          backgroundColor: 'greenyellow'
+          background: 'linear-gradient(to bottom, white, skyblue)',
         }}
       >
         {/* Filters */}
-        <div style={{ marginBottom: '20px', marginTop: '20px' }}>
+        <div style={{ marginBottom: '20px', marginTop: '20px', }}>
           <label>
             Blocked:
             <select
@@ -179,9 +176,14 @@ const AdminAllusers = () => {
         </div>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+      <table style={{
+        width: '100%',
+        borderCollapse: 'collapse',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        background: 'linear-gradient(to bottom, white, skyblue)',
+      }}>
         <thead>
-          <tr style={{ backgroundColor: '#4CAF50', color: 'white' }}>
+          <tr style={{ backgroundColor: '#2196F3', color: 'white' }}>
             <th style={{ padding: '10px', textAlign: 'left' }}>Profile Picture</th>
             <th style={{ padding: '10px', textAlign: 'left' }}>Name</th>
             <th style={{ padding: '10px', textAlign: 'left' }}>Email</th>
@@ -208,10 +210,10 @@ const AdminAllusers = () => {
                     }}
                   />
                 </td>
-                <td style={{ padding: '10px', color: '#333' }}>{user.name}</td>
-                <td style={{ padding: '10px', color: '#555' }}>{user.email}</td>
+                <td style={{ padding: '10px', color: 'black' }}>{user.name}</td>
+                <td style={{ padding: '10px', color: 'black' }}>{user.email}</td>
 
-                <td style={{ padding: '10px', color: '#555' }}>
+                <td style={{ padding: '10px', color: 'black' }}>
                   {new Date(user.dateOfBirth).toLocaleDateString()}
                 </td>
 

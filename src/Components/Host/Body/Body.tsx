@@ -2,14 +2,33 @@ import { useNavigate } from 'react-router-dom';
 import hostHome1 from '../../../assets/hostHome1.png';
 import hostHome2 from '../../../assets/hostHome2.png';
 import hostHome3 from '../../../assets/hostHome3.png';
+import { AppDispatch, useAppSelector } from '../../../app/store';
+import { useDispatch } from 'react-redux';
+import { isAdminVerifyUser } from '../../../Api/host';
 
 function Body() {
   const navigate = useNavigate()
 
-  const gotoRegisterPage = () => {
-    navigate('/hostBikeRegister')
+  const dispatch = useDispatch<AppDispatch>()
+  const authState = useAppSelector((state) => state.auth);
+  const userDetails = authState.user
+  console.log(1, userDetails.userId);
+  const userId = userDetails.userId
+
+
+
+  const gotoRegisterPage = async () => {
+    const response = await isAdminVerifyUser(userId)
+    console.log(9, response);
+
+    if (response?.data.user.isUser) {
+      navigate('/hostBikeRegister')
+    } else {
+      navigate('/hostWaitingPage')
+      console.log('Admin verification failed');
+    }
   }
-  
+
   return (
     <>
       <div

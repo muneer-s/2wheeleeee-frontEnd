@@ -6,7 +6,7 @@ const saveBikeDetails = async (data: FormData) => {
     try {
         const response = await Api.post(hostRoutes.saveBikeDetails, data, {
             headers: {
-                "Content-Type": "multipart/form-data", 
+                "Content-Type": "multipart/form-data",
             },
         });
         return response;
@@ -15,9 +15,21 @@ const saveBikeDetails = async (data: FormData) => {
     }
 }
 
+const isAdminVerifyUser = async (userId: string) => {
+    try {
+
+        const response = await Api.get(hostRoutes.isAdminVerifyUser,{params:{userId}})
+        return response
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
 
-export{
+
+export {
     saveBikeDetails,
+    isAdminVerifyUser
 }
