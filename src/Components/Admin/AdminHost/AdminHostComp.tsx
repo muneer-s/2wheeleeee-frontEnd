@@ -31,28 +31,49 @@ interface BikeInterface {
 
 const AdminHostComp = () => {
     const [bikeList, setBikeList] = useState<BikeInterface[]>([]);
+    const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState('');
+    const [sort, setSort] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalBikes, setTotalBikes] = useState(0);
+    const limit = 10;
+
     const navigate = useNavigate()
 
 
-    useEffect(() => {
-        const fetchBikeDetails = async () => {
-            try {
-                const response = await getAllBikeDetails();
-
-                if (response && response.data) {
-                    console.log("Bike List in Admin Side:", response.data);
-                    setBikeList(response.data.bikeList);
-                } else {
-                    toast.error(`errorreeeeeeeeee : ${response?.data.message}`)
-                    console.error("Unexpected response structure:", response?.data);
-                }
-            } catch (error) {
-                console.error("Error fetching bike details:", error);
+   const fetchBikeDetails = async () => {
+        try {
+            const response = await getAllBikeDetails({ page: currentPage, limit, search, filter, sort });
+            if (response.success) {
+                setBikeList(response.bikeDetails.bikes);
+                setTotalBikes(response.bikeDetails.total);
+            } else {
+                toast.error('Failed to fetch bike details');
             }
-        };
+        } catch (error) {
+            toast.error('Error fetching bike details');
+        }
+    };
 
+    useEffect(() => {
         fetchBikeDetails();
-    }, []);
+    }, [currentPage, search, filter, sort]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFilter(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSort(e.target.value);
+        setCurrentPage(1);
+    };
+
 
     const singlePageView = (bike: BikeInterface) => {
         navigate('/singleBikeViewPage', { state: { bike } });
@@ -62,6 +83,30 @@ const AdminHostComp = () => {
         <div className="bg-gradient-to-b from-white to-sky-200 " style={{ minHeight: '100vh' }}>
             <div className="overflow-x-auto p-6 ">
                 <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Bike Details</h1>
+
+                <div className="mb-4 flex justify-between">
+                <input
+                    type="text"
+                    placeholder="Search by user name"
+                    value={search}
+                    onChange={handleSearch}
+                    className="border px-4 py-2 rounded-lg"
+                />
+                <select value={filter} onChange={handleFilter} className="border px-4 py-2 rounded-lg">
+                    <option value="">All</option>
+                    <option value="verified">Verified</option>
+                    <option value="notVerified">Not Verified</option>
+                </select>
+                <select value={sort} onChange={handleSort} className="border px-4 py-2 rounded-lg">
+                    <option value="">Sort by Rent</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+
+
+
+
                 <table className="table-auto w-full border-collapse rounded-lg shadow-lg bg-gradient-to-b from-white to-sky-200 " >
                     <thead className="bg-gray-100 text-gray-600">
                         <tr>
@@ -117,6 +162,22 @@ const AdminHostComp = () => {
                         )}
                     </tbody>
                 </table>
+
+                <div className="mt-4 flex justify-center">
+                {[...Array(Math.ceil(totalBikes / limit))].map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setCurrentPage(index + 1)}
+                        className={`px-4 py-2 mx-1 rounded-lg ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
+
+
+
+
             </div>
         </div>
 

@@ -63,10 +63,10 @@ const userBlockUnBlock = async (id: string) => {
     }
 }
 
-const getAllBikeDetails = async () => {
+const getAllBikeDetails = async (params: object) => {
     try {
-        const result = await Api.get(adminRoutes.getAllBikeDetails)
-        return result
+        const response = await Api.get(adminRoutes.getAllBikeDetails,{params})
+        return response.data
 
     } catch (error) {
         console.log(error);
