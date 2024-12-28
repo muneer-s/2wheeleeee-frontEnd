@@ -108,9 +108,10 @@ const BikeRegister = () => {
 
         if (!formData.registerNumber.trim()) {
             newErrors.registerNumber = "Register number is required."
-        } else if (!/^[0-9/]+$/.test(formData.registerNumber.trim())) {
-            newErrors.registerNumber = "Register number must contain only numbers and '/'."
         }
+        // } else if (!/^[0-9/]+$/.test(formData.registerNumber.trim())) {
+        //     newErrors.registerNumber = "Register number must contain only numbers and '/'."
+        // }
 
 
 
