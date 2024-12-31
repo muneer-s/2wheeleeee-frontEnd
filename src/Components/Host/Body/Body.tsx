@@ -21,8 +21,8 @@ function Body() {
     const response = await isAdminVerifyUser(userId)
     console.log(9, response);
 
-    if (response?.data.user.isUser) {
-      navigate('/hostBikeRegister')
+    if (response?.data?.user?.isUser) {
+      navigate('/hostBikeListPage')
     } else {
       navigate('/hostWaitingPage')
       console.log('Admin verification failed');

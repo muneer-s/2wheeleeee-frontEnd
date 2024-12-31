@@ -26,10 +26,54 @@ const isAdminVerifyUser = async (userId: string) => {
     }
 }
 
+const fetchBikeData = async(userId:string)=>{
+    try {
+        const response = await Api.get(hostRoutes.fetchBikeData,{
+            params:{userId}
+        })
+        return response.data
+        
+    } catch (error) {
+        console.error("Error fetching bike data:", error);
+        throw error;        
+    }
+}
+
+const singleBikeView = async(bikeId:string)=>{
+    try {
+        const response = await Api.get(hostRoutes.bikeSingleView,{
+            params:{bikeId}
+        })
+        return response.data
+        
+    } catch (error) {
+        console.error("Error fetching bike :", error);
+        throw error;
+    }
+}
+
+const deleteSelectedBike = async(bikeId:string)=>{
+    try {
+
+        const response = await Api.delete(hostRoutes.deleteBike,{
+            params:{bikeId}
+        })
+
+        return response.data
+        
+    } catch (error) {
+        console.error("Error deleting bike :", error);
+        throw error;
+    }
+}
+
 
 
 
 export {
     saveBikeDetails,
-    isAdminVerifyUser
+    isAdminVerifyUser,
+    fetchBikeData,
+    singleBikeView,
+    deleteSelectedBike
 }

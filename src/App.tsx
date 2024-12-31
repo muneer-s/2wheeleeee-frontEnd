@@ -21,6 +21,11 @@ import HostSingleView from './Screen/Admin/AdminHostSingleView/HostSingleView';
 import UserProtecteRoute from './Middleware/UserProtectRoute';
 import ForgotPasswordScreen from './Screen/User/ForgotPassword/ForgotPasswordScreen';
 import WaitingPage from './Screen/Host/WaitingPage/WaitingPage';
+import HostBikeList from './Screen/Host/HostBikeList/HostBikeList';
+import HostBikeViewPage from './Screen/Host/HostBikeSingleView/HostBikeViewPage';
+
+
+
 function App() {
 
   return (
@@ -46,6 +51,9 @@ function App() {
             <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage/></UserProtecteRoute>} />
             <Route path='/hostSuccessPage' element={<UserProtecteRoute><Success /></UserProtecteRoute>} />
             <Route path='/hostWaitingPage' element={<UserProtecteRoute><WaitingPage/></UserProtecteRoute>} />
+            <Route path='/hostBikeListPage' element={<UserProtecteRoute><HostBikeList/></UserProtecteRoute>} />
+            <Route path='/HostBikeViewPage/:id' element={<UserProtecteRoute><HostBikeViewPage/></UserProtecteRoute>} />
+
 
 
 
