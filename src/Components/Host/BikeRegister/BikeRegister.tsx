@@ -130,7 +130,7 @@ const BikeRegister = () => {
         }
 
         if (!formData.polutionExpDate.trim()) {
-            newErrors.polutionExpDate = "Pollution expiry date is required."
+            newErrors.polutionExpDate = "Polution expiry date is required."
 
         }
         if (formData.polutionExpDate.trim()) {
@@ -238,11 +238,11 @@ const BikeRegister = () => {
 
                     {/* Rent Amount */}
                     <div>
-                        <label className="block text-gray-700">Rent Amount Per Hour</label>
+                        <label className="block text-gray-700">Rent Amount Per Day</label>
                         <input
                             type="text"
                             name="rentAmount"
-                            placeholder="Amount Per Hour"
+                            placeholder="Amount Per Day"
                             onChange={handleInputChange}
                             className="w-full mt-1 p-2 border rounded"
                         />

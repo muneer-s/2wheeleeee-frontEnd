@@ -6,7 +6,7 @@ export interface BikeData {
     images: File[]; 
     registerNumber: string; 
     insuranceExpDate: Date | string; 
-    pollutionExpDate: Date | string; 
+    polutionExpDate: Date | string; 
     rcImage: File | null; 
     insuranceImage: File | null; 
   }

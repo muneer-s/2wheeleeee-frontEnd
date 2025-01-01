@@ -51,12 +51,12 @@ const logout = async (Credential: { email: string }) => {
     }
 }
 
-const forgotPassword = async( email: string )=>{
+const forgotPassword = async (email: string) => {
     try {
 
-        const result = await Api.post(userRoutes.forgotPassword,{email})
+        const result = await Api.post(userRoutes.forgotPassword, { email })
         return result
-        
+
     } catch (error) {
         console.log(error);
         throw error;
@@ -105,6 +105,33 @@ const edituserDocuments = async (formData: FormData) => {
     }
 }
 
+const getAllBikeList = async () => {
+    try {
+
+        const BikeList = await Api.get(userRoutes.getAllBikes)
+        return BikeList.data
+
+    } catch (error) {
+        console.error("Error in user get all bike list :", error);
+        throw error;
+    }
+}
+
+const getBikeDetails = async (id: string) => {
+    try {
+        console.log("Fetching bike details with ID:", id);
+
+        const bike = await Api.get(`${userRoutes.getBikeDeatils}/${id}`);
+        console.log("Response from backend:", bike.data);
+
+        return bike.data
+
+    } catch (error) {
+        console.error("Error in user get bike details :", error);
+        throw error;
+    }
+}
+
 
 export {
     verifyOtp,
@@ -114,5 +141,7 @@ export {
     getProfile,
     edituser,
     edituserDocuments,
-    forgotPassword
+    forgotPassword,
+    getAllBikeList,
+    getBikeDetails
 }

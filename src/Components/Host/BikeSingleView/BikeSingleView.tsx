@@ -17,6 +17,7 @@ interface Bike {
     polutionExpDate: string | number | Date;
     rcImage: string;
     insuranceImage: string;
+    isHost:boolean;
 
 
 }
@@ -60,11 +61,11 @@ const BikeSingleView = () => {
                 cancelButtonText: 'No, cancel',
                 reverseButtons: true,
             });
-    
+
             // If the user confirms, proceed with the deletion
             if (result.isConfirmed) {
                 const deleteResponse = await deleteSelectedBike(id as string);
-    
+
                 if (deleteResponse.success) {
                     toast.success("Bike deleted successfully!");
                     navigate(-1); // Navigate back to the previous page
@@ -79,7 +80,7 @@ const BikeSingleView = () => {
             toast.error("An error occurred while deleting the bike.");
         }
     };
-    
+
 
 
 
@@ -137,11 +138,16 @@ const BikeSingleView = () => {
                             <p className="text-lg"><strong>Rent Amount:</strong> ₹{bike?.rentAmount} per day</p>
                             <p className="text-lg"><strong>Insurance Expiry Date:</strong> {bike?.insuranceExpDate ? new Date(bike?.insuranceExpDate).toLocaleDateString() : "N/A"}</p>
                             <p className="text-lg"><strong>Pollution Expiry Date:</strong> {bike?.polutionExpDate ? new Date(bike?.polutionExpDate).toLocaleDateString() : "N/A"}</p>
+                            
+                            {bike?.isHost ? (
+                                <p className="text-green-600">Bike Verified by the admin</p>
+                            ) : (
+                                <p className="text-red-600">Bike is not verified</p>
+                            )}
+
+
                         </div>
                     </div>
-
-
-
 
 
 
@@ -178,7 +184,7 @@ const BikeSingleView = () => {
                     </button>
 
                     <button
-                    onClick={deleteBike}
+                        onClick={deleteBike}
                         className="ml-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800"
                     >
                         Delete

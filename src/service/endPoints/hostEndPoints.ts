@@ -4,7 +4,8 @@ const hostRoutes={
     isAdminVerifyUser:'/host/isAdminVerifyUser',
     fetchBikeData:'/host/fetchBikeData',
     bikeSingleView:'/host/bikeSingleView',
-    deleteBike:'/host/deleteBike'
+    deleteBike:'/host/deleteBike',
+    editBike:'/host/editBike'
 }
 
 export default hostRoutes

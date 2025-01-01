@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { getAllBikeDetails, logout } from "../../../Api/admin";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { adminLogout } from "../../../app/slice/AuthSlice";
+import { useDispatch } from "react-redux";
+
+
 
 interface UserDetails {
     _id: string;
@@ -23,7 +27,7 @@ interface BikeInterface {
     images: string[];
     registerNumber: string;
     insuranceExpDate: Date | string;
-    pollutionExpDate: Date | string;
+    polutionExpDate: Date | string;
     rcImage: string | null;
     insuranceImage: string | null;
     userDetails: UserDetails;
@@ -39,9 +43,11 @@ const AdminHostComp = () => {
     const limit = 10;
 
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
 
-   const fetchBikeDetails = async () => {
+
+    const fetchBikeDetails = async () => {
         try {
             const response = await getAllBikeDetails({ page: currentPage, limit, search, filter, sort });
             if (response.success) {
@@ -49,6 +55,8 @@ const AdminHostComp = () => {
                 setTotalBikes(response.bikeDetails.total);
             } else {
                 toast.error('Failed to fetch bike details');
+                await logout()
+                dispatch(adminLogout());
             }
         } catch (error) {
             toast.error('Error fetching bike details');
@@ -85,24 +93,24 @@ const AdminHostComp = () => {
                 <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Bike Details</h1>
 
                 <div className="mb-4 flex justify-between">
-                <input
-                    type="text"
-                    placeholder="Search by user name"
-                    value={search}
-                    onChange={handleSearch}
-                    className="border px-4 py-2 rounded-lg"
-                />
-                <select value={filter} onChange={handleFilter} className="border px-4 py-2 rounded-lg">
-                    <option value="">All</option>
-                    <option value="verified">Verified</option>
-                    <option value="notVerified">Not Verified</option>
-                </select>
-                <select value={sort} onChange={handleSort} className="border px-4 py-2 rounded-lg">
-                    <option value="">Sort by Rent</option>
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                </select>
-            </div>
+                    <input
+                        type="text"
+                        placeholder="Search by user name"
+                        value={search}
+                        onChange={handleSearch}
+                        className="border px-4 py-2 rounded-lg"
+                    />
+                    <select value={filter} onChange={handleFilter} className="border px-4 py-2 rounded-lg">
+                        <option value="">All</option>
+                        <option value="verified">Verified</option>
+                        <option value="notVerified">Not Verified</option>
+                    </select>
+                    <select value={sort} onChange={handleSort} className="border px-4 py-2 rounded-lg">
+                        <option value="">Sort by Rent</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
 
 
 
@@ -164,16 +172,16 @@ const AdminHostComp = () => {
                 </table>
 
                 <div className="mt-4 flex justify-center">
-                {[...Array(Math.ceil(totalBikes / limit))].map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setCurrentPage(index + 1)}
-                        className={`px-4 py-2 mx-1 rounded-lg ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-            </div>
+                    {[...Array(Math.ceil(totalBikes / limit))].map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentPage(index + 1)}
+                            className={`px-4 py-2 mx-1 rounded-lg ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div>
 
 
 

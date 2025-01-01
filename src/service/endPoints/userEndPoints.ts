@@ -9,6 +9,8 @@ const userRoutes={
     editUser : '/user/editUser',
     editUserDocuments:'/user/editUserDocuments',
     forgotPassword:'/user/forgotPassword',
+    getAllBikes:'/user/getAllBikes',
+    getBikeDeatils:'/user/getBikeDeatils'
     
 
     

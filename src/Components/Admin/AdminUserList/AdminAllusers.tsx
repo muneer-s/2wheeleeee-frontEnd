@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import { getAllUsers, logout } from '../../../Api/admin';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { adminLogout } from '../../../app/slice/AuthSlice';
+import { useDispatch } from 'react-redux';
+
+
 
 interface User {
   isBlocked: boolean;
@@ -22,6 +26,8 @@ const AdminAllusers = () => {
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
 
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -55,6 +61,10 @@ const AdminAllusers = () => {
         if (response && response.data) {
           setUserList(response.data.usersList);
           setTotalPages(response.data.totalPages);
+        } else {
+          await logout()
+          dispatch(adminLogout());
+
         }
       } catch (error: any) {
         // toast.error(error.response.message)
@@ -98,7 +108,7 @@ const AdminAllusers = () => {
 
 
   return (
-    <div style={{ padding: '20px',background: 'linear-gradient(to bottom, white, skyblue)',minHeight: '100vh',}}>
+    <div style={{ padding: '20px', background: 'linear-gradient(to bottom, white, skyblue)', minHeight: '100vh', }}>
       <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>All Users</h2>
 
 

@@ -122,9 +122,9 @@ const UserLogin: React.FC = () => {
 
                     </button>
                 </form>
-                <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p>
+                {/* <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p> */}
 
-
+{/* 
                 <div className="text-center my-4">OR</div>
 
                 <button className="w-full flex items-center justify-center gap-2 bg-white py-2 border border-gray-300 rounded shadow hover:shadow-md transition">
@@ -134,7 +134,7 @@ const UserLogin: React.FC = () => {
                         className="w-5"
                     />
                     Continue With Google
-                </button>
+                </button> */}
 
                 <div className="text-center mt-4">
                     <p className="text-sm text-gray-700">

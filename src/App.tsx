@@ -23,6 +23,12 @@ import ForgotPasswordScreen from './Screen/User/ForgotPassword/ForgotPasswordScr
 import WaitingPage from './Screen/Host/WaitingPage/WaitingPage';
 import HostBikeList from './Screen/Host/HostBikeList/HostBikeList';
 import HostBikeViewPage from './Screen/Host/HostBikeSingleView/HostBikeViewPage';
+import EditBike from './Screen/Host/EditBike/EditBike';
+import UserBikeListPage from './Screen/User/UserBikeListPage/UserBikeListPage';
+import UserBikeSinglePage from './Screen/User/UserBikeSingleViewPage/UserBikeSinglePage';
+// Import the slick-carousel styles
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 
 
@@ -53,6 +59,14 @@ function App() {
             <Route path='/hostWaitingPage' element={<UserProtecteRoute><WaitingPage/></UserProtecteRoute>} />
             <Route path='/hostBikeListPage' element={<UserProtecteRoute><HostBikeList/></UserProtecteRoute>} />
             <Route path='/HostBikeViewPage/:id' element={<UserProtecteRoute><HostBikeViewPage/></UserProtecteRoute>} />
+            <Route path='/EditBike/:id' element={<UserProtecteRoute><EditBike/></UserProtecteRoute>} />
+
+
+
+            <Route path='/UserBikeListPage' element={<UserBikeListPage/>} />
+            <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage/>} />
+            
+            
 
 
 

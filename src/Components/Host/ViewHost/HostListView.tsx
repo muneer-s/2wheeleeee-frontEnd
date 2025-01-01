@@ -105,16 +105,19 @@ const HostListView = () => {
                                         </div>
                                         <div className="flex flex-col mt-4 mb-2 md:mt-0 md:ml-4 space-y-2">
                                             <button
-                                                className="w-32 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                                className="w-24 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                                                 onClick={() => navigate(`/HostBikeViewPage/${bike._id}`)}
                                             >
                                                 View
                                             </button>
-                                            <button className="w-32 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                                            {/* <button 
+                                            className="w-32 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                            onClick={() => navigate(`/EditBike/${bike._id}`)}
+                                            >
                                                 Edit
-                                            </button>
+                                            </button> */}
                                             <button
-                                                className="w-32 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                                className="w-24 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                                                 onClick={() => deleteBike(bike._id)} // Pass the bike ID here
 
                                             >

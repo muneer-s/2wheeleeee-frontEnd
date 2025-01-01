@@ -18,7 +18,7 @@ const saveBikeDetails = async (data: FormData) => {
 const isAdminVerifyUser = async (userId: string) => {
     try {
 
-        const response = await Api.get(hostRoutes.isAdminVerifyUser,{params:{userId}})
+        const response = await Api.get(hostRoutes.isAdminVerifyUser, { params: { userId } })
         return response
 
     } catch (error) {
@@ -26,43 +26,61 @@ const isAdminVerifyUser = async (userId: string) => {
     }
 }
 
-const fetchBikeData = async(userId:string)=>{
+const fetchBikeData = async (userId: string) => {
     try {
-        const response = await Api.get(hostRoutes.fetchBikeData,{
-            params:{userId}
+        const response = await Api.get(hostRoutes.fetchBikeData, {
+            params: { userId }
         })
         return response.data
-        
+
     } catch (error) {
         console.error("Error fetching bike data:", error);
-        throw error;        
+        throw error;
     }
 }
 
-const singleBikeView = async(bikeId:string)=>{
+const singleBikeView = async (bikeId: string) => {
     try {
-        const response = await Api.get(hostRoutes.bikeSingleView,{
-            params:{bikeId}
+        const response = await Api.get(hostRoutes.bikeSingleView, {
+            params: { bikeId }
         })
         return response.data
-        
+
     } catch (error) {
         console.error("Error fetching bike :", error);
         throw error;
     }
 }
 
-const deleteSelectedBike = async(bikeId:string)=>{
+const deleteSelectedBike = async (bikeId: string) => {
     try {
 
-        const response = await Api.delete(hostRoutes.deleteBike,{
-            params:{bikeId}
+        const response = await Api.delete(hostRoutes.deleteBike, {
+            params: { bikeId }
         })
 
         return response.data
-        
+
     } catch (error) {
         console.error("Error deleting bike :", error);
+        throw error;
+    }
+}
+
+const updateBikeDetails = async (bikeId: string | undefined, formData: FormData) => {
+    try {
+        const response = await Api.post(hostRoutes.editBike, formData, {
+            params: { bikeId },
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+
+
+
+        return response.data
+    } catch (error) {
+        console.error("Error edit bike :", error);
         throw error;
     }
 }
@@ -75,5 +93,6 @@ export {
     isAdminVerifyUser,
     fetchBikeData,
     singleBikeView,
-    deleteSelectedBike
+    deleteSelectedBike,
+    updateBikeDetails
 }
