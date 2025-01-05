@@ -37,6 +37,7 @@ const BikeListComp = () => {
 
     return (
         <div className="container mx-auto p-6 bg-gradient-to-b from-white to-sky-300 min-h-screen">
+            <button className="bg-sky-200 rounded pl-3 pr-3" onClick={()=>navigate(-1)}>Back</button>
             <h1 className="text-3xl font-bold text-center mb-8">Available Bikes</h1>
 
 

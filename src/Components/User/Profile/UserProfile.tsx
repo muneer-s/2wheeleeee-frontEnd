@@ -351,7 +351,7 @@ const UserProfile: React.FC = () => {
 
                                     <button
                                         type="submit"
-                                        className={`w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                                        className={`w-full bg-sky-500 text-white rounded p-2 hover:bg-sky-600 ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
                                         disabled={isSubmitting}
                                     >{isSubmitting ? "Saving..." : "Save"}</button>
                                 </form>

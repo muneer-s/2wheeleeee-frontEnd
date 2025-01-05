@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick"; // Import the slick carousel
 import { getBikeDetails } from "../../../Api/user"; // Your API call to fetch bike details
 
-// Optional: Import custom styles if you prefer
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 import { useAppSelector } from "../../../app/store";
 
 interface UserDetails {
@@ -45,6 +45,8 @@ const BikeSingleComp = () => {
     const authState = useAppSelector((state) => state.auth);
     const userIsPresent = authState.user
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         const fetchDetails = async () => {
             try {
@@ -74,7 +76,6 @@ const BikeSingleComp = () => {
         insuranceImage ,
         userDetails } = bikeDetails;
 
-    // Slider settings
     const settings = {
         dots: true,
         infinite: true,
@@ -86,7 +87,8 @@ const BikeSingleComp = () => {
     return (
         <div className="min-h-screen container mx-auto p-6 bg-gradient-to-b from-white to-sky-300">
             
-            
+            <button className="bg-sky-200 rounded pl-3 pr-3" onClick={()=>navigate(-1)}>Back</button>
+
             {/* Image Carousel */}
             <div className="mb-4">
                 <Slider {...settings}>
@@ -113,7 +115,7 @@ const BikeSingleComp = () => {
             </div>
 
             
-            {/* Conditionally Render Bike Documents */}
+            {/* Bike Documents */}
             {userIsPresent && (
                 <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 items-center ">
                     <h1 className="text-xl font-bold mb-4">Bike Documents</h1>

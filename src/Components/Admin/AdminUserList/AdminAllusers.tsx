@@ -120,7 +120,7 @@ const AdminAllusers = () => {
           alignItems: 'center',
           marginBottom: '20px',
           marginTop: '20px',
-          background: 'linear-gradient(to bottom, white, skyblue)',
+          background: 'linear-gradient(to bottom, white, white)',
         }}
       >
 
@@ -155,14 +155,16 @@ const AdminAllusers = () => {
           alignItems: 'center',
           marginBottom: '20px',
           marginTop: '20px',
-          background: 'linear-gradient(to bottom, white, skyblue)',
+          background: '#d4f1f9',
         }}
       >
         {/* Filters */}
-        <div style={{ marginBottom: '20px', marginTop: '20px', }}>
+        <div style={{ marginBottom: '20px', marginTop: '20px' }}>
+
           <label>
-            Blocked:
+            Blocked : 
             <select
+            style={{marginLeft:5}}
               value={filter.isBlocked === undefined ? '' : filter.isBlocked.toString()}
               onChange={(e) => handleFilterChange('isBlocked', e.target.value)}
             >
@@ -171,9 +173,13 @@ const AdminAllusers = () => {
               <option value="false">Not Blocked</option>
             </select>
           </label>
-          <label style={{ marginLeft: '10px' }}>
-            Verified:
+
+
+
+          <label style={{ marginLeft: '30px' }}>
+            Verified : 
             <select
+            style={{marginLeft:5}}
               value={filter.isUser === undefined ? '' : filter.isUser.toString()}
               onChange={(e) => handleFilterChange('isUser', e.target.value)}
             >

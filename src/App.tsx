@@ -26,7 +26,6 @@ import HostBikeViewPage from './Screen/Host/HostBikeSingleView/HostBikeViewPage'
 import EditBike from './Screen/Host/EditBike/EditBike';
 import UserBikeListPage from './Screen/User/UserBikeListPage/UserBikeListPage';
 import UserBikeSinglePage from './Screen/User/UserBikeSingleViewPage/UserBikeSinglePage';
-// Import the slick-carousel styles
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -48,6 +47,8 @@ function App() {
             <Route path='/otp' element={<Otp />} />
             <Route path='/forgotPassword' element={<ForgotPasswordScreen/>} />
             
+            <Route path='/UserBikeListPage' element={<UserBikeListPage/>} />
+            <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage/>} />
 
 
             
@@ -63,8 +64,6 @@ function App() {
 
 
 
-            <Route path='/UserBikeListPage' element={<UserBikeListPage/>} />
-            <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage/>} />
             
             
 

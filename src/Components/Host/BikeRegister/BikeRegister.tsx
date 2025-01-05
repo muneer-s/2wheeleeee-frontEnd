@@ -81,10 +81,11 @@ const BikeRegister = () => {
 
 
     const validateForm = () => {
-
-        // const newErrors = {};
-
         const newErrors: { [key: string]: string } = {};
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0);
+        const sixMonthsFromToday = new Date(todayDate);
+        sixMonthsFromToday.setMonth(sixMonthsFromToday.getMonth() + 6);
 
         if (!formData.companyName.trim()) newErrors.companyName = "Company name is required";
 
@@ -109,34 +110,24 @@ const BikeRegister = () => {
         if (!formData.registerNumber.trim()) {
             newErrors.registerNumber = "Register number is required."
         }
-        // } else if (!/^[0-9/]+$/.test(formData.registerNumber.trim())) {
-        //     newErrors.registerNumber = "Register number must contain only numbers and '/'."
-        // }
+       
 
-
-
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
 
         if (!formData.insuranceExpDate.trim()) {
-            newErrors.insuranceExpDate = "Insurance expiry date is required."
-
-        }
-        if (formData.insuranceExpDate.trim()) {
+            newErrors.insuranceExpDate = "Insurance expiry date is required.";
+        } else {
             const insuranceExpDate = new Date(formData.insuranceExpDate);
-            if (insuranceExpDate <= today) {
-                newErrors.insuranceExpDate = "Insurance expiry date cannot be earlier than today."
+            if (insuranceExpDate < sixMonthsFromToday) {
+                newErrors.insuranceExpDate = "Insurance expiry date must be at least 6 months from today.";
             }
         }
-
+    
         if (!formData.polutionExpDate.trim()) {
-            newErrors.polutionExpDate = "Polution expiry date is required."
-
-        }
-        if (formData.polutionExpDate.trim()) {
+            newErrors.polutionExpDate = "Pollution expiry date is required.";
+        } else {
             const polutionExpDate = new Date(formData.polutionExpDate);
-            if (polutionExpDate <= today) {
-                newErrors.polutionExpDate = "Pollution expiry date cannot be earlier than today."
+            if (polutionExpDate < sixMonthsFromToday) {
+                newErrors.polutionExpDate = "Pollution expiry date must be at least 6 months from today.";
             }
         }
 
@@ -156,7 +147,7 @@ const BikeRegister = () => {
         e.preventDefault();
 
         if (!validateForm()) {
-            return; // Don't proceed if there are validation errors
+            return;
         }
 
 
@@ -414,9 +405,9 @@ const BikeRegister = () => {
                         {isSubmitting ? "Submiting..." : "Submit"}
 
                     </button>
-                    <button 
-                    className="bg-red-500  hover:bg-red-700 text-white font-serif font-bold py-2 px-4 mx-3 rounded"
-                    onClick={() => navigate(-1)}
+                    <button
+                        className="bg-red-500  hover:bg-red-700 text-white font-serif font-bold py-2 px-4 mx-3 rounded"
+                        onClick={() => navigate(-1)}
                     >
                         Cancel
                     </button>

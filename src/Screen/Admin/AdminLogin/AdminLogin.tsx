@@ -99,9 +99,10 @@ const AdminLogin: React.FC = () => {
 
                     <button
                         type="submit"
-                        disabled={loading}
-                        className="w-full text-white py-2 rounded hover:bg-red-700 transition"
-                        style={{ backgroundColor: '#ff4500' }}
+                        disabled={loading} 
+                        className={`w-full text-white py-2 rounded transition ${loading ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-red-700'
+                            }`}
+                        style={{ backgroundColor: loading ? '#d3d3d3' : '#ff4500' }}
                     >
                         {loading ? 'Logging in...' : 'Login'}
                     </button>

@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 const OTPComponent: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [searchParams] = useSearchParams();
 
@@ -37,52 +38,45 @@ const OTPComponent: React.FC = () => {
     };
 
     const handleVerify = async () => {
+        if (!otp) {
+            toast.error('Please enter the OTP.');
+            return;
+        }
+
+        setLoading(true);
         try {
-            console.log("OTP: ", otp);
-            console.log('userid : ', userId);
-            if (!otp) {
-                toast.error('No otp')
-                return
-            }
-
-
             const result = await verifyOtp({ otp, userId });
-
-            console.log("otp de verify result : ", result);
 
             if (result?.data.success) {
                 dispatch(saveUser(result.data.userData));
                 dispatch(setUserCredential(result.data.userAccessToken))
                 toast.success('Logged in successfully');
                 navigate('/');
-            } else {
-                console.log("Invalid OTP or verification failed.");
-            }
+            } 
         } catch (err) {
-            console.error("Error during OTP verification:", err);
+            console.error('Error during OTP verification:', err);
+            toast.error('An error occurred during verification.');
+        }finally {
+            setLoading(false);
         }
     };
 
     const resendOTP = async () => {
-        const email = userId || ''; 
-        console.log(11,email);
-        
+        const email = userId || '';
 
         if (!email) {
             toast.error("Email is missing. Please try again.");
             return;
         }
+        setLoading(true);
         try {
 
-            const result = await resendOtp({ email }); 
-            console.log(22,result);
-            
+            const result = await resendOtp({ email });
+
             if (result?.success) {
-                console.log('OTP resent successfully');
                 toast.success("OTP resent successfully")
-                setSeconds(60); 
+                setSeconds(60);
             } else {
-                console.error("Failed to resend OTP:", result.message);
                 toast.error(result.message || "Failed to resend OTP.");
 
             }
@@ -90,6 +84,8 @@ const OTPComponent: React.FC = () => {
         catch (error) {
             console.error("Error resending OTP:", error);
             toast.error("An error occurred while resending the OTP.");
+        }finally{
+            setLoading(false)
         }
 
     };
@@ -132,9 +128,12 @@ const OTPComponent: React.FC = () => {
                 </div>
                 <button
                     onClick={handleVerify}
-                    className="w-full px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                    className={`w-full px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 ${
+                        loading ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    disabled={loading} 
                 >
-                    Verify
+                    {loading ? 'Processing...' : 'Verify'}
                 </button>
             </div>
         </div>

@@ -4,8 +4,6 @@ import { useAppSelector } from '../app/store';
 
 const AdminProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const { adminData } = useAppSelector((state) => state.auth);
-  console.log('aaaaaaa',adminData);
-
   return adminData ? children : <Navigate to="/adminLogin" />;
 };
 
