@@ -67,17 +67,14 @@ const deleteSelectedBike = async (bikeId: string) => {
     }
 }
 
-const updateBikeDetails = async (bikeId: string | undefined, formData: FormData) => {
+const editBike = async (bikeId: string | undefined, formData: FormData) => {
     try {
-        const response = await Api.post(hostRoutes.editBike, formData, {
+        const response = await Api.put(hostRoutes.editBike, formData, {
             params: { bikeId },
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
-
-
-
         return response.data
     } catch (error) {
         console.error("Error edit bike :", error);
@@ -94,5 +91,5 @@ export {
     fetchBikeData,
     singleBikeView,
     deleteSelectedBike,
-    updateBikeDetails
+    editBike
 }

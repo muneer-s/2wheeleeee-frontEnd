@@ -173,7 +173,9 @@ const BikeRegister = () => {
         setIsSubmitting(true);
 
         try {
+            
             const response = await saveBikeDetails(submissionData);
+
 
             if (response?.status === 200) {
                 toast.success("Bike details registered successfully!");

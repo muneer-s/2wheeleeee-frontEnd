@@ -48,11 +48,11 @@ const HostListView = () => {
                 cancelButtonText: 'No, cancel',
                 reverseButtons: true,
             });
-    
+
             // If the user confirms, proceed with the deletion
             if (result.isConfirmed) {
                 const deleteResponse = await deleteSelectedBike(id); // Pass the ID to the delete function
-    
+
                 if (deleteResponse.success) {
                     toast.success("Bike deleted successfully!");
                     setBikes((prevBikes) => prevBikes.filter((bike) => bike._id !== id)); // Remove the deleted bike from state
@@ -67,7 +67,7 @@ const HostListView = () => {
             toast.error("An error occurred while deleting the bike.");
         }
     };
-    
+
 
 
 
@@ -110,12 +110,18 @@ const HostListView = () => {
                                             >
                                                 View
                                             </button>
-                                            {/* <button 
-                                            className="w-32 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                                            onClick={() => navigate(`/EditBike/${bike._id}`)}
-                                            >
-                                                Edit
-                                            </button> */}
+
+                                            {bike.isEdit && (
+                                                <button
+                                                    className="w-24 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                                    onClick={() => navigate(`/EditBike/${bike._id}`)}
+                                                >
+                                                    Edit
+                                                </button>
+                                            )}
+
+
+
                                             <button
                                                 className="w-24 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                                                 onClick={() => deleteBike(bike._id)} // Pass the bike ID here

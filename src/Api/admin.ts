@@ -95,6 +95,17 @@ const checkBlockedStatus = async (email: string) => {
     }
 }
 
+const isEditOn = async(bikeId:string)=>{
+    try {
+        const response = await Api.put(`${adminRoutes.isEditOn}/${bikeId}`);
+        return response.data
+        
+    } catch (error) {
+        console.error('Error in isedit on:', error);
+        throw error;
+    }
+}
+
 
 
 export {
@@ -106,5 +117,6 @@ export {
     getAllBikeDetails,
     verifyHost,
     userBlockUnBlock,
-    checkBlockedStatus
+    checkBlockedStatus,
+    isEditOn
 }

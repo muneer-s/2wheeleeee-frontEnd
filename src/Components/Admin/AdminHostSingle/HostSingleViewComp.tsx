@@ -1,17 +1,16 @@
 import { useLocation } from "react-router-dom";
-import { verifyHost } from "../../../Api/admin";
+import { isEditOn, verifyHost } from "../../../Api/admin";
 import { useState } from "react";
 import { BikeData } from "../../../Interfaces/BikeInterface";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-
+import toast from "react-hot-toast";
 
 const HostSingleViewComp = () => {
-
   const location = useLocation();
   const { bike } = location.state || {};
   const [isHostVerified, setIsHostVerified] = useState(bike?.isHost || false);
-
+  const [loadingState, setLoadingState] = useState({ verifyHost: false, editExpiry: false });
 
   if (!bike) {
     return (
@@ -21,159 +20,172 @@ const HostSingleViewComp = () => {
     );
   }
 
-
   const handleVerifyHost = async () => {
+    setLoadingState((prev) => ({ ...prev, verifyHost: true }));
     try {
       const result = await verifyHost(bike._id);
-      console.log("1010101----", result);
-
-
       if (result?.status === 200) {
         setIsHostVerified((prev: BikeData) => !prev);
+        toast.success("Successfully updated host status!");
       }
     } catch (error) {
       console.error("Error verifying host:", error);
+    } finally {
+      setLoadingState((prev) => ({ ...prev, verifyHost: false }));
     }
   };
 
+  const isInsuranceExpired = new Date(bike.insuranceExpDate) < new Date();
+  const isPollutionExpired = new Date(bike.polutionExpDate) < new Date();
 
-
-
-
+  const handleEditExpiry = async () => {
+    setLoadingState((prev) => ({ ...prev, editExpiry: true }));
+    try {
+      const result = await isEditOn(bike._id);
+      if (result.success) {
+        toast.success("Admin sent a request to edit bike details.");
+      }
+    } catch (error) {
+      console.error("Error in isEditOn:", error);
+    } finally {
+      setLoadingState((prev) => ({ ...prev, editExpiry: false }));
+    }
+  };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        {/* User Details Section */}
-        <div className="p-6 bg-gray-100 border-t">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">User Details</h2>
-          <div className="flex items-center gap-4">
-            <img
-              src={bike.userDetails.profile_picture}
-              alt={bike.userDetails.name}
-              className="w-24 h-24 rounded-full object-cover shadow-md"
-            />
-            <div>
-              <p className="text-gray-700">
-                <span className="font-semibold">Name:</span> {bike.userDetails.name}
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Email:</span> {bike.userDetails.email}
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Phone:</span> {bike.userDetails.phoneNumber}
-              </p>
-              <p className="text-gray-700">
-                <span className="font-semibold">Address:</span> {bike.userDetails.address}
-              </p>
-            </div>
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-6">
+      {/* User Details Section */}
+      <div className="p-6 bg-gray-100 border-t rounded-lg shadow-md mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">User Details</h2>
+        <div className="flex flex-col sm:flex-row items-center sm:gap-4">
+          <img
+            src={bike.userDetails.profile_picture}
+            alt={bike.userDetails.name}
+            className="w-24 h-24 rounded-full object-cover shadow-md mb-4 sm:mb-0"
+          />
+          <div className="text-center sm:text-left">
+            <p className="text-gray-700">
+              <span className="font-semibold">Name:</span> {bike.userDetails.name}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Email:</span> {bike.userDetails.email}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Phone:</span> {bike.userDetails.phoneNumber}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Address:</span> {bike.userDetails.address}
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* Bike Details Section */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Bike Details</h2>
+      {/* Bike Details Section */}
+      <div className="p-6 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Bike Details</h2>
+        <div className="space-y-4">
+          
+          <h1 className="text-xl font-semibold text-gray-700">{bike.modelName}</h1>
+          <p className="text-gray-600">
+            <span className="font-semibold">Company:</span> {bike.companyName}
+          </p>
+          <p className="text-gray-600">
+            <span className="font-semibold">Rent:</span> ₹{bike.rentAmount}
+          </p>
+          <p className="text-gray-600">
+            <span className="font-semibold">Fuel Type:</span> {bike.fuelType}
+          </p>
 
-          <div className="space-y-4">
-            <h1 className="text-xl font-semibold text-gray-700">{bike.modelName}</h1>
+
+          {/* Expiry Information */}
+          <div className="mt-6 space-y-2">
             <p className="text-gray-600">
-              <span className="font-semibold">Company:</span> {bike.companyName}
+              <span className="font-semibold">Reg No:</span> {bike.registerNumber}
             </p>
             <p className="text-gray-600">
-              <span className="font-semibold">Rent:</span> ₹{bike.rentAmount}
+              <span className="font-semibold">Insurance Exp Date:</span>{" "}
+              {new Date(bike.insuranceExpDate).toISOString().split("T")[0]}{" "}
+              {isInsuranceExpired && (
+                <span className="text-red-600 font-bold">Expired</span>
+              )}
             </p>
             <p className="text-gray-600">
-              <span className="font-semibold">Fuel Type:</span> {bike.fuelType}
+              <span className="font-semibold">Pollution Exp Date:</span>{" "}
+              {new Date(bike.polutionExpDate).toISOString().split("T")[0]}{" "}
+              {isPollutionExpired && (
+                <span className="text-red-600 font-bold">Expired</span>
+              )}
             </p>
-
-
-            {/* Additional Bike Info */}
-            <div className="mt-6 space-y-2">
-              <p className="text-gray-600">
-                <span className="font-semibold">Reg No:</span> {bike.registerNumber}
-              </p>
-              {/* <p className="text-gray-600">
-                <span className="font-semibold">Insurance Exp Date:</span> {bike.insuranceExpDate}
-              </p> */}
-
-              <p className="text-gray-600">
-                <span className="font-semibold">Insurance Exp Date:</span>{" "}
-                {new Date(bike.insuranceExpDate).toISOString().split("T")[0]}
-              </p>
-
-              <p className="text-gray-600">
-                <span className="font-semibold">Pollution Exp Date:</span>{" "}
-                {new Date(bike.polutionExpDate).toISOString().split("T")[0]}
-              </p>
-            </div>
-
-            <p className="text-gray-600">
-              <span className="font-semibold">Is Host:</span>{" "}
-              {isHostVerified ? "Approved" : "Pending"}
-            </p>
-            <button
-              onClick={handleVerifyHost}
-              className={`px-4 py-2 text-white rounded ${isHostVerified ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
-                }`}
-            >
-              {isHostVerified ? "Revoke" : "Approve"}
-            </button>
-
-
-
+            {(isInsuranceExpired || isPollutionExpired) && (
+              <button
+                disabled={loadingState.editExpiry}
+                onClick={handleEditExpiry}
+                className="mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
+              >
+                {loadingState.editExpiry ? "Processing..." : "Edit"}
+              </button>
+            )}
           </div>
 
-          {/* Bike Images */}
-          <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-4">Images</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {bike.images.map((image: string, index: number) => (
-              <Zoom key={index}>
+          {/* Host Status */}
+          <p className="text-gray-600">
+            <span className="font-semibold">Is Host:</span>{" "}
+            {isHostVerified ? "Approved" : "Pending"}
+          </p>
+          <button
+            onClick={handleVerifyHost}
+            className={`px-4 py-2 text-white rounded ${isHostVerified ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
+              }`}
+            disabled={loadingState.verifyHost}
+          >
+            {loadingState.verifyHost
+              ? "Processing..."
+              : isHostVerified
+                ? "Revoke"
+                : "Approve"}
+          </button>
+        </div>
 
-                <img
-                  key={index}
-                  src={image}
-                  alt={`Bike Image ${index + 1}`}
-                  className="w-auto h-auto object-cover rounded-lg shadow-sm"
-                />
-              </Zoom>
-            ))}
-          </div>
+        {/* Bike Images */}
+        <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-4">Images</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {bike.images.map((image: string, index: number) => (
+            <Zoom key={index}>
+              <img
+                src={image}
+                alt={`Bike Image ${index + 1}`}
+                className="w-full min-h-fit max-h-fit object-cover rounded-lg shadow-sm"
+              />
+            </Zoom>
+          ))}
+        </div>
 
-
-
-          {/* Document Images */}
-          <div className="mt-6 place-items-center h-auto w-auto">
+        {/* Document Images */}
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
             <p className="text-gray-600 font-semibold">RC Image:</p>
             <Zoom>
               <img
                 src={bike.rcImage}
                 alt="RC Document"
-                className="w-auto h-96 object-cover rounded-lg shadow-sm mt-2"
+                className="w-96 max-h-fit min-h-fit object-cover rounded-lg shadow-sm mt-2"
               />
             </Zoom>
-
-
-            <p className="text-gray-600 font-semibold mt-4">Insurance Image:</p>
+          </div>
+          <div>
+            <p className="text-gray-600 font-semibold">Insurance Image:</p>
             <Zoom>
               <img
                 src={bike.insuranceImage}
                 alt="Insurance Document"
-                className="w-auto h-96 object-cover rounded-lg shadow-sm mt-2"
+                className="w-auto max-h-fit min-h-fit object-cover rounded-lg shadow-sm mt-2"
               />
             </Zoom>
-
-
           </div>
         </div>
-
-
       </div>
     </div>
   );
-}
+};
 
-export default HostSingleViewComp
-
-
-
-
+export default HostSingleViewComp;

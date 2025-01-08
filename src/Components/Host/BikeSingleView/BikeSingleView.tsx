@@ -17,7 +17,7 @@ interface Bike {
     polutionExpDate: string | number | Date;
     rcImage: string;
     insuranceImage: string;
-    isHost:boolean;
+    isHost: boolean;
 
 
 }
@@ -136,9 +136,22 @@ const BikeSingleView = () => {
                             <p className="text-lg"><strong>Register Number:</strong> {bike?.registerNumber}</p>
                             <p className="text-lg"><strong>Fuel Type:</strong> {bike?.fuelType}</p>
                             <p className="text-lg"><strong>Rent Amount:</strong> ₹{bike?.rentAmount} per day</p>
-                            <p className="text-lg"><strong>Insurance Expiry Date:</strong> {bike?.insuranceExpDate ? new Date(bike?.insuranceExpDate).toLocaleDateString() : "N/A"}</p>
-                            <p className="text-lg"><strong>Pollution Expiry Date:</strong> {bike?.polutionExpDate ? new Date(bike?.polutionExpDate).toLocaleDateString() : "N/A"}</p>
-                            
+                            <p className="text-lg">
+                                <strong>Insurance Expiry Date:</strong>
+                                {bike?.insuranceExpDate ? new Date(bike?.insuranceExpDate).toLocaleDateString() : "N/A"}
+                                {bike?.insuranceExpDate && new Date(bike.insuranceExpDate) < new Date() && (
+                                    <span className="text-red-500 ml-2">Expired</span>
+                                )}
+                            </p>
+
+                            <p className="text-lg">
+                                <strong>Pollution Expiry Date:</strong>
+                                {bike?.polutionExpDate ? new Date(bike?.polutionExpDate).toLocaleDateString() : "N/A"}
+                                {bike?.polutionExpDate && new Date(bike.polutionExpDate) < new Date() && (
+                                    <span className="text-red-500 ml-2">Expired</span>
+                                )}
+                            </p>
+
                             {bike?.isHost ? (
                                 <p className="text-green-600">Bike Verified by the admin</p>
                             ) : (

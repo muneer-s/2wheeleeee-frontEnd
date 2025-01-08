@@ -92,24 +92,32 @@ const AdminHostComp = () => {
             <div className="overflow-x-auto p-6 ">
                 <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Bike Details</h1>
 
-                <div className="mb-4 flex justify-between">
-                    <input
-                        type="text"
-                        placeholder="Search by user name"
-                        value={search}
-                        onChange={handleSearch}
-                        className="border px-4 py-2 rounded-lg"
-                    />
-                    <select value={filter} onChange={handleFilter} className="border px-4 py-2 rounded-lg">
-                        <option value="">All</option>
-                        <option value="verified">Verified</option>
-                        <option value="notVerified">Not Verified</option>
-                    </select>
-                    <select value={sort} onChange={handleSort} className="border px-4 py-2 rounded-lg">
-                        <option value="">Sort by Rent</option>
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
+                <div className="mb-4 flex justify-start ">
+                    <div className="ml-5">
+                        <input
+                            type="text"
+                            placeholder="Search by user name"
+                            value={search}
+                            onChange={handleSearch}
+                            className="border px-4 py-2 rounded-lg"
+                        />
+                    </div>
+                    <div className="ml-10 flex">
+                        <p className="mt-2 mr-3"> Verification : </p>
+                        <select value={filter} onChange={handleFilter} className="border px-4 py-2 rounded-lg">
+                            <option value="">All</option>
+                            <option value="verified">Verified</option>
+                            <option value="notVerified">Not Verified</option>
+                        </select>
+                    </div >
+                    <div className="ml-11">
+                        <select value={sort} onChange={handleSort} className="border px-4 py-2 rounded-lg">
+                            <option value="">Sort by Rent</option>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+
                 </div>
 
 
@@ -118,12 +126,14 @@ const AdminHostComp = () => {
                 <table className="table-auto w-full border-collapse rounded-lg shadow-lg bg-gradient-to-b from-white to-sky-200 " >
                     <thead className="bg-gray-100 text-gray-600">
                         <tr>
-                            <th className="border border-gray-300 p-3 text-left">User Profile</th>
+                            <th className="border border-gray-300 p-3 text-left">Bike Image</th>
                             <th className="border border-gray-300 p-3 text-left">User Name</th>
                             <th className="border border-gray-300 p-3 text-left">Company Name</th>
                             <th className="border border-gray-300 p-3 text-left">Model Name</th>
                             <th className="border border-gray-300 p-3 text-left">Rent Amount</th>
                             <th className="border border-gray-300 p-3 text-left">Verify or Not</th>
+                            <th className="border border-gray-300 p-3 text-left">Polution Exp Date</th>
+                            <th className="border border-gray-300 p-3 text-left">Insurance Exp Date</th>
                             <th className="border border-gray-300 p-3 text-center">Actions</th>
                         </tr>
                     </thead>
@@ -134,7 +144,7 @@ const AdminHostComp = () => {
                                     {/* User Profile Picture */}
                                     <td className=" p-4 flex justify-center items-center">
                                         <img
-                                            src={bike.userDetails.profile_picture || 'https://via.placeholder.com/150'}
+                                            src={bike.images[0] || 'https://via.placeholder.com/150'}
                                             alt={bike.userDetails.name}
                                             className="w-16 h-16 rounded-full object-cover border-2 border-gray-300 hover:scale-105 transition transform"
                                         />
@@ -144,12 +154,29 @@ const AdminHostComp = () => {
                                     {/* Bike Details */}
                                     <td className="border border-gray-300 p-4">{bike.companyName}</td>
                                     <td className="border border-gray-300 p-4">{bike.modelName}</td>
-                                    <td className="border border-gray-300 p-4 text-green-500 font-semibold">₹{bike.rentAmount}</td>
+                                    <td className="border border-gray-300 p-4">₹{bike.rentAmount}</td>
 
 
                                     <td className={`border border-gray-300 p-4 font-semibold ${bike.isHost ? 'text-green-500' : 'text-red-500'}`}>
                                         {bike.isHost ? 'Verified' : 'Not Verified'}
                                     </td>
+                                    <td
+                                        className={`border border-gray-300 p-4 font-semibold ${new Date(bike.polutionExpDate) < new Date() ? 'text-red-500' : 'text-green-500'
+                                            }`}
+                                    >
+                                        {new Date(bike.polutionExpDate) < new Date()
+                                            ? 'Expired'
+                                            : bike.polutionExpDate.toString().split("T")[0]}
+                                    </td>
+                                    <td
+                                        className={`border border-gray-300 p-4 font-semibold ${new Date(bike.insuranceExpDate) < new Date() ? 'text-red-500' : 'text-green-500'
+                                            }`}
+                                    >
+                                        {new Date(bike.insuranceExpDate) < new Date()
+                                            ? 'Expired'
+                                            : bike.insuranceExpDate.toString().split("T")[0]}
+                                    </td>
+
 
 
 

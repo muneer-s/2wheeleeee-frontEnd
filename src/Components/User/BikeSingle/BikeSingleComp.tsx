@@ -51,8 +51,8 @@ const BikeSingleComp = () => {
         const fetchDetails = async () => {
             try {
                 const response = await getBikeDetails(id!);
-                console.log('bike details : ',response.bike);
-                
+                console.log('bike details : ', response.bike);
+
                 setBikeDetails(response.bike);
             } catch (error) {
                 console.error("Error fetching bike details:", error);
@@ -64,16 +64,16 @@ const BikeSingleComp = () => {
 
     if (!bikeDetails) return <p>Loading bike details...</p>;
 
-    const { companyName, 
-        modelName, 
-        rentAmount, 
-        fuelType, 
-        images, 
+    const { companyName,
+        modelName,
+        rentAmount,
+        fuelType,
+        images,
         registerNumber,
         insuranceExpDate,
         polutionExpDate,
         rcImage,
-        insuranceImage ,
+        insuranceImage,
         userDetails } = bikeDetails;
 
     const settings = {
@@ -86,8 +86,8 @@ const BikeSingleComp = () => {
 
     return (
         <div className="min-h-screen container mx-auto p-6 bg-gradient-to-b from-white to-sky-300">
-            
-            <button className="bg-sky-200 rounded pl-3 pr-3" onClick={()=>navigate(-1)}>Back</button>
+
+            <button className="bg-sky-200 rounded pl-3 pr-3" onClick={() => navigate(-1)}>Back</button>
 
             {/* Image Carousel */}
             <div className="mb-4">
@@ -114,14 +114,33 @@ const BikeSingleComp = () => {
                 <p><strong>Register Number:</strong> {registerNumber}</p>
             </div>
 
-            
+
             {/* Bike Documents */}
             {userIsPresent && (
                 <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 items-center ">
                     <h1 className="text-xl font-bold mb-4">Bike Documents</h1>
                     <p><strong>Reg No:</strong> {registerNumber}</p>
-                    <p><strong>Insurance Exp Date:</strong> {insuranceExpDate.toLocaleString()}</p>
-                    <p><strong>Polution Exp Date:</strong> {polutionExpDate.toLocaleString()}</p>
+                    {/* Insurance Exp Date */}
+                    <p>
+                        <strong>Insurance Exp Date:</strong> {new Date(insuranceExpDate).toISOString().split("T")[0]}{" "}
+                        {new Date(insuranceExpDate) <= new Date() ? (
+                            <span className="text-red-500">(Expired)</span>
+                        ) : (
+                            <span className="text-green-500">(Valid)</span>
+                        )}
+                    </p>
+
+                    {/* Polution Exp Date */}
+                    <p>
+                        <strong>Polution Exp Date:</strong> {new Date(polutionExpDate).toISOString().split("T")[0]}{" "}
+                        {new Date(polutionExpDate) <= new Date() ? (
+                            <span className="text-red-500">(Expired)</span>
+                        ) : (
+                            <span className="text-green-500">(Valid)</span>
+                        )}
+                    </p>
+
+
                     <p><strong>rc Image:</strong></p>
                     <img
                         src={rcImage || "https://via.placeholder.com/150"}
@@ -137,7 +156,7 @@ const BikeSingleComp = () => {
             )}
 
             {/* Owner Details */}
-            
+
             {userIsPresent && userDetails && (
                 <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6">
                     <h2 className="text-xl font-bold mb-4">Owner Details</h2>
