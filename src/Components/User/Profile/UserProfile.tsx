@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { edituser, edituserDocuments, getProfile } from "../../../Api/user";
+import { edituser, edituserDocuments, getProfile, logout } from "../../../Api/user";
 import { useAppSelector } from "../../../app/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -34,15 +34,16 @@ const UserProfile: React.FC = () => {
             try {
                 const response = await getProfile(userEmail);
                 console.log(1, response);
-
-                setUserProfile(response?.data.userDetails);
-                setPic(response?.data.userDetails?.profile_picture || "");
-
-                if (response?.data.message == false) {
+                if(response.data.success){
+                    setUserProfile(response?.data.userDetails);
+                    setPic(response?.data.userDetails?.profile_picture || "");
+                }else{
                     toast.error(response.data.message)
+                    await logout({ email: userEmail });
                 }
+  
             } catch (error) {
-                console.error('Error:', error);
+                console.error('catch Error get profile:', error);
             }
         }
         fetchData();

@@ -47,7 +47,6 @@ const logout = async (Credential: { email: string }) => {
         return result
     } catch (error) {
         console.log(error);
-
     }
 }
 
@@ -71,8 +70,8 @@ const getProfile = async (email: string) => {
         return result
 
     } catch (error) {
-        console.log(error);
-
+        console.log("error in get profile user.ts",error);
+        throw error
     }
 }
 

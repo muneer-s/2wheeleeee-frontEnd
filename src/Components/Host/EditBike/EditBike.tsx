@@ -11,16 +11,20 @@ const EditBike = () => {
     const [bikeData, setBikeData] = useState<BikeData | null>(null);
     const [newInsuranceImage, setNewInsuranceImage] = useState<File | null>(null);
     const [newPolutionImage, setNewPolutionImage] = useState<File | null>(null);
+    const [insurancePreview, setInsurancePreview] = useState<string | null>(null);
+    const [polutionPreview, setPolutionPreview] = useState<string | null>(null);
     const [errors, setErrors] = useState<any>({});
-    const [loading, setLoading] = useState<boolean>(false); // Loading state
-
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchBikeDetails = async () => {
             try {
                 const response = await singleBikeView(id as string);
                 if (response.success) {
+                    console.log(response.bike)
                     setBikeData(response.bike);
+                    setInsurancePreview(response.bike.insuranceImage);
+                    setPolutionPreview(response.bike.polutionImage);
                 } else {
                     console.error("Failed to fetch bike details.");
                 }
@@ -46,19 +50,30 @@ const EditBike = () => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            const previewUrl = URL.createObjectURL(file);
 
             if (type === "insuranceImage") {
                 setNewInsuranceImage(file);
+                setInsurancePreview(previewUrl);
             } else if (type === "polutionImage") {
                 setNewPolutionImage(file);
+                setPolutionPreview(previewUrl);
             }
-            console.log(`${type} selected :`, file)
+        }
+    };
+
+    const cancelImage = (type: string) => {
+        if (type === "insuranceImage") {
+            setNewInsuranceImage(null);
+            setInsurancePreview(null);
+        } else if (type === "polutionImage") {
+            setNewPolutionImage(null);
+            setPolutionPreview(null);
         }
     };
 
     const validateForm = () => {
         const newErrors: any = {};
-
         const today = new Date();
         const sixMonthsLater = new Date();
         sixMonthsLater.setMonth(today.getMonth() + 6);
@@ -71,11 +86,11 @@ const EditBike = () => {
             newErrors.polutionExpDate = "Pollution expiry date must be at least 6 months from today.";
         }
 
-        if (!newInsuranceImage) {
+        if (!newInsuranceImage && !insurancePreview) {
             newErrors.insuranceImage = "Insurance image is required.";
         }
 
-        if (!newPolutionImage) {
+        if (!newPolutionImage && !polutionPreview) {
             newErrors.polutionImage = "Pollution image is required.";
         }
 
@@ -99,20 +114,15 @@ const EditBike = () => {
         if (newInsuranceImage) formData.append("insuranceImage", newInsuranceImage);
         if (newPolutionImage) formData.append("polutionImage", newPolutionImage);
 
-
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
         try {
-
             const response = await editBike(id, formData);
 
             if (response.success) {
-                toast.success("Bike details updated successfully!")
+                toast.success("Bike details updated successfully!");
                 navigate(-1);
             } else {
                 console.error("Failed to update bike details.");
-                toast.error("Failed to update bike details.")
+                toast.error("Failed to update bike details.");
             }
         } catch (error) {
             console.error("Error updating bike details:", error);
@@ -133,8 +143,7 @@ const EditBike = () => {
         <div className="min-h-screen flex justify-center items-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
                 <h2 className="text-2xl font-semibold mb-6">Edit Bike Details</h2>
-                <form >
-                    {/* View-only fields */}
+                <form>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">Model Name</label>
                         <p className="mt-1 block w-full rounded-md bg-gray-100 p-2">{bikeData.modelName}</p>
@@ -144,7 +153,6 @@ const EditBike = () => {
                         <p className="mt-1 block w-full rounded-md bg-gray-100 p-2">{bikeData.registerNumber}</p>
                     </div>
 
-                    {/* Editable fields */}
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">Insurance Expiry Date</label>
                         <input
@@ -153,7 +161,6 @@ const EditBike = () => {
                             value={bikeData.insuranceExpDate ? new Date(bikeData.insuranceExpDate).toISOString().split('T')[0] : ""}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-
                         />
                         {errors.insuranceExpDate && <p className="text-red-500 text-sm">{errors.insuranceExpDate}</p>}
                     </div>
@@ -166,31 +173,52 @@ const EditBike = () => {
                             value={bikeData.polutionExpDate ? new Date(bikeData.polutionExpDate).toISOString().split('T')[0] : ""}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-
                         />
                         {errors.polutionExpDate && <p className="text-red-500 text-sm">{errors.polutionExpDate}</p>}
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Upload Insurance Image</label>
+                        <label className="block text-sm font-medium text-gray-700">Insurance Image</label>
+                        {insurancePreview && (
+                            <div className="relative">
+                                <img src={insurancePreview} alt="Insurance Preview" className="h-40 w-40 object-cover rounded-md" />
+                                <button
+                                    type="button"
+                                    onClick={() => cancelImage("insuranceImage")}
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        )}
                         <input
                             type="file"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, "insuranceImage")}
                             className="mt-1 block w-full text-gray-500"
-
                         />
                         {errors.insuranceImage && <p className="text-red-500 text-sm">{errors.insuranceImage}</p>}
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Upload Pollution Image</label>
+                        <label className="block text-sm font-medium text-gray-700">Pollution Image</label>
+                        {polutionPreview && (
+                            <div className="relative">
+                                <img src={polutionPreview} alt="Pollution Preview" className="h-40 w-40 object-cover rounded-md" />
+                                <button
+                                    type="button"
+                                    onClick={() => cancelImage("polutionImage")}
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        )}
                         <input
                             type="file"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, "polutionImage")}
                             className="mt-1 block w-full text-gray-500"
-
                         />
                         {errors.polutionImage && <p className="text-red-500 text-sm">{errors.polutionImage}</p>}
                     </div>
@@ -199,22 +227,19 @@ const EditBike = () => {
                         type="submit"
                         disabled={loading}
                         onClick={handleSubmit}
-                        className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""
-                            }`}
+                        className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                         {loading ? "Saving..." : "Save Changes"}
                     </button>
                     <button
                         disabled={loading}
-                        className={`bg-red-500 text-white px-4 py-2 ml-5 rounded-lg hover:bg-red-700 ${loading ? "opacity-50 cursor-not-allowed" : ""
-                            }`}
+                        className={`bg-red-500 text-white px-4 py-2 ml-5 rounded-lg hover:bg-red-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                         onClick={() => {
                             navigate(-1);
                         }}
                     >
                         Cancel
                     </button>
-
                 </form>
             </div>
         </div>

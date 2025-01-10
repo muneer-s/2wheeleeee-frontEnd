@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
-import { BikeData } from "../../../Interfaces/BikeInterface";
 import { useAppSelector } from "../../../app/store";
 import { useNavigate } from "react-router-dom";
 
@@ -25,10 +24,12 @@ const BikeRegister = () => {
         insuranceExpDate: "",
         polutionExpDate: "",
         rcImage: null as File | null,
+        PolutionImage: null as File | null,
         insuranceImage: null as File | null,
     });
 
     const [rcImagePreview, setRcImagePreview] = useState<string | null>(null);
+    const [PolutionImagePreview, setPolutionImagePreview] = useState<string | null>(null);
     const [insuranceImagePreview, setInsuranceImagePreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     // const [errors, setErrors] = useState({}); // State for errors
@@ -57,7 +58,11 @@ const BikeRegister = () => {
         } else if (name === "rcImage" && files?.[0]) {
             setFormData({ ...formData, rcImage: files[0] });
             setRcImagePreview(URL.createObjectURL(files[0]));
-        } else if (name === "insuranceImage" && files?.[0]) {
+        } else if (name === "PolutionImage" && files?.[0]) {
+            setFormData({ ...formData, PolutionImage: files[0] });
+            setPolutionImagePreview(URL.createObjectURL(files[0]));
+        }
+        else if (name === "insuranceImage" && files?.[0]) {
             setFormData({ ...formData, insuranceImage: files[0] });
             setInsuranceImagePreview(URL.createObjectURL(files[0]));
         }
@@ -74,7 +79,7 @@ const BikeRegister = () => {
     };
 
 
-    const handleRemoveSingleImage = (key: "rcImage" | "insuranceImage", setPreview: React.Dispatch<React.SetStateAction<string | null>>) => {
+    const handleRemoveSingleImage = (key: "rcImage" | "insuranceImage" | "PolutionImage", setPreview: React.Dispatch<React.SetStateAction<string | null>>) => {
         setFormData({ ...formData, [key]: null });
         setPreview(null);
     };
@@ -110,7 +115,7 @@ const BikeRegister = () => {
         if (!formData.registerNumber.trim()) {
             newErrors.registerNumber = "Register number is required."
         }
-       
+
 
 
         if (!formData.insuranceExpDate.trim()) {
@@ -121,7 +126,7 @@ const BikeRegister = () => {
                 newErrors.insuranceExpDate = "Insurance expiry date must be at least 6 months from today.";
             }
         }
-    
+
         if (!formData.polutionExpDate.trim()) {
             newErrors.polutionExpDate = "Pollution expiry date is required.";
         } else {
@@ -133,6 +138,9 @@ const BikeRegister = () => {
 
         if (!formData.rcImage) {
             newErrors.rcImage = "Please upload the Rc Image.."
+        }
+        if (!formData.PolutionImage) {
+            newErrors.PolutionImage = "Please upload the Polution Image.."
         }
 
         if (!formData.insuranceImage) {
@@ -167,15 +175,15 @@ const BikeRegister = () => {
         });
 
         if (formData.rcImage) submissionData.append("rcImage", formData.rcImage);
+        if (formData.PolutionImage) submissionData.append("PolutionImage", formData.PolutionImage);
         if (formData.insuranceImage) submissionData.append("insuranceImage", formData.insuranceImage);
 
 
         setIsSubmitting(true);
 
         try {
-            
-            const response = await saveBikeDetails(submissionData);
 
+            const response = await saveBikeDetails(submissionData);
 
             if (response?.status === 200) {
                 toast.success("Bike details registered successfully!");
@@ -356,8 +364,33 @@ const BikeRegister = () => {
                             <div className="mt-4 relative w-24 h-24">
                                 <img src={rcImagePreview} alt="RC Preview" className="w-full h-full object-cover rounded" />
                                 <button
-                                    // onClick={handleRemoveRcImage}
                                     onClick={() => handleRemoveSingleImage("rcImage", setRcImagePreview)}
+
+                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                                    title="Remove"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Upload Polution Image */}
+                    <div>
+                        <label className="block text-gray-700">Upload Polution Image</label>
+                        <input
+                            type="file"
+                            name="PolutionImage"
+                            onChange={handleFileChange}
+                            className="w-full mt-1"
+                        />
+                        {renderError("PolutionImage")}
+
+                        {PolutionImagePreview && (
+                            <div className="mt-4 relative w-24 h-24">
+                                <img src={PolutionImagePreview} alt="Polution Preview" className="w-full h-full object-cover rounded" />
+                                <button
+                                    onClick={() => handleRemoveSingleImage("PolutionImage", setPolutionImagePreview)}
 
                                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
                                     title="Remove"
