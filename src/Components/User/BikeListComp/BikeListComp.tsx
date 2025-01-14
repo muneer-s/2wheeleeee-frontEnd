@@ -44,62 +44,67 @@ const BikeListComp = () => {
                 Back
             </button>
             <h1 className="text-3xl font-bold text-center mb-8">Available Bikes</h1>
+            <div className="flex">
+                <div>
+<input />
+                </div>
+                <div className="h-auto min-h-screen grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-14 bg-gradient-to-b from-sky-50 to-sky-300">
+                    {bikes.map((bike) => {
+                        // Check if insurance or pollution date is expired
+                        const isInsuranceExpired =
+                            new Date(bike.insuranceExpDate) <= new Date();
+                        const isPolutionExpired =
+                            new Date(bike.polutionExpDate) <= new Date();
+                        const isExpired = isInsuranceExpired || isPolutionExpired;
 
-            <div className="h-auto min-h-screen grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-14 bg-gradient-to-b from-sky-50 to-sky-300">
-                {bikes.map((bike) => {
-                    // Check if insurance or pollution date is expired
-                    const isInsuranceExpired =
-                        new Date(bike.insuranceExpDate) <= new Date();
-                    const isPolutionExpired =
-                        new Date(bike.polutionExpDate) <= new Date();
-                    const isExpired = isInsuranceExpired || isPolutionExpired;
-
-                    return (
-                        <div
-                            key={bike._id}
-                            className="mt-3 mb-3 ml-2 bg-gradient-to-b from-white to-sky-300 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                            style={{ width: "200px", height: "320px" }} // Adjusted height for extra info
-                        >
-                            {/* Bike Image */}
-                            <img
-                                src={bike.images[0] || "https://via.placeholder.com/150"}
-                                alt={`${bike.companyName} ${bike.modelName}`}
-                                className="w-full h-28 object-cover"
-                            />
-                            {/* Bike Details */}
-                            <div className="p-2">
-                                <h2 className="text-lg font-semibold mb-1 text-center align-middle">
-                                    {bike.modelName}
-                                </h2>
-                                <h3 className="text-sm font-medium text-center">
-                                    {bike.companyName}
-                                </h3>
-                                <p className="text-gray-500 text-xs mt-2 text-center">
-                                    <strong>Fuel:</strong> {bike.fuelType}
-                                </p>
-                                <p className="text-gray-500 text-xs text-center">
-                                    <strong>Rent:</strong> ₹{bike.rentAmount}/day
-                                </p>
-
-                                {/* Expiration Info */}
-                                {isExpired && (
-                                    <p className="text-red-500 text-xs text-center mt-2">
-                                        {isInsuranceExpired && "Insurance Expired"}{" "}
-                                        {isInsuranceExpired && isPolutionExpired && " | "}
-                                        {isPolutionExpired && "Pollution Expired"}
-                                    </p>
-                                )}
-                            </div>
-                            <button
-                                className="w-full bg-sky-400 text-center py-2 rounded-md shadow-sm hover:bg-gray-100 transition"
-                                onClick={() => navigate(`/UserBikeSinglePage/${bike._id}`)}
+                        return (
+                            <div
+                                key={bike._id}
+                                className="mt-3 mb-3 ml-2 bg-gradient-to-b from-white to-sky-300 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                                style={{ width: "200px", height: "320px" }} // Adjusted height for extra info
                             >
-                                View
-                            </button>
-                        </div>
-                    );
-                })}
+                                {/* Bike Image */}
+                                <img
+                                    src={bike.images[0] || "https://via.placeholder.com/150"}
+                                    alt={`${bike.companyName} ${bike.modelName}`}
+                                    className="w-full h-28 object-cover"
+                                />
+                                {/* Bike Details */}
+                                <div className="p-2">
+                                    <h2 className="text-lg font-semibold mb-1 text-center align-middle">
+                                        {bike.modelName}
+                                    </h2>
+                                    <h3 className="text-sm font-medium text-center">
+                                        {bike.companyName}
+                                    </h3>
+                                    <p className="text-gray-500 text-xs mt-2 text-center">
+                                        <strong>Fuel:</strong> {bike.fuelType}
+                                    </p>
+                                    <p className="text-gray-500 text-xs text-center">
+                                        <strong>Rent:</strong> ₹{bike.rentAmount}/day
+                                    </p>
+
+                                    {/* Expiration Info */}
+                                    {isExpired && (
+                                        <p className="text-red-500 text-xs text-center mt-2">
+                                            {isInsuranceExpired && "Insurance Expired"}{" "}
+                                            {isInsuranceExpired && isPolutionExpired && " | "}
+                                            {isPolutionExpired && "Pollution Expired"}
+                                        </p>
+                                    )}
+                                </div>
+                                <button
+                                    className="w-full bg-sky-400 text-center py-2 rounded-md shadow-sm hover:bg-gray-100 transition"
+                                    onClick={() => navigate(`/UserBikeSinglePage/${bike._id}`)}
+                                >
+                                    View
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
+
         </div>
     );
 };

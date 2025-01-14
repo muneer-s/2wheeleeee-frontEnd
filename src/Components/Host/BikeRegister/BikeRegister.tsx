@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
 import { useAppSelector } from "../../../app/store";
 import { useNavigate } from "react-router-dom";
-
+import ImageCrop from "../../../Config/Crop/ImageCrop";
 
 
 
@@ -27,12 +27,15 @@ const BikeRegister = () => {
         PolutionImage: null as File | null,
         insuranceImage: null as File | null,
     });
-
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [rcImagePreview, setRcImagePreview] = useState<string | null>(null);
     const [PolutionImagePreview, setPolutionImagePreview] = useState<string | null>(null);
     const [insuranceImagePreview, setInsuranceImagePreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    // const [errors, setErrors] = useState({}); // State for errors
+
+
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
 
@@ -69,6 +72,47 @@ const BikeRegister = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
 
     };
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedImage(file);
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
+
+    // const handleCropComplete = (cropped: Blob | null) => {
+    //     setCroppedImage(cropped);
+    //     setPreviewUrl(cropped ? URL.createObjectURL(cropped) : null);
+    //     setFormData((prevFormData) => ({
+    //         ...prevFormData,
+    //         rcImage: cropped,
+    //     }));
+    // };
+
+    const handleCropComplete = (cropped: Blob | null) => {
+        if (cropped) {
+            // Convert the Blob to a File
+            const file = new File([cropped], "cropped-image.jpg", { type: cropped.type });
+
+            // Update state with the File object
+            setCroppedImage(file);
+            setPreviewUrl(URL.createObjectURL(file));
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                rcImage: file,
+            }));
+        } else {
+            // Handle null case
+            setCroppedImage(null);
+            setPreviewUrl(null);
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                rcImage: null,
+            }));
+        }
+    };
+
 
 
 
@@ -78,11 +122,30 @@ const BikeRegister = () => {
         setFormData({ ...formData, images: newImages });
     };
 
-
+    // remove preview images
     const handleRemoveSingleImage = (key: "rcImage" | "insuranceImage" | "PolutionImage", setPreview: React.Dispatch<React.SetStateAction<string | null>>) => {
         setFormData({ ...formData, [key]: null });
         setPreview(null);
     };
+
+
+    const handlePreRemoveImage = () => {
+        // Clear all related states
+        setSelectedImage(null);
+        setCroppedImage(null);
+        setPreviewUrl(null);
+        setRcImagePreview(null); // Optional, if rcImagePreview is used elsewhere
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            rcImage: null,
+        }));
+    };
+
+
+
+
+
+
 
 
     const validateForm = () => {
@@ -350,22 +413,55 @@ const BikeRegister = () => {
                     </div>
 
                     {/* Upload RC Image */}
+                    {/* Upload RC Image */}
                     <div>
                         <label className="block text-gray-700">Upload RC Image</label>
                         <input
                             type="file"
                             name="rcImage"
-                            onChange={handleFileChange}
+                            onChange={handleImageUpload}
                             className="w-full mt-1"
                         />
+                        {previewUrl && !croppedImage && (
+                            <ImageCrop imageSrc={previewUrl} onCropComplete={handleCropComplete} />
+                        )}
+                        {croppedImage && (
+                            <div className="mt-4 relative">
+                                {/* Cropped Image Preview */}
+                                <img src={URL.createObjectURL(croppedImage)} alt="Cropped" className="w-24 h-24 object-cover rounded" />
+
+                                {/* Cancel Button */}
+                                <button
+                                    onClick={() => setCroppedImage(null)} // Reset the croppedImage state
+                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                                    title="Cancel"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        )}
                         {renderError("rcImage")}
+                    </div>
+
+                    {/* <div>
+                        <label className="block text-gray-700">Upload RC Image</label>
+                        <input
+                            type="file"
+                            name="rcImage"
+                            onChange={handleImageUpload}
+                            className="w-full mt-1"
+                        />
+                        {previewUrl && !croppedImage && (
+                            <ImageCrop imageSrc={previewUrl} onCropComplete={handleCropComplete} />
+                        )}
+                        {croppedImage && <img src={URL.createObjectURL(croppedImage)} alt="Cropped" />}
 
                         {rcImagePreview && (
                             <div className="mt-4 relative w-24 h-24">
                                 <img src={rcImagePreview} alt="RC Preview" className="w-full h-full object-cover rounded" />
                                 <button
-                                    onClick={() => handleRemoveSingleImage("rcImage", setRcImagePreview)}
-
+                                    // onClick={() => handleRemoveSingleImage("rcImage", setRcImagePreview)}
+                                    onClick={handlePreRemoveImage} 
                                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
                                     title="Remove"
                                 >
@@ -373,7 +469,9 @@ const BikeRegister = () => {
                                 </button>
                             </div>
                         )}
-                    </div>
+
+                        {renderError("rcImage")}
+                    </div> */}
 
                     {/* Upload Polution Image */}
                     <div>

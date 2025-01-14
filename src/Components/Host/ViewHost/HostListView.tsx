@@ -154,10 +154,10 @@ const HostListView = () => {
 
 
     return (
-        <div className=" min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center w-full" >
+        <div className=" min-h-screen h-auto bg-gradient-to-b from-white to-sky-300 flex justify-center items-center w-full" >
             <div className="h-auto w-full max-w-4xl bg-white rounded-lg shadow-lg p-8 bg-gradient-to-b from-white to-sky-200 " style={{ marginTop: '80px', marginBottom: '80px' }}>
                 {/* Sidebar */}
-                <div className="flex flex-col md:flex-row w-auto">
+                <div className="flex h-auto flex-col md:flex-row w-auto">
                     <div className="h-auto w-full md:w-1/4 border-r border-gray-200 pr-4">
                         <ul className="space-y-4 text-gray-700">
                             <li className={`font-semibold cursor-pointer ${activeTab === "Bike Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Bike Details")}>Bike Details</li>

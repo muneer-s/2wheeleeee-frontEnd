@@ -106,7 +106,6 @@ const edituserDocuments = async (formData: FormData) => {
 
 const getAllBikeList = async () => {
     try {
-
         const BikeList = await Api.get(userRoutes.getAllBikes)
         return BikeList.data
 
