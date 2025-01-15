@@ -72,6 +72,8 @@ const BikeRegister = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
 
     };
+
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -140,13 +142,6 @@ const BikeRegister = () => {
             rcImage: null,
         }));
     };
-
-
-
-
-
-
-
 
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
@@ -539,8 +534,9 @@ const BikeRegister = () => {
 
                     </button>
                     <button
-                        className="bg-red-500  hover:bg-red-700 text-white font-serif font-bold py-2 px-4 mx-3 rounded"
+                        className={`bg-red-500  hover:bg-red-700 text-white font-serif font-bold py-2 px-4 mx-3 rounded ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
                         onClick={() => navigate(-1)}
+                        disabled={isSubmitting}
                     >
                         Cancel
                     </button>

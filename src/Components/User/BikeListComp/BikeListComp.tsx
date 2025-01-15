@@ -16,41 +16,114 @@ interface BikeInterface {
     polutionExpDate: Date | string;
     rcImage: string | null;
     insuranceImage: string | null;
+    polutionImage: string | null;
 }
 
 const BikeListComp = () => {
     const [bikes, setBikes] = useState<BikeInterface[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [search, setSearch] = useState("");
+    const [fuelType, setFuelType] = useState("");
+    const [minRent, setMinRent] = useState("");
+    const [maxRent, setMaxRent] = useState("");
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchBikeData = async () => {
-            try {
-                const response = await getAllBikeList();
-                setBikes(response.bikeList);
-            } catch (error) {
-                console.error("Error fetching bike data:", error);
-            }
-        };
+    const fetchBikeData = async () => {
+        try {
+            const response = await getAllBikeList({
+                page: currentPage,
+                search,
+                fuelType,
+                minRent,
+                maxRent,
+            });
+            setBikes(response.bikeList);
+            setTotalPages(response.totalPages);
+        } catch (error) {
+            console.error("Error fetching bike data:", error);
+        }
+    };
 
+    useEffect(() => {
         fetchBikeData();
-    }, []);
+    }, [currentPage, search, fuelType, minRent, maxRent]);
+
+    // useEffect(() => {
+    //     const fetchBikeData = async () => {
+    //         try {
+    //             const response = await getAllBikeList();
+    //             setBikes(response.bikeList);
+    //         } catch (error) {
+    //             console.error("Error fetching bike data:", error);
+    //         }
+    //     };
+
+    //     fetchBikeData();
+    // }, []);
 
     return (
-        <div className="container mx-auto p-6 bg-gradient-to-b from-white to-sky-300 min-h-screen">
+        <div className="container mx-auto p-6 bg-gradient-to-b from-white to-sky-300 min-h-screen ">
             <button
                 className="bg-sky-200 rounded pl-3 pr-3"
                 onClick={() => navigate(-1)}
             >
                 Back
             </button>
-            <h1 className="text-3xl font-bold text-center mb-8">Available Bikes</h1>
-            <div className="flex">
-                <div>
-<input />
+
+            <h1 className="text-3xl font-bold text-center mb-8 mt-28">Available Bikes</h1>
+
+            <div className="w-full">
+                {/* Filters Section */}
+                <div className="mb-10 p-4 bg-white rounded flex shadow-lg gap-4 w-full mt-10">
+
+                    <input
+                        type="text"
+                        placeholder="Search by model/company"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-1/3 mb-4 p-2 border rounded mt-7"
+                    />
+                    
+                    <select
+                        value={fuelType}
+                        onChange={(e) => setFuelType(e.target.value)}
+                        className="w-1/3 mb-4 p-2 border rounded"
+                    >
+                        <option value="">All Fuel Types</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Electric">Electric</option>
+                    </select>
+                    <div className="mb-4 w-1/3 flex">
+                        <input
+                            type="number"
+                            placeholder="Min Rent"
+                            value={minRent}
+                            onChange={(e) => setMinRent(e.target.value)}
+                            className="w-1/3 p-2 border rounded mr-2"
+                        />
+                        <input
+                            type="number"
+                            placeholder="Max Rent"
+                            value={maxRent}
+                            onChange={(e) => setMaxRent(e.target.value)}
+                            className="w-1/3 p-2 border rounded"
+                        />
+                    </div>
+                    {/* <button
+                        className=" hidden w-full bg-sky-500 text-white py-2 rounded"
+                        onClick={() => fetchBikeData()} 
+                    >
+                        Apply Filters
+                    </button> */}
                 </div>
-                <div className="h-auto min-h-screen grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-14 bg-gradient-to-b from-sky-50 to-sky-300">
+
+
+
+                {/* Bike List Section */}
+                <div className="w-3/4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 pl-6">
                     {bikes.map((bike) => {
-                        // Check if insurance or pollution date is expired
                         const isInsuranceExpired =
                             new Date(bike.insuranceExpDate) <= new Date();
                         const isPolutionExpired =
@@ -60,41 +133,22 @@ const BikeListComp = () => {
                         return (
                             <div
                                 key={bike._id}
-                                className="mt-3 mb-3 ml-2 bg-gradient-to-b from-white to-sky-300 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                                style={{ width: "200px", height: "320px" }} // Adjusted height for extra info
+                                className="bg-white p-4 rounded shadow"
                             >
-                                {/* Bike Image */}
                                 <img
                                     src={bike.images[0] || "https://via.placeholder.com/150"}
                                     alt={`${bike.companyName} ${bike.modelName}`}
-                                    className="w-full h-28 object-cover"
+                                    className="w-full h-32 object-cover rounded"
                                 />
-                                {/* Bike Details */}
-                                <div className="p-2">
-                                    <h2 className="text-lg font-semibold mb-1 text-center align-middle">
-                                        {bike.modelName}
-                                    </h2>
-                                    <h3 className="text-sm font-medium text-center">
-                                        {bike.companyName}
-                                    </h3>
-                                    <p className="text-gray-500 text-xs mt-2 text-center">
-                                        <strong>Fuel:</strong> {bike.fuelType}
-                                    </p>
-                                    <p className="text-gray-500 text-xs text-center">
-                                        <strong>Rent:</strong> ₹{bike.rentAmount}/day
-                                    </p>
-
-                                    {/* Expiration Info */}
-                                    {isExpired && (
-                                        <p className="text-red-500 text-xs text-center mt-2">
-                                            {isInsuranceExpired && "Insurance Expired"}{" "}
-                                            {isInsuranceExpired && isPolutionExpired && " | "}
-                                            {isPolutionExpired && "Pollution Expired"}
-                                        </p>
-                                    )}
-                                </div>
+                                <h2 className="text-lg font-semibold mt-2">{bike.modelName}</h2>
+                                <p>{bike.companyName}</p>
+                                <p>Fuel: {bike.fuelType}</p>
+                                <p>Rent: ₹{bike.rentAmount}/day</p>
+                                {isExpired && (
+                                    <p className="text-red-500">Expired Documents</p>
+                                )}
                                 <button
-                                    className="w-full bg-sky-400 text-center py-2 rounded-md shadow-sm hover:bg-gray-100 transition"
+                                    className="w-full bg-sky-500 text-white py-1 mt-2 rounded"
                                     onClick={() => navigate(`/UserBikeSinglePage/${bike._id}`)}
                                 >
                                     View
@@ -105,6 +159,26 @@ const BikeListComp = () => {
                 </div>
             </div>
 
+
+            {/* Pagination */}
+            <div className="flex justify-center mt-6">
+                <button
+                    className="p-2 mx-2 bg-gray-300 rounded"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    
+                >
+                    Previous
+                </button>
+                <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                <button
+                    className="p-2 mx-2 bg-gray-300 rounded"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                    Next
+                </button>
+            </div>
         </div>
     );
 };

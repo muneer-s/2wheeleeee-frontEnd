@@ -132,9 +132,9 @@ const HostSingleViewComp = () => {
             <span className="font-semibold">Is Host:</span>{" "}
             {isHostVerified ? "Approved" : "Pending"}
           </p>
-          <button
+          <button     
             onClick={handleVerifyHost}
-            className={`px-4 py-2 text-white rounded ${isHostVerified ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
+            className={`px-4 py-2 text-white rounded ${loadingState.verifyHost ? "opacity-50 cursor-not-allowed" : ""} ${isHostVerified ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
               }`}
             disabled={loadingState.verifyHost}
           >
@@ -148,6 +148,7 @@ const HostSingleViewComp = () => {
 
         {/* Bike Images */}
         <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-4">Images</h3>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {bike.images.map((image: string, index: number) => (
             <Zoom key={index}>
@@ -172,6 +173,7 @@ const HostSingleViewComp = () => {
               />
             </Zoom>
           </div>
+
           <div>
             <p className="text-gray-600 font-semibold">Insurance Image:</p>
             <Zoom>
@@ -182,6 +184,18 @@ const HostSingleViewComp = () => {
               />
             </Zoom>
           </div>
+
+          <div>
+            <p className="text-gray-600 font-semibold">Polution Image:</p>
+            <Zoom>
+              <img
+                src={bike.PolutionImage}
+                alt="Insurance Document"
+                className="w-auto max-h-fit min-h-fit object-cover rounded-lg shadow-sm mt-2"
+              />
+            </Zoom>
+          </div>
+
         </div>
       </div>
     </div>

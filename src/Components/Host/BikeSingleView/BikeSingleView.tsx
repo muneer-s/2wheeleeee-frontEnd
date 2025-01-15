@@ -17,6 +17,7 @@ interface Bike {
     polutionExpDate: string | number | Date;
     rcImage: string;
     insuranceImage: string;
+    PolutionImage: string;
     isHost: boolean;
 
 
@@ -177,6 +178,14 @@ const BikeSingleView = () => {
                             <strong>Insurance Image:</strong>
                             <img
                                 src={bike?.insuranceImage}
+                                alt="Insurance Document"
+                                className="w-auto h-64 object-cover rounded-lg mt-2 border shadow-md"
+                            />
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <strong>Polution Image:</strong>
+                            <img
+                                src={bike?.PolutionImage}
                                 alt="Insurance Document"
                                 className="w-auto h-64 object-cover rounded-lg mt-2 border shadow-md"
                             />

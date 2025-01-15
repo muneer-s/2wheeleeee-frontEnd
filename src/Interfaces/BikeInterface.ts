@@ -9,5 +9,6 @@ export interface BikeData {
     polutionExpDate: Date | string; 
     rcImage: File | null; 
     insuranceImage: File | null; 
+    PolutionImage: File | null; 
   }
   

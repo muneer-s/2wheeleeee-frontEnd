@@ -34,6 +34,7 @@ interface BikeDetails {
     polutionExpDate: Date | string;
     rcImage: string | null;
     insuranceImage: string | null;
+    PolutionImage: string | null;
     userDetails: UserDetails;
 }
 
@@ -74,6 +75,7 @@ const BikeSingleComp = () => {
         polutionExpDate,
         rcImage,
         insuranceImage,
+        PolutionImage,
         userDetails } = bikeDetails;
 
     const settings = {
@@ -104,6 +106,7 @@ const BikeSingleComp = () => {
                 </Slider>
             </div>
 
+
             {/* Bike Details */}
             <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 text-center">
                 <h1 className="text-xl font-bold mb-4">Bike Details</h1>
@@ -112,47 +115,60 @@ const BikeSingleComp = () => {
                 <p><strong>Rent:</strong> ₹{rentAmount}/day</p>
                 <p><strong>Fuel Type:</strong> {fuelType}</p>
                 <p><strong>Register Number:</strong> {registerNumber}</p>
+                <p><strong>Reg No:</strong> {registerNumber}</p>
+                <p>
+                    <strong>Insurance Exp Date:</strong> {new Date(insuranceExpDate).toISOString().split("T")[0]}{" "}
+                    {new Date(insuranceExpDate) <= new Date() ? (
+                        <span className="text-red-500">(Expired)</span>
+                    ) : (
+                        <span className="text-green-500">(Valid)</span>
+                    )}
+                </p>
+                <p>
+                    <strong>Polution Exp Date:</strong> {new Date(polutionExpDate).toISOString().split("T")[0]}{" "}
+                    {new Date(polutionExpDate) <= new Date() ? (
+                        <span className="text-red-500">(Expired)</span>
+                    ) : (
+                        <span className="text-green-500">(Valid)</span>
+                    )}
+                </p>
+
             </div>
 
 
-            {/* Bike Documents */}
             {userIsPresent && (
-                <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 items-center ">
-                    <h1 className="text-xl font-bold mb-4">Bike Documents</h1>
-                    <p><strong>Reg No:</strong> {registerNumber}</p>
-                    {/* Insurance Exp Date */}
-                    <p>
-                        <strong>Insurance Exp Date:</strong> {new Date(insuranceExpDate).toISOString().split("T")[0]}{" "}
-                        {new Date(insuranceExpDate) <= new Date() ? (
-                            <span className="text-red-500">(Expired)</span>
-                        ) : (
-                            <span className="text-green-500">(Valid)</span>
-                        )}
-                    </p>
+                <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 flex flex-wrap gap-6 justify-between items-center">
+                    {/* RC Image Section */}
+                    <div className="flex flex-col items-center">
+                        <p className="font-semibold mb-2">RC Image:</p>
+                        <img
+                            src={rcImage || "https://via.placeholder.com/150"}
+                            alt={`${modelName} RC`}
+                            className="w-40 h-40 object-cover rounded"
+                        />
+                    </div>
 
-                    {/* Polution Exp Date */}
-                    <p>
-                        <strong>Polution Exp Date:</strong> {new Date(polutionExpDate).toISOString().split("T")[0]}{" "}
-                        {new Date(polutionExpDate) <= new Date() ? (
-                            <span className="text-red-500">(Expired)</span>
-                        ) : (
-                            <span className="text-green-500">(Valid)</span>
-                        )}
-                    </p>
+                    {/* Insurance Image Section */}
+                    <div className="flex flex-col items-center">
+                        <p className="font-semibold mb-2">Insurance Image:</p>
+                        <img
+                            src={insuranceImage || "https://via.placeholder.com/150"}
+                            alt={`${modelName} Insurance`}
+                            className="w-40 h-40 object-cover rounded"
+                        />
+                    </div>
 
-
-                    <p><strong>rc Image:</strong></p>
-                    <img
-                        src={rcImage || "https://via.placeholder.com/150"}
-                        alt={`${modelName}`}
-                    />
-
-                    <p><strong>Insurance Image:</strong></p>
-                    <img
-                        src={insuranceImage || "https://via.placeholder.com/150"}
-                        alt={`${modelName}`}
-                    />
+                    {/* Pollution Image Section */}
+                    <div className="flex flex-col items-center">
+                        <p className="font-semibold mb-2">Pollution Image:</p>
+                        <img
+                            src={PolutionImage || "https://via.placeholder.com/150"}
+                            alt={`${modelName} Pollution`}
+                            className="w-40 h-40 object-cover rounded"
+                        />
+                    </div>
                 </div>
+
             )}
 
             {/* Owner Details */}

@@ -30,6 +30,7 @@ interface BikeInterface {
     polutionExpDate: Date | string;
     rcImage: string | null;
     insuranceImage: string | null;
+    PolutionImage: string | null;
     userDetails: UserDetails;
 }
 
