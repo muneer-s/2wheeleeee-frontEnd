@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { editBike, singleBikeView } from "../../../Api/host";
+import { editBike, singleBikeView } from "../../../api/host";
 import { BikeData } from "../../../Interfaces/BikeInterface";
 import toast from "react-hot-toast";
 

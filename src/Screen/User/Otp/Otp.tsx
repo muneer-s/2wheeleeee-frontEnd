@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { resendOtp, verifyOtp } from '../../../Api/user';
+import { resendOtp, verifyOtp } from '../../../api/user';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { saveUser, setUserCredential } from '../../../app/slice/AuthSlice';
 import { useDispatch } from 'react-redux';

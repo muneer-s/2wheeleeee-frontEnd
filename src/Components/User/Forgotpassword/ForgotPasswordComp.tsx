@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { forgotPassword } from '../../../Api/user';
+import { forgotPassword } from '../../../api/user';
 
 
 const ForgotPasswordComp: React.FC = () => {

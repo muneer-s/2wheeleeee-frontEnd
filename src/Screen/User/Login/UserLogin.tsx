@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import logAnime from '../../../assets/anime/logAnime.json';
-import { login } from '../../../Api/user';
+import { login } from '../../../api/user';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, useAppSelector } from '../../../app/store';
@@ -17,11 +17,10 @@ const UserLogin: React.FC = () => {
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
+    const [validationErrors, setValidationErrors] = useState<{ email?: string; password?: string }>({});
+
 
     const { userData } = useAppSelector((state) => state.auth)
-    console.log('userdataaa login page:', userData);
-
-
     const authState = useAppSelector((state) => state.auth);
     const userDetails = authState.user
 
@@ -30,14 +29,39 @@ const UserLogin: React.FC = () => {
     }, [userData, userDetails]);
 
 
+    const validateForm = () => {
+        const errors: { email?: string; password?: string } = {};
+
+        // Email validation
+        if (!email) {
+            errors.email = 'Email is required';
+        } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+            errors.email = 'Invalid email format';
+        }
+
+        // Password validation
+        if (!password) {
+            errors.password = 'Password is required';
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+            errors.password =
+                'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
+        }
+        
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
+
+        if (!validateForm()) return;
+
         setLoading(true)
         try {
             const response = await login({ email, password })
-            console.log('login response : ', response)
-            console.log('login response : ', response.userAccessToken)
 
             if (response?.success && response.user) {
                 const user = {
@@ -51,12 +75,12 @@ const UserLogin: React.FC = () => {
                 toast.success('Logged in successfully');
                 navigate('/');
             } else {
-                toast.error(response?.message || 'Login failed');
+                // toast.error(response?.message || 'Login failed.');
                 setError(response?.message || 'Invalid email or password');
             }
         } catch (err: any) {
             setError(err.message || 'An error occurred during login');
-            toast.error('login Failed');
+            // toast.error('login Failed');
         } finally {
             setLoading(false);
         }
@@ -87,13 +111,16 @@ const UserLogin: React.FC = () => {
 
                         <input
                             id="email"
-                            type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter Your Email Address"
-                            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                            className={`w-full px-3 py-2 border ${validationErrors.email ? 'border-red-500' : 'border-gray-300'
+                                } rounded focus:outline-none focus:ring-2 ${validationErrors.email ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                                }`}
                         />
+                        {validationErrors.email && (
+                            <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+                        )}
                     </div>
 
                     <div>
@@ -106,9 +133,14 @@ const UserLogin: React.FC = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter Your Password"
-                            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                            className={`w-full px-3 py-2 border ${validationErrors.password ? 'border-red-500' : 'border-gray-300'
+                                } rounded focus:outline-none focus:ring-2 ${validationErrors.password ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                                }`}
+
                         />
+                        {validationErrors.password && (
+                            <p className="text-red-500 text-sm mt-1">{validationErrors.password}</p>
+                        )}
                     </div>
 
                     <button
@@ -122,9 +154,9 @@ const UserLogin: React.FC = () => {
 
                     </button>
                 </form>
-                {/* <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p> */}
+                {/* <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p>
 
-{/* 
+
                 <div className="text-center my-4">OR</div>
 
                 <button className="w-full flex items-center justify-center gap-2 bg-white py-2 border border-gray-300 rounded shadow hover:shadow-md transition">

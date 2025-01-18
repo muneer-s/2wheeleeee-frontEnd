@@ -1,5 +1,5 @@
-import errorHandler from "./errorHandler.ts";
-import userRoutes from "../service/endPoints/userEndPoints";
+   import errorHandler from "./errorHandler.ts";
+import userRoutes from "../service/endPoints/userEndPoints.ts";
 import Api from "../service/axios.ts";
 
 import { UserData } from "../Interfaces/Interfaces.ts";

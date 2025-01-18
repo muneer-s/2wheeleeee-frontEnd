@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { deleteSelectedBike, singleBikeView } from "../../../Api/host";
+import { deleteSelectedBike, singleBikeView } from "../../../api/host";
 import toast from "react-hot-toast";
 import Swal from 'sweetalert2';
 

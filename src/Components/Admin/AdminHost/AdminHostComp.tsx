@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllBikeDetails, logout } from "../../../Api/admin";
+import { getAllBikeDetails, logout } from "../../../api/admin";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { adminLogout } from "../../../app/slice/AuthSlice";

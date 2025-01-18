@@ -36,7 +36,7 @@ const UserRegister: React.FC = () => {
         },
         validationSchema,
         onSubmit: async (values) => {
-            setLoading(true); 
+            setLoading(true);
             try {
                 const response = await fetch('http://localhost:3000/api/user/userSignup', {
                     method: 'POST',
@@ -59,20 +59,20 @@ const UserRegister: React.FC = () => {
             } catch (err) {
                 toast.error('An error occurred during registration.');
                 console.error(err);
-            }finally {
+            } finally {
                 setLoading(false);
             }
         },
     });
 
     return (
-        <div className="h-full flex items-center justify-center relative bg-blue-10">
-            <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-96" style={{ marginTop: '80px' }}>
+        <div className=" flex items-center justify-center  bg-blue-70 min-h-screen p-4">
+            <div className="relative z-10 bg-blue-200 p-8 rounded-lg shadow-lg w-full max-w-sm" style={{ marginTop: '80px' }}>
                 <h2 className="text-center text-2xl font-bold mb-4" style={{ color: '#00A3FF' }}>
                     Register
                 </h2>
                 <button
-                    className="absolute top-2 right-2 text-blue-700 font-bold"
+                    className="absolute top-2 right-2 md:top-4 md:right-4 text-blue-700 font-bold"
                     onClick={() => navigate('/')}
                 >
                     ✕
@@ -90,11 +90,10 @@ const UserRegister: React.FC = () => {
                             value={formik.values.userName}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className={`w-full px-3 py-2 border ${
-                                formik.touched.userName && formik.errors.userName
+                            className={`w-full px-3 py-2 border ${formik.touched.userName && formik.errors.userName
                                     ? 'border-red-500'
                                     : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.userName && formik.errors.userName && (
                             <p className="text-red-500 text-sm">{formik.errors.userName}</p>
@@ -112,11 +111,10 @@ const UserRegister: React.FC = () => {
                             value={formik.values.email}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className={`w-full px-3 py-2 border ${
-                                formik.touched.email && formik.errors.email
+                            className={`w-full px-3 py-2 border ${formik.touched.email && formik.errors.email
                                     ? 'border-red-500'
                                     : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.email && formik.errors.email && (
                             <p className="text-red-500 text-sm">{formik.errors.email}</p>
@@ -134,11 +132,10 @@ const UserRegister: React.FC = () => {
                             value={formik.values.password}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className={`w-full px-3 py-2 border ${
-                                formik.touched.password && formik.errors.password
+                            className={`w-full px-3 py-2 border ${formik.touched.password && formik.errors.password
                                     ? 'border-red-500'
                                     : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.password && formik.errors.password && (
                             <p className="text-red-500 text-sm">{formik.errors.password}</p>
@@ -156,38 +153,29 @@ const UserRegister: React.FC = () => {
                             value={formik.values.confirmPassword}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            className={`w-full px-3 py-2 border ${
-                                formik.touched.confirmPassword && formik.errors.confirmPassword
+                            className={`w-full px-3 py-2 border ${formik.touched.confirmPassword && formik.errors.confirmPassword
                                     ? 'border-red-500'
                                     : 'border-gray-300'
-                            } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.confirmPassword && formik.errors.confirmPassword && (
                             <p className="text-red-500 text-sm">{formik.errors.confirmPassword}</p>
                         )}
                     </div>
 
-                    
+
 
 
 
                     <button
                         type="submit"
-                        className={`w-full text-white py-2 rounded hover:bg-blue-700 transition ${
-                            loading ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
+                        className={`w-full text-white py-2 rounded hover:bg-blue-700 transition ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
                         style={{ backgroundColor: '#00A3FF' }}
                         disabled={loading}
                     >
                         {loading ? 'Submitting...' : 'Register'}
                     </button>
-
-
-
-
-
-
-
 
                 </form>
 

@@ -4,7 +4,7 @@ import hostHome2 from '../../../assets/hostHome2.png';
 import hostHome3 from '../../../assets/hostHome3.png';
 import { AppDispatch, useAppSelector } from '../../../app/store';
 import { useDispatch } from 'react-redux';
-import { isAdminVerifyUser } from '../../../Api/host';
+import { isAdminVerifyUser } from '../../../api/host';
 
 function Body() {
   const navigate = useNavigate()

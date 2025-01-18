@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getSingleUser, toggleIsUser, userBlockUnBlock } from '../../../Api/admin';
+import { getSingleUser, toggleIsUser, userBlockUnBlock } from '../../../api/admin';
 import {
   Card,
   CardContent,

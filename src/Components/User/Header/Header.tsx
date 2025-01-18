@@ -3,10 +3,10 @@ import { useAppSelector, AppDispatch } from "../../../app/store";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../../../app/slice/AuthSlice";
 import toast from "react-hot-toast";
-import { logout } from "../../../Api/user";
+import { logout } from "../../../api/user";
 import { useEffect, useState } from "react";
 import defaultDp from '../../../assets/defaultDP.png'
-import { checkBlockedStatus } from "../../../Api/admin";
+import { checkBlockedStatus } from "../../../api/admin";
 
 const Header = () => {
   const navigate = useNavigate();

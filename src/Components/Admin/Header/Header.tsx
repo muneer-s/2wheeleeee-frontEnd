@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 
 import { adminLogout } from '../../../app/slice/AuthSlice';
-import { logout } from '../../../Api/admin';
+import { logout } from '../../../api/admin';
 
 
 
@@ -12,7 +12,18 @@ const AdminHeader: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const adminData = useSelector((state: any) => state.auth.adminData);
 
+
+    useEffect(() => {
+        // Check if the admin is logged in
+        if (!adminData) {
+            // Perform admin logout and redirect to login page
+            dispatch(adminLogout());
+            navigate('/adminLogin');
+            // toast.error('Session expired. Please log in again.');
+        }
+    }, [adminData, dispatch, navigate]);
 
     const handleLogout = async () => {
         try {

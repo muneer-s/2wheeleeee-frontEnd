@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllUsers, logout } from '../../../Api/admin';
+import { getAllUsers, logout } from '../../../api/admin';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { adminLogout } from '../../../app/slice/AuthSlice';
@@ -58,10 +58,14 @@ const AdminAllusers = () => {
         console.log(222, response);
 
 
-        if (response && response.data) {
+        if (response && response.data.success) {
+          console.log('----------------------');
+          
           setUserList(response.data.usersList);
           setTotalPages(response.data.totalPages);
         } else {
+          console.log("*************************");
+          
           await logout()
           dispatch(adminLogout());
 
@@ -162,9 +166,9 @@ const AdminAllusers = () => {
         <div style={{ marginBottom: '20px', marginTop: '20px' }}>
 
           <label>
-            Blocked : 
+            Blocked :
             <select
-            style={{marginLeft:5}}
+              style={{ marginLeft: 5 }}
               value={filter.isBlocked === undefined ? '' : filter.isBlocked.toString()}
               onChange={(e) => handleFilterChange('isBlocked', e.target.value)}
             >
@@ -177,9 +181,9 @@ const AdminAllusers = () => {
 
 
           <label style={{ marginLeft: '30px' }}>
-            Verified : 
+            Verified :
             <select
-            style={{marginLeft:5}}
+              style={{ marginLeft: 5 }}
               value={filter.isUser === undefined ? '' : filter.isUser.toString()}
               onChange={(e) => handleFilterChange('isUser', e.target.value)}
             >
@@ -216,7 +220,7 @@ const AdminAllusers = () => {
               <tr key={user._id} style={{ borderBottom: '1px solid #ddd' }}>
                 <td style={{ padding: '10px' }}>
                   <img
-                    src={user.profile_picture || 'https://via.placeholder.com/50'}
+                    src={user.profile_picture || 'No DP'}
                     alt={user.name}
                     style={{
                       width: '50px',

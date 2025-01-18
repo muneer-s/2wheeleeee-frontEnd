@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { edituser, edituserDocuments, getProfile, logout } from "../../../Api/user";
+import { edituser, edituserDocuments, getProfile, logout } from "../../../api/user";
 import { useAppSelector } from "../../../app/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";

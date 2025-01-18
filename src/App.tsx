@@ -64,16 +64,7 @@ function App() {
 
 
 
-            
-            
-
-
-
-
-
-
-
-
+    
 
 
             {/* admin side */}

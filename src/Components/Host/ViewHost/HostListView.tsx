@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../app/store";
-import { deleteSelectedBike, fetchBikeData } from "../../../Api/host";
+import { deleteSelectedBike, fetchBikeData } from "../../../api/host";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 
