@@ -28,6 +28,7 @@ import UserBikeListPage from './Screen/User/UserBikeListPage/UserBikeListPage';
 import UserBikeSinglePage from './Screen/User/UserBikeSingleViewPage/UserBikeSinglePage';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ForbiddenPage from './Components/403/ForbiddenPage';
 
 
 
@@ -46,6 +47,7 @@ function App() {
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} />
             <Route path='/forgotPassword' element={<ForgotPasswordScreen/>} />
+            <Route path='/pageNotFound' element={<ForbiddenPage/>} />
             
             <Route path='/UserBikeListPage' element={<UserBikeListPage/>} />
             <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage/>} />
@@ -62,9 +64,6 @@ function App() {
             <Route path='/HostBikeViewPage/:id' element={<UserProtecteRoute><HostBikeViewPage/></UserProtecteRoute>} />
             <Route path='/EditBike/:id' element={<UserProtecteRoute><EditBike/></UserProtecteRoute>} />
 
-
-
-    
 
 
             {/* admin side */}

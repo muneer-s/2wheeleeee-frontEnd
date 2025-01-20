@@ -14,8 +14,10 @@ const Header = () => {
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
-  
+
   const [dropDownOpen, setDropdownOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   const handleLogout = async () => {
     const email = userDetails.email
@@ -30,42 +32,87 @@ const Header = () => {
   };
 
 
-useEffect(()=>{
-  const checkIfBlocked = async()=>{
-    if(userDetails?.email){
-      try {
+  useEffect(() => {
+    const checkIfBlocked = async () => {
+      if (userDetails?.email) {
+        try {
+          const email = userDetails.email
+          const response = await checkBlockedStatus(email)
 
-        const email = userDetails.email
-        const response = await checkBlockedStatus(email)
-        
-        if(response?.data?.isBlocked){
-          toast.error("Your account has been blocked by the admin.")
-          handleLogout()
+          if (response?.data?.isBlocked) {
+            toast.error("Your account has been blocked by the admin.")
+            handleLogout()
+          }
+        } catch (error) {
+          console.error("Error checking blocked status:", error);
         }
-        
-      } catch (error) {
-        console.error("Error checking blocked status:", error);
       }
-    }
-  };
-  checkIfBlocked();
-},[userDetails,navigate])
+    };
+    checkIfBlocked();
+  }, [userDetails, navigate])
 
 
   return (
-    <header className="bg-white px-8 py-2 flex items-center justify-between shadow-md w-full mx-auto">
+    <header className="bg-white px-4 py-2 flex items-center justify-between shadow-md w-full mx-auto md:px-8">
+      {/* Logo */}
       <div className="text-2xl font-bold text-sky-500">2Wheleeee</div>
+     
+      {/* Hamburger menu (Mobile) */}
+      {/* Hamburger menu (Mobile) */}
+      <div className="md:hidden">
+        <button
+          className="text-gray-700 focus:outline-none"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+            />
+          </svg>
+        </button>
+      </div>
 
-      <div className="flex items-center space-x-8">
-        <nav>
-          <ul className="flex space-x-8">
-            <li><a href="/" className="text-black hover:text-sky-500">Home</a></li>
-            <li><a href="/about" className="text-black hover:text-sky-500">About Us</a></li>
-            <li><a href="/services" className="text-black hover:text-sky-500">Services</a></li>
-            <li><a href="/contact" className="text-black hover:text-sky-500">Contact Us</a></li>
-          </ul>
-        </nav>
+      {/* Navigation */}
+      <nav
+        className={`${
+          mobileMenuOpen ? "block" : "hidden"
+        } md:flex md:items-center md:space-x-8 absolute md:static top-12 left-0 w-full bg-white md:bg-transparent md:w-auto z-10`}
+      >
+        <ul className="flex flex-col md:flex-row md:space-x-8">
+          <li>
+            <a href="/" className="block px-4 py-2 text-black hover:text-sky-500">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="/about" className="block px-4 py-2 text-black hover:text-sky-500">
+              About Us
+            </a>
+          </li>
+          <li>
+            <a href="/services" className="block px-4 py-2 text-black hover:text-sky-500">
+              Services
+            </a>
+          </li>
+          <li>
+            <a href="/contact" className="block px-4 py-2 text-black hover:text-sky-500">
+              Contact Us
+            </a>
+          </li>
+        </ul>
+      </nav>
 
+      {/* User Section */}
+      <div className="flex items-center space-x-4">
         {userDetails ? (
           <div className="relative">
             <div
@@ -77,7 +124,7 @@ useEffect(()=>{
                 alt="Profile"
                 className="w-10 h-10 rounded-full border"
               />
-              <span className="text-gray-700">{userDetails.name}</span>
+              <span className="text-gray-700 hidden md:inline">{userDetails.name}</span>
             </div>
             {dropDownOpen && (
               <div className="absolute right-0 mt-2 bg-white border shadow-lg rounded-md w-48">

@@ -1,26 +1,11 @@
 import { useEffect, useState } from "react";
 import { getAllBikeList } from "../../../api/user";
 import { useNavigate } from "react-router-dom";
+import { IBikeDetails } from "../../../Interfaces/User/IUser";
 
-interface BikeInterface {
-    isHost: boolean;
-    _id: string;
-    userId: string;
-    companyName: string;
-    modelName: string;
-    rentAmount: number | string;
-    fuelType: string;
-    images: string[];
-    registerNumber: string;
-    insuranceExpDate: Date | string;
-    polutionExpDate: Date | string;
-    rcImage: string | null;
-    insuranceImage: string | null;
-    polutionImage: string | null;
-}
 
 const BikeListComp = () => {
-    const [bikes, setBikes] = useState<BikeInterface[]>([]);
+    const [bikes, setBikes] = useState<IBikeDetails[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState("");
@@ -50,19 +35,6 @@ const BikeListComp = () => {
         fetchBikeData();
     }, [currentPage, search, fuelType, minRent, maxRent]);
 
-    // useEffect(() => {
-    //     const fetchBikeData = async () => {
-    //         try {
-    //             const response = await getAllBikeList();
-    //             setBikes(response.bikeList);
-    //         } catch (error) {
-    //             console.error("Error fetching bike data:", error);
-    //         }
-    //     };
-
-    //     fetchBikeData();
-    // }, []);
-
     return (
         <div className="container mx-auto p-6 bg-gradient-to-b from-white to-sky-300 min-h-screen ">
             <button
@@ -76,43 +48,43 @@ const BikeListComp = () => {
 
             <div className="w-full">
                 {/* Filters Section */}
-                <div className="mb-10 p-4 bg-white rounded flex shadow-lg gap-4 w-full mt-10">
+                <div className="mb-10 p-4 bg-white rounded shadow-lg gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
                     <input
                         type="text"
                         placeholder="Search by model/company"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-1/3 mb-4 p-2 border rounded mt-7"
+                        className="w-full mb-4 p-2 border rounded"
                     />
                     
                     <select
                         value={fuelType}
                         onChange={(e) => setFuelType(e.target.value)}
-                        className="w-1/3 mb-4 p-2 border rounded"
+                        className="w-full mb-4 p-2 border rounded"
                     >
                         <option value="">All Fuel Types</option>
                         <option value="Petrol">Petrol</option>
                         <option value="Electric">Electric</option>
                     </select>
-                    <div className="mb-4 w-1/3 flex">
+                    <div className="flex w-full gap-2">
                         <input
                             type="number"
                             placeholder="Min Rent"
                             value={minRent}
                             onChange={(e) => setMinRent(e.target.value)}
-                            className="w-1/3 p-2 border rounded mr-2"
+                            className="w-1/2 p-2 border rounded"
                         />
                         <input
                             type="number"
                             placeholder="Max Rent"
                             value={maxRent}
                             onChange={(e) => setMaxRent(e.target.value)}
-                            className="w-1/3 p-2 border rounded"
+                            className="w-1/2 p-2 border rounded"
                         />
                     </div>
                     {/* <button
-                        className=" hidden w-full bg-sky-500 text-white py-2 rounded"
+                        className="  w-full bg-sky-500 text-white py-2 rounded"
                         onClick={() => fetchBikeData()} 
                     >
                         Apply Filters
@@ -161,18 +133,18 @@ const BikeListComp = () => {
 
 
             {/* Pagination */}
-            <div className="flex justify-center mt-6">
+            <div className="flex flex-wrap justify-center items-center mt-6 gap-2">
                 <button
-                    className="p-2 mx-2 bg-gray-300 rounded"
+                    className="p-3 px-6 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                     
                 >
                     Previous
                 </button>
-                <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                <span className="px-3">{`Page ${currentPage} of ${totalPages}`}</span>
                 <button
-                    className="p-2 mx-2 bg-gray-300 rounded"
+                    className="p-3 px-6 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                 >

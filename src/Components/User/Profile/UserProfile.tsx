@@ -1,10 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { edituser, edituserDocuments, getProfile, logout } from "../../../api/user";
 import { useAppSelector } from "../../../app/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { authSlice, saveUser } from "../../../app/slice/AuthSlice";
-type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
+import {  saveUser } from "../../../app/slice/AuthSlice";
+// type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
 
 
 import { UserData } from "../../../Interfaces/Interfaces";
@@ -226,7 +226,7 @@ const UserProfile: React.FC = () => {
                 "An error occurred while updating the profile. Please try again later."
             );
         } finally {
-            setIsSubmitting(false); // Re-enable the button
+            setIsSubmitting(false);
         }
     }
 

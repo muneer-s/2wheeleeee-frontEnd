@@ -4,38 +4,11 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { adminLogout } from "../../../app/slice/AuthSlice";
 import { useDispatch } from "react-redux";
+import { IAdminBikeData } from "../../../Interfaces/Admin/IAdmin";
 
-
-
-interface UserDetails {
-    _id: string;
-    name: string;
-    email: string;
-    profile_picture: string;
-    address: string;
-    phoneNumber: number;
-}
-
-interface BikeInterface {
-    isHost: boolean;
-    _id: string;
-    userId: string;
-    companyName: string;
-    modelName: string;
-    rentAmount: number | string;
-    fuelType: string;
-    images: string[];
-    registerNumber: string;
-    insuranceExpDate: Date | string;
-    polutionExpDate: Date | string;
-    rcImage: string | null;
-    insuranceImage: string | null;
-    PolutionImage: string | null;
-    userDetails: UserDetails;
-}
 
 const AdminHostComp = () => {
-    const [bikeList, setBikeList] = useState<BikeInterface[]>([]);
+    const [bikeList, setBikeList] = useState<IAdminBikeData[]>([]);
     const [search, setSearch] = useState('');
     const [filter, setFilter] = useState('');
     const [sort, setSort] = useState('');
@@ -84,7 +57,7 @@ const AdminHostComp = () => {
     };
 
 
-    const singlePageView = (bike: BikeInterface) => {
+    const singlePageView = (bike: IAdminBikeData) => {
         navigate('/singleBikeViewPage', { state: { bike } });
     }
 

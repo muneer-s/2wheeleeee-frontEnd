@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSingleUser, toggleIsUser, userBlockUnBlock } from '../../../api/admin';
+
 import {
   Card,
   CardContent,
@@ -13,25 +14,13 @@ import {
 } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { IUser } from '../../../Interfaces/Admin/IAdmin';
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  dateOfBirth: string;
-  profile_picture: string | null;
-  address: string;
-  phoneNumber: number;
-  isBlocked: boolean;
-  isUser: boolean;
-  isVerified: boolean;
-  license_picture_front: string;
-  license_picture_back: string;
-}
+
 
 const AdminSingleUserPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
 
   useEffect(() => {

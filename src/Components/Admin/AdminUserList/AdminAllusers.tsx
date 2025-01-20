@@ -4,21 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { adminLogout } from '../../../app/slice/AuthSlice';
 import { useDispatch } from 'react-redux';
+import { IAdminUser } from '../../../Interfaces/Admin/IAdmin';
 
 
 
-interface User {
-  isBlocked: boolean;
-  isUser: boolean;
-  _id: string;
-  name: string;
-  email: string;
-  dateOfBirth: string;
-  profile_picture: string | null;
-}
 
 const AdminAllusers = () => {
-  const [userList, setUserList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<IAdminUser[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [search, setSearch] = useState<string>('');

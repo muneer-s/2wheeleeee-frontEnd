@@ -8,11 +8,10 @@ import toast from "react-hot-toast";
 const HostListView = () => {
 
     const [activeTab, setActiveTab] = useState<string>("Bike Details");
-    const [bikes, setBikes] = useState<any[]>([]); // State for storing bike data
+    const [bikes, setBikes] = useState<any[]>([]); 
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
     const navigate = useNavigate()
-
-    // Get the logged-in user's details
     const authState = useAppSelector((state) => state.auth);
     const userId = authState?.user?.userId;
 
@@ -38,7 +37,6 @@ const HostListView = () => {
 
     const deleteBike = async (id: string) => {
         try {
-            // Show confirmation dialog using SweetAlert2
             const result = await Swal.fire({
                 title: 'Are you sure?',
                 text: 'Do you really want to delete this bike?',
@@ -49,13 +47,12 @@ const HostListView = () => {
                 reverseButtons: true,
             });
 
-            // If the user confirms, proceed with the deletion
             if (result.isConfirmed) {
-                const deleteResponse = await deleteSelectedBike(id); // Pass the ID to the delete function
+                const deleteResponse = await deleteSelectedBike(id); 
 
                 if (deleteResponse.success) {
                     toast.success("Bike deleted successfully!");
-                    setBikes((prevBikes) => prevBikes.filter((bike) => bike._id !== id)); // Remove the deleted bike from state
+                    setBikes((prevBikes) => prevBikes.filter((bike) => bike._id !== id)); 
                 } else {
                     toast.error("Error while deleting bike");
                 }
@@ -78,34 +75,36 @@ const HostListView = () => {
         switch (activeTab) {
             case "Bike Details":
                 return (
-                    <div className="mb-8 h-auto ">
+                    <div className="mb-8">
                         <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Details</h2>
                         {/*   sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-96 */}
-                        <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-96 ">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {bikes.length > 0 ? (
                                 bikes.map((bike) => (
                                     <div
                                         key={bike._id} // Use a unique identifier here (like `_id`) instead of `index` for production
-                                        className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-lg p-4"
-                                    >
+                                        className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-lg p-4 space-y-4"
+                                        >
                                         <img
                                             src={bike.images[0] || "https://via.placeholder.com/150"} // Display the first image
                                             alt={bike.modelName}
-                                            className="w-24 h-24 object-cover rounded-lg md:mr-4"
-                                        />
-                                        <div className="flex flex-col justify-between flex-grow">
+                                            className="w-full h-40 object-cover rounded-lg"
+                                            />
+                                        <div className="space-y-2">
                                             <h3 className="text-xl font-bold text-gray-800">{bike.modelName}</h3>
                                             <p className="text-sm text-gray-600">{bike.registerNumber}</p>
                                             <p className="text-sm text-gray-600">
-                                                <strong>Insurance Exp Date:</strong> {new Date(bike.insuranceExpDate).toLocaleDateString()}
+                                                <strong>Insurance Exp Date:</strong>{" "}
+                                                 {new Date(bike.insuranceExpDate).toLocaleDateString()}
                                             </p>
                                             <p className="text-sm text-gray-600">
-                                                <strong>Pollution Exp Date:</strong> {new Date(bike.polutionExpDate).toLocaleDateString()}
+                                                <strong>Pollution Exp Date:</strong>{" "}
+                                                 {new Date(bike.polutionExpDate).toLocaleDateString()}
                                             </p>
                                         </div>
-                                        <div className="flex flex-col mt-4 mb-2 md:mt-0 md:ml-4 space-y-2">
+                                        <div className="flex flex-col space-y-2">
                                             <button
-                                                className="w-24 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                                className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                                                 onClick={() => navigate(`/HostBikeViewPage/${bike._id}`)}
                                             >
                                                 View
@@ -113,7 +112,7 @@ const HostListView = () => {
 
                                             {bike.isEdit && (
                                                 <button
-                                                    className="w-24 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                                    className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                                                     onClick={() => navigate(`/EditBike/${bike._id}`)}
                                                 >
                                                     Edit
@@ -123,9 +122,8 @@ const HostListView = () => {
 
 
                                             <button
-                                                className="w-24 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                                                onClick={() => deleteBike(bike._id)} // Pass the bike ID here
-
+                                                className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                                onClick={() => deleteBike(bike._id)} 
                                             >
                                                 Delete
                                             </button>
@@ -136,10 +134,6 @@ const HostListView = () => {
                                 <p className="text-gray-600">No bikes found for this user.</p>
                             )}
                         </div>
-
-
-
-
                     </div>
                 );
 
@@ -151,29 +145,72 @@ const HostListView = () => {
         }
     };
 
-
-
     return (
-        <div className=" min-h-screen h-auto bg-gradient-to-b from-white to-sky-300 flex justify-center items-center w-full" >
-            <div className="h-auto w-full max-w-4xl bg-white rounded-lg shadow-lg p-8 bg-gradient-to-b from-white to-sky-200 " style={{ marginTop: '80px', marginBottom: '80px' }}>
-                {/* Sidebar */}
-                <div className="flex h-auto flex-col md:flex-row w-auto">
-                    <div className="h-auto w-full md:w-1/4 border-r border-gray-200 pr-4">
-                        <ul className="space-y-4 text-gray-700">
-                            <li className={`font-semibold cursor-pointer ${activeTab === "Bike Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Bike Details")}>Bike Details</li>
-                            <li className={`cursor-pointer ${activeTab === "Add" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Add")}>Add</li>
-                        </ul>
-                    </div>
-
-                    {/* Main Content */}
-
-                    <div className=" h-auto w-full md:w-3/4 pl-4">{renderContent()}</div>
-
-
-                </div>
+        <div className="min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center">
+          <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg p-8">
+            <div className="flex flex-col md:flex-row">
+              {/* Sidebar */}
+              <button
+                className="md:hidden mb-4 bg-sky-500 text-white px-4 py-2 rounded-lg"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              >
+                {isSidebarOpen ? "Close Menu" : "Open Menu"}
+              </button>
+              <div
+                className={`${
+                  isSidebarOpen ? "block" : "hidden"
+                } md:block w-full md:w-1/4 border-r border-gray-200 pr-4`}
+              >
+                <ul className="space-y-4 text-gray-700">
+                  <li
+                    className={`font-semibold cursor-pointer ${
+                      activeTab === "Bike Details" ? "text-sky-500" : ""
+                    }`}
+                    onClick={() => setActiveTab("Bike Details")}
+                  >
+                    Bike Details
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      activeTab === "Add" ? "text-sky-500" : ""
+                    }`}
+                    onClick={() => setActiveTab("Add")}
+                  >
+                    Add
+                  </li>
+                </ul>
+              </div>
+    
+              {/* Main Content */}
+              <div className="w-full md:w-3/4 pl-4">{renderContent()}</div>
             </div>
+          </div>
         </div>
-    )
+      );
+
+
+
+    // return (
+    //     <div className=" min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center" >
+    //         <div className=" w-full max-w-5xl bg-white rounded-lg shadow-lg p-8 bg-gradient-to-b from-white to-sky-200 " style={{ marginTop: '80px', marginBottom: '80px' }}>
+    //             {/* Sidebar */}
+    //             <div className="flex h-auto flex-col md:flex-row w-auto">
+    //                 <div className="h-auto w-full md:w-1/4 border-r border-gray-200 pr-4">
+    //                     <ul className="space-y-4 text-gray-700">
+    //                         <li className={`font-semibold cursor-pointer ${activeTab === "Bike Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Bike Details")}>Bike Details</li>
+    //                         <li className={`cursor-pointer ${activeTab === "Add" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Add")}>Add</li>
+    //                     </ul>
+    //                 </div>
+
+    //                 {/* Main Content */}
+
+    //                 <div className=" h-auto w-full md:w-3/4 pl-4">{renderContent()}</div>
+
+
+    //             </div>
+    //         </div>
+    //     </div>
+    // )
 }
 
 export default HostListView

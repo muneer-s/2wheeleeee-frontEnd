@@ -7,40 +7,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { useAppSelector } from "../../../app/store";
+import { IBikeDetailsWithUserDetails } from "../../../Interfaces/User/IUser";
 
-interface UserDetails {
-    _id: string;
-    name: string;
-    email: string;
-    phoneNumber: number | null;
-    address: string;
-    profile_picture: string | null;
-    license_number: string | null;
-    license_Exp_Date: Date | string;
-    license_picture_front: string | null;
-    license_picture_back: string | null;
-}
-
-interface BikeDetails {
-    _id: string;
-    userId: string;
-    companyName: string;
-    modelName: string;
-    rentAmount: number | string;
-    fuelType: string;
-    images: string[];
-    registerNumber: string;
-    insuranceExpDate: Date | string;
-    polutionExpDate: Date | string;
-    rcImage: string | null;
-    insuranceImage: string | null;
-    PolutionImage: string | null;
-    userDetails: UserDetails;
-}
 
 const BikeSingleComp = () => {
     const { id } = useParams<{ id: string }>();
-    const [bikeDetails, setBikeDetails] = useState<BikeDetails | null>(null);
+    const [bikeDetails, setBikeDetails] = useState<IBikeDetailsWithUserDetails | null>(null);
 
 
     const authState = useAppSelector((state) => state.auth);
