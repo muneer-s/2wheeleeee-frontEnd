@@ -94,7 +94,7 @@ const BikeListComp = () => {
 
 
                 {/* Bike List Section */}
-                <div className="w-3/4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 pl-6">
+                <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                     {bikes.map((bike) => {
                         const isInsuranceExpired =
                             new Date(bike.insuranceExpDate) <= new Date();
@@ -105,12 +105,12 @@ const BikeListComp = () => {
                         return (
                             <div
                                 key={bike._id}
-                                className="bg-white p-4 rounded shadow"
+                                className="bg-white p-4 rounded shadow transition-transform hover:scale-105"
                             >
                                 <img
                                     src={bike.images[0] || "https://via.placeholder.com/150"}
                                     alt={`${bike.companyName} ${bike.modelName}`}
-                                    className="w-full h-32 object-cover rounded"
+                                    className="w-full h-40 object-cover rounded"
                                 />
                                 <h2 className="text-lg font-semibold mt-2">{bike.modelName}</h2>
                                 <p>{bike.companyName}</p>
