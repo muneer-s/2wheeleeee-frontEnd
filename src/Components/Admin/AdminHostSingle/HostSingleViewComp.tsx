@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { isEditOn, verifyHost } from "../../../api/admin";
+import { isEditOn, verifyHost } from "../../../Api/admin";
 import { useState } from "react";
 import { BikeData } from "../../../Interfaces/BikeInterface";
 import Zoom from 'react-medium-image-zoom';

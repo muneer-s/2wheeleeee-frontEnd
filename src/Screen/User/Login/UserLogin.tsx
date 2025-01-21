@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import logAnime from '../../../assets/anime/logAnime.json';
-import { login } from '../../../api/user';
+import { login } from '../../../Api/user';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, useAppSelector } from '../../../app/store';
-import { saveUser } from '../../../app/slice/AuthSlice';
-import { setUserCredential } from '../../../app/slice/AuthSlice';
+import { AppDispatch, useAppSelector } from '../../../Apps/store';
+import { saveUser } from '../../../Apps/slice/AuthSlice';
+import { setUserCredential } from '../../../Apps/slice/AuthSlice';
 
 
 const UserLogin: React.FC = () => {

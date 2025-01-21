@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getAllUsers, logout } from '../../../api/admin';
+import { getAllUsers, logout } from '../../../Api/admin';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { adminLogout } from '../../../app/slice/AuthSlice';
+
+import { adminLogout } from '../../../Apps/slice/AuthSlice';
+
+
 import { useDispatch } from 'react-redux';
 import { IAdminUser } from '../../../Interfaces/Admin/IAdmin';
 import CustomTable from '../../../ReusableComponents/CustomTable';

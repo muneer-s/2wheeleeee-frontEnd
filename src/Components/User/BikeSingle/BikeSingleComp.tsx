@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick"; // Import the slick carousel
-import { getBikeDetails } from "../../../api/user"; // Your API call to fetch bike details
+import { getBikeDetails } from "../../../Api/user"; // Your API call to fetch bike details
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { useAppSelector } from "../../../app/store";
+import { useAppSelector } from "../../../Apps/store";
 import { IBikeDetailsWithUserDetails } from "../../../Interfaces/User/IUser";
 
 

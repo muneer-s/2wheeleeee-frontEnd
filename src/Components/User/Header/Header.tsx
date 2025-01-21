@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useAppSelector, AppDispatch } from "../../../app/store";
+import { useAppSelector, AppDispatch } from "../../../Apps/store";
 import { useDispatch } from "react-redux";
-import { userLogout } from "../../../app/slice/AuthSlice";
+import { userLogout } from "../../../Apps/slice/AuthSlice";
 import toast from "react-hot-toast";
-import { logout } from "../../../api/user";
+import { logout } from "../../../Api/user";
 import { useEffect, useState } from "react";
 import defaultDp from '../../../assets/defaultDP.png'
-import { checkBlockedStatus } from "../../../api/admin";
+import { checkBlockedStatus } from "../../../Api/admin";
 
 const Header = () => {
   const navigate = useNavigate();

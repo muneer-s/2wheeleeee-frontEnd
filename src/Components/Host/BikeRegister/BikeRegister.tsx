@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { saveBikeDetails } from "../../../api/host";
-import { useAppSelector } from "../../../app/store";
+import { saveBikeDetails } from "../../../Api/host";
+import { useAppSelector } from "../../../Apps/store";
 import { useNavigate } from "react-router-dom";
 import ImageCrop from "../../../Config/Crop/ImageCrop";
 

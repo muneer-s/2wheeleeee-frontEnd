@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { resendOtp, verifyOtp } from '../../../api/user';
+import { resendOtp, verifyOtp } from '../../../Api/user';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { saveUser, setUserCredential } from '../../../app/slice/AuthSlice';
+import { saveUser, setUserCredential } from '../../../Apps/slice/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../../app/store';
+import { useAppSelector } from '../../../Apps/store';
 import toast from 'react-hot-toast';
 
 const OTPComponent: React.FC = () => {

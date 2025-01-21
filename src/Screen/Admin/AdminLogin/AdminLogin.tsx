@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../../api/admin'; // Assume you have a separate API for admin
+import { login } from '../../../Api/admin'; // Assume you have a separate API for admin
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
-import { AppDispatch, useAppSelector } from '../../../app/store';
-import { setAdminCredential } from '../../../app/slice/AuthSlice';
+import { AppDispatch, useAppSelector } from '../../../Apps/store';
+import { setAdminCredential } from '../../../Apps/slice/AuthSlice';
 
 const AdminLogin: React.FC = () => {
     const navigate = useNavigate();

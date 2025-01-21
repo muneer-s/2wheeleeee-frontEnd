@@ -1,4 +1,3 @@
-   import errorHandler from "./errorHandler.ts";
 import userRoutes from "../service/endPoints/userEndPoints.ts";
 import Api from "../service/axios.ts";
 
@@ -11,7 +10,7 @@ const verifyOtp = async (data: { otp: string, userId: string | null }) => {
         return result;
     } catch (error) {
         console.log(error as Error);
-        errorHandler(error as Error);
+        throw error;
     }
 }
 
@@ -21,6 +20,7 @@ const resendOtp = async ({ email }: { email: string }) => {
         return response.data;
     } catch (error) {
         console.log(error as Error);
+        throw error;
     }
 }
 
@@ -47,6 +47,7 @@ const logout = async (Credential: { email: string }) => {
         return result
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }
 
@@ -85,7 +86,7 @@ const edituser = async (email: string, updatedDetails: Partial<UserData>) => {
         return result
     } catch (error) {
         console.log(error);
-
+        throw error;
     }
 }
 
@@ -100,7 +101,7 @@ const edituserDocuments = async (formData: FormData) => {
 
     } catch (error) {
         console.log(error);
-
+        throw error;
     }
 }
 

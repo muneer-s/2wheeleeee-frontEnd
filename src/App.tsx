@@ -4,7 +4,7 @@ import UserLogin from './Screen/User/Login/UserLogin';
 import UserRegister from './Screen/User/Register/UserRegister';
 import Otp from './Screen/User/Otp/Otp';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { store } from './Apps/store';
 import HostHome from './Screen/Host/HostHome/HostHome';
 import { Toaster } from 'react-hot-toast';
 import AdminLogin from './Screen/Admin/AdminLogin/AdminLogin'

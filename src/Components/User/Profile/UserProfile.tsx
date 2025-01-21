@@ -1,9 +1,9 @@
 import React, {  useEffect, useState } from "react";
-import { edituser, edituserDocuments, getProfile, logout } from "../../../api/user";
-import { useAppSelector } from "../../../app/store";
+import { edituser, edituserDocuments, getProfile, logout } from "../../../Api/user";
+import { useAppSelector } from "../../../Apps/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {  saveUser } from "../../../app/slice/AuthSlice";
+import {  saveUser } from "../../../Apps/slice/AuthSlice";
 // type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
 
 

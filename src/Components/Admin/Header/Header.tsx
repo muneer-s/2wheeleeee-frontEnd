@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-
-import { adminLogout } from '../../../app/slice/AuthSlice';
-import { logout } from '../../../api/admin';
+import { adminLogout } from '../../../Apps/slice/AuthSlice';
+import { logout } from '../../../Api/admin';
 
 
 

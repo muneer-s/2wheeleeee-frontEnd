@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllBikeList } from "../../../api/user";
+import { getAllBikeList } from "../../../Api/user";
 import { useNavigate } from "react-router-dom";
 import { IBikeDetails } from "../../../Interfaces/User/IUser";
 
