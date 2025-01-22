@@ -111,8 +111,11 @@ const AdminSingleUserPage = () => {
   }
 
   return (
-    <Box sx={{ padding: '20px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
-      <Card sx={{ maxWidth: 800, margin: 'auto', boxShadow: 3, borderRadius: 2 }}>
+    <Box sx={{
+      padding: { xs: '10px', sm: '20px' },
+      backgroundColor: '#f5f5f5', minHeight: '100vh'
+    }}>
+      <Card sx={{ maxWidth: { xs: '100%', sm: 800 }, margin: 'auto', boxShadow: 3, borderRadius: 2 }}>
         <CardContent>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} display="flex" justifyContent="center">
@@ -120,24 +123,24 @@ const AdminSingleUserPage = () => {
                 src={user.profile_picture || 'https://via.placeholder.com/200'}
                 alt={user.name}
                 sx={{
-                  width: 150,
-                  height: 150,
+                  width: 120,
+                  height: 120,
                   boxShadow: 2,
                   marginBottom: 2,
                 }}
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h4" align="center" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
                 {user.name}
               </Typography>
-              <Typography variant="subtitle1" align="center" color="text.secondary">
+              <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
                 {user.email}
               </Typography>
             </Grid>
             <Divider sx={{ width: '100%', marginY: 2 }} />
 
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="body1">
                 <strong>Phone Number:</strong> {user.phoneNumber}
               </Typography>
@@ -148,11 +151,13 @@ const AdminSingleUserPage = () => {
                 <strong>Date of Birth:</strong>{' '}
                 {new Date(user.dateOfBirth).toLocaleDateString()}
               </Typography>
-              {/* </Grid>
+            </Grid>
+
+            {/* </Grid>
 
             <Grid item xs={6}> */}
 
-              {/* <Typography variant="body1" display="flex" alignItems="center">
+            {/* <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Verified:</strong>{' '}
                 {user.isVerified ? (
                   <CheckCircleOutlineIcon color="success" sx={{ marginLeft: 1 }} />
@@ -160,7 +165,7 @@ const AdminSingleUserPage = () => {
                   <CancelOutlinedIcon color="error" sx={{ marginLeft: 1 }} />
                 )}
               </Typography> */}
-
+            <Grid item xs={12} sm={6}>
               <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Blocked:</strong>{' '}
                 {user.isBlocked ? (
@@ -170,7 +175,7 @@ const AdminSingleUserPage = () => {
                 )}
               </Typography>
 
-              <Divider sx={{ width: '100%', marginY: 2 }} />
+              {/* <Divider sx={{ width: '100%', marginY: 2 }} /> */}
 
 
               <Typography variant="body1" display="flex" alignItems="center" sx={{ marginBottom: 2 }} >
@@ -199,10 +204,12 @@ const AdminSingleUserPage = () => {
                   {user.isBlocked ? 'UnBlock' : 'Block'}
                 </Button>
               </Typography>
-
             </Grid>
+
             <Divider sx={{ width: '100%', marginY: 2 }} />
-            <Grid item xs={6}>
+
+            {/* License Pictures */}
+            <Grid item xs={12} sm={6}>
               <img
                 src={user.license_picture_front || 'https://via.placeholder.com/300x200'}
                 alt="License Front"
@@ -216,7 +223,7 @@ const AdminSingleUserPage = () => {
                 License Front
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <img
                 src={user.license_picture_back || 'https://via.placeholder.com/300x200'}
                 alt="License Back"

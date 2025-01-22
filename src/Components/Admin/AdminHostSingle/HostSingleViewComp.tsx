@@ -61,9 +61,9 @@ const HostSingleViewComp = () => {
           <img
             src={bike.userDetails.profile_picture}
             alt={bike.userDetails.name}
-            className="w-24 h-24 rounded-full object-cover shadow-md mb-4 sm:mb-0"
+            className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover shadow-md mb-4 sm:mb-0"
           />
-          <div className="text-center sm:text-left">
+          <div className="text-center sm:text-left space-y-2">
             <p className="text-gray-700">
               <span className="font-semibold">Name:</span> {bike.userDetails.name}
             </p>
@@ -149,13 +149,13 @@ const HostSingleViewComp = () => {
         {/* Bike Images */}
         <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-4">Images</h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {bike.images.map((image: string, index: number) => (
             <Zoom key={index}>
               <img
                 src={image}
                 alt={`Bike Image ${index + 1}`}
-                className="w-full min-h-fit max-h-fit object-cover rounded-lg shadow-sm"
+                className="w-full h-auto object-cover rounded-lg shadow-sm"
               />
             </Zoom>
           ))}
@@ -169,8 +169,8 @@ const HostSingleViewComp = () => {
               <img
                 src={bike.rcImage}
                 alt="RC Document"
-                className="w-96 max-h-fit min-h-fit object-cover rounded-lg shadow-sm mt-2"
-              />
+                className="w-full max-w-md lg:max-w-sm xl:max-w-xs max-h-80 lg:max-h-60 xl:max-h-48 object-cover rounded-lg shadow-sm mt-2"
+                />
             </Zoom>
           </div>
 
@@ -180,8 +180,8 @@ const HostSingleViewComp = () => {
               <img
                 src={bike.insuranceImage}
                 alt="Insurance Document"
-                className="w-auto max-h-fit min-h-fit object-cover rounded-lg shadow-sm mt-2"
-              />
+                className="w-full max-w-md lg:max-w-sm xl:max-w-xs max-h-80 lg:max-h-60 xl:max-h-48 object-cover rounded-lg shadow-sm mt-2"
+                />
             </Zoom>
           </div>
 
@@ -191,12 +191,15 @@ const HostSingleViewComp = () => {
               <img
                 src={bike.PolutionImage}
                 alt="Insurance Document"
-                className="w-auto max-h-fit min-h-fit object-cover rounded-lg shadow-sm mt-2"
-              />
+                className="w-full max-w-md lg:max-w-sm xl:max-w-xs max-h-80 lg:max-h-60 xl:max-h-48 object-cover rounded-lg shadow-sm mt-2"
+                />
             </Zoom>
           </div>
 
         </div>
+
+
+
       </div>
     </div>
   );
