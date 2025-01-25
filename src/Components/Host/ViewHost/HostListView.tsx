@@ -110,14 +110,21 @@ const HostListView = () => {
                                                 View
                                             </button>
 
-                                            {bike.isEdit && (
+                                            <button
+                                                className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                                onClick={() => navigate(`/EditBikeDetails/${bike._id}`)}
+                                            >
+                                                Edit
+                                            </button>
+
+                                            {/* {bike.isEdit && (
                                                 <button
                                                     className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                                                     onClick={() => navigate(`/EditBike/${bike._id}`)}
                                                 >
                                                     Edit
                                                 </button>
-                                            )}
+                                            )} */}
 
 
 
@@ -127,6 +134,10 @@ const HostListView = () => {
                                             >
                                                 Delete
                                             </button>
+
+
+
+
                                         </div>
                                     </div>
                                 ))

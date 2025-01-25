@@ -193,7 +193,7 @@ const AdminSingleUserPage = () => {
 
 
               <Typography variant="body1" display="flex" alignItems="center">
-                <strong>Is User Blocked :</strong> {user.isBlocked ? 'Blockend' : 'Not Blocked'}
+                <strong>Is User Blocked :</strong> {user.isBlocked ? 'Blocked' : 'Not Blocked'}
                 <Button
                   variant="contained"
                   color={user.isBlocked ? 'primary' : 'error'}

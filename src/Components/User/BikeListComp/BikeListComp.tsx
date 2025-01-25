@@ -70,7 +70,7 @@ const BikeListComp = () => {
                     <div className="flex w-full gap-2">
                         <input
                             type="number"
-                            placeholder="Min Rent"
+                            placeholder="Min Rent ( > 0)"
                             value={minRent}
                             onChange={(e) => setMinRent(e.target.value)}
                             className="w-1/2 p-2 border rounded"

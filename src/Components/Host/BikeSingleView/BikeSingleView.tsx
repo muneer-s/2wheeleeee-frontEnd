@@ -148,6 +148,13 @@ const BikeSingleView = () => {
                             ) : (
                                 <p className="text-red-600 text-sm sm:text-lg">Bike is not verified</p>
                             )}
+
+
+
+
+
+
+
                         </div>
                     </div>
 
@@ -161,7 +168,7 @@ const BikeSingleView = () => {
                                 src={bike?.rcImage}
                                 alt="RC Document"
                                 className="w-full h-auto sm:h-64 object-cover rounded-lg mt-2 border shadow-md"
-                                />
+                            />
                         </div>
                         <div className="flex flex-col items-center">
                             <strong>Insurance Image:</strong>
@@ -169,7 +176,7 @@ const BikeSingleView = () => {
                                 src={bike?.insuranceImage}
                                 alt="Insurance Document"
                                 className="w-full h-auto sm:h-64 object-cover rounded-lg mt-2 border shadow-md"
-                                />
+                            />
                         </div>
                         <div className="flex flex-col items-center">
                             <strong>Polution Image:</strong>
@@ -177,8 +184,10 @@ const BikeSingleView = () => {
                                 src={bike?.PolutionImage}
                                 alt="Insurance Document"
                                 className="w-full h-auto sm:h-64 object-cover rounded-lg mt-2 border shadow-md"
-                                />
+                            />
                         </div>
+
+
                     </div>
                 </div>
 
@@ -194,9 +203,18 @@ const BikeSingleView = () => {
                     <button
                         onClick={deleteBike}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800"
-                        >
+                    >
                         Delete
                     </button>
+                    {/* {bike?.isEdit && ( */}
+                    <button
+                        className=" px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                        onClick={() => navigate(`/EditBike/${bike?._id}`)}
+                    >
+                        Edit
+                    </button>
+                    {/* )} */}
+
                 </div>
 
 

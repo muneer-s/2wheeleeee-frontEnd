@@ -1,11 +1,11 @@
 const hostRoutes={
 
-    saveBikeDetails:'/host/saveBikeDetails',
-    isAdminVerifyUser:'/host/isAdminVerifyUser',
-    fetchBikeData:'/host/fetchBikeData',
-    bikeSingleView:'/host/bikeSingleView',
-    deleteBike:'/host/deleteBike',
-    editBike:'/host/editBike'
+    saveBikeDetails:'/bike/saveBikeDetails',
+    isAdminVerifyUser:'/bike/isAdminVerifyUser',
+    fetchBikeData:'/bike/fetchBikeData',
+    bikeSingleView:'/bike/bikeSingleView',
+    deleteBike:'/bike/deleteBike',
+    editBike:'/bike/editBike'
 }
 
 export default hostRoutes

@@ -1,4 +1,5 @@
 export interface IBike {
+    _id: string;
     companyName: string;
     modelName: string;
     images: string[];
@@ -11,4 +12,5 @@ export interface IBike {
     insuranceImage: string;
     PolutionImage: string;
     isHost: boolean;
+    isEdit:boolean
 }

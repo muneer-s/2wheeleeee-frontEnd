@@ -24,7 +24,7 @@ const EditBike = () => {
                     console.log(response.bike)
                     setBikeData(response.bike);
                     setInsurancePreview(response.bike.insuranceImage);
-                    setPolutionPreview(response.bike.polutionImage);
+                    setPolutionPreview(response.bike.PolutionImage);
                 } else {
                     console.error("Failed to fetch bike details.");
                 }
@@ -201,7 +201,7 @@ const EditBike = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Pollution Image</label>
+                        <label className="block text-sm font-medium text-gray-700">Polution Image</label>
                         {polutionPreview && (
                             <div className="relative">
                                 <img src={polutionPreview} alt="Pollution Preview" className="h-40 w-40 object-cover rounded-md" />

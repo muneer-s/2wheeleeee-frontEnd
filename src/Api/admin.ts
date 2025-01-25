@@ -75,13 +75,12 @@ const getAllBikeDetails = async (params: object) => {
 }
 
 
-const verifyHost = async (id: string) => {
+const verifyHost = async (id: string,payload:any=null) => {
     try {
-        const result = await Api.put(`${adminRoutes.verifyHost}/${id}`)
+        const result = await Api.put(`${adminRoutes.verifyHost}/${id}`,payload)
         return result
     } catch (error) {
         console.log(error);
-
     }
 }
 

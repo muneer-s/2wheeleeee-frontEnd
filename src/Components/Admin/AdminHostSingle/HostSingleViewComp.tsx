@@ -11,7 +11,7 @@ const HostSingleViewComp = () => {
   const { bike } = location.state || {};
   const [isHostVerified, setIsHostVerified] = useState(bike?.isHost || false);
   const [loadingState, setLoadingState] = useState({ verifyHost: false, editExpiry: false });
-
+  const [revokeReason, setRevokeReason] = useState("")
   if (!bike) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -23,13 +23,31 @@ const HostSingleViewComp = () => {
   const handleVerifyHost = async () => {
     setLoadingState((prev) => ({ ...prev, verifyHost: true }));
     try {
-      const result = await verifyHost(bike._id);
+
+      const payload = isHostVerified
+        ? { reason: revokeReason }
+        : null;
+
+      if (isHostVerified && !revokeReason.trim()) {
+        toast.error("Please provide a reason for revoking.");
+        return;
+      }
+
+      const result = await verifyHost(bike._id, payload);
+
       if (result?.status === 200) {
         setIsHostVerified((prev: BikeData) => !prev);
-        toast.success("Successfully updated host status!");
+        toast.success(
+          isHostVerified
+            ? "Host status revoked successfully!"
+            : "Host verified successfully!"
+        );
+        setRevokeReason("");
       }
     } catch (error) {
       console.error("Error verifying host:", error);
+      toast.error("Failed to update host status.");
+
     } finally {
       setLoadingState((prev) => ({ ...prev, verifyHost: false }));
     }
@@ -84,7 +102,7 @@ const HostSingleViewComp = () => {
       <div className="p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Bike Details</h2>
         <div className="space-y-4">
-          
+
           <h1 className="text-xl font-semibold text-gray-700">{bike.modelName}</h1>
           <p className="text-gray-600">
             <span className="font-semibold">Company:</span> {bike.companyName}
@@ -132,7 +150,22 @@ const HostSingleViewComp = () => {
             <span className="font-semibold">Is Host:</span>{" "}
             {isHostVerified ? "Approved" : "Pending"}
           </p>
-          <button     
+          {isHostVerified && (
+            <div className="mt-2">
+              <label htmlFor="revokeReason" className="block text-sm font-medium text-gray-700">
+                Reason for Revoking:
+              </label>
+              <input
+                id="revokeReason"
+                type="text"
+                placeholder="Enter reason"
+                value={revokeReason}
+                onChange={(e) => setRevokeReason(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              />
+            </div>
+          )}
+          <button
             onClick={handleVerifyHost}
             className={`px-4 py-2 text-white rounded ${loadingState.verifyHost ? "opacity-50 cursor-not-allowed" : ""} ${isHostVerified ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
               }`}
@@ -170,7 +203,7 @@ const HostSingleViewComp = () => {
                 src={bike.rcImage}
                 alt="RC Document"
                 className="w-full max-w-md lg:max-w-sm xl:max-w-xs max-h-80 lg:max-h-60 xl:max-h-48 object-cover rounded-lg shadow-sm mt-2"
-                />
+              />
             </Zoom>
           </div>
 
@@ -181,7 +214,7 @@ const HostSingleViewComp = () => {
                 src={bike.insuranceImage}
                 alt="Insurance Document"
                 className="w-full max-w-md lg:max-w-sm xl:max-w-xs max-h-80 lg:max-h-60 xl:max-h-48 object-cover rounded-lg shadow-sm mt-2"
-                />
+              />
             </Zoom>
           </div>
 
@@ -192,7 +225,7 @@ const HostSingleViewComp = () => {
                 src={bike.PolutionImage}
                 alt="Insurance Document"
                 className="w-full max-w-md lg:max-w-sm xl:max-w-xs max-h-80 lg:max-h-60 xl:max-h-48 object-cover rounded-lg shadow-sm mt-2"
-                />
+              />
             </Zoom>
           </div>
 
