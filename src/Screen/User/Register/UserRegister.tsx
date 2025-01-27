@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
+import { signup } from '../../../Api/user';
+
 
 const UserRegister: React.FC = () => {
     const navigate = useNavigate();
@@ -38,23 +40,20 @@ const UserRegister: React.FC = () => {
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                const response = await fetch('http://localhost:3000/api/user/userSignup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        name: values.userName,
-                        email: values.email,
-                        password: values.password,
-                    }),
+                const response = await signup({
+                    name: values.userName,
+                    email: values.email,
+                    password: values.password,
                 });
 
-                const data = await response.json();
-                if (data.success) {
-                    toast.success(data.message);
-                    navigate(`/otp?email=${data.email}`);
+                console.log(111,response);
+            
+
+                if (response.success) {
+                    toast.success(response.message);
+                    navigate(`/otp?email=${response.data.email}`);
                 } else {
-                    toast.error(data.message);
+                    toast.error(response.message);
                 }
             } catch (err) {
                 toast.error('An error occurred during registration.');

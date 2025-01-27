@@ -7,7 +7,7 @@ const verifyOtp = async (data: { otp: string, userId: string | null }) => {
     try {
         const otp = parseInt(data.otp);
         const result = await Api.post(userRoutes.verifyOtp, { otp, userId: data.userId });
-        return result;
+        return result.data;
     } catch (error) {
         console.log(error as Error);
         throw error;
@@ -23,13 +23,21 @@ const resendOtp = async ({ email }: { email: string }) => {
         throw error;
     }
 }
+const signup = async(userData:{name:string,email:string,password:string})=>{
+    try {
+        const result = await Api.post(userRoutes.signup,userData)
+        return result.data;
+
+    } catch (error) {
+        throw error
+    }
+}
 
 
 
 const login = async (credentials: { email: string; password: string }) => {
     try {
         const result = await Api.post(userRoutes.login, credentials);
-        console.log('result verindo : ', result)
         return result.data
     } catch (error: any) {
         console.log(error);
@@ -44,7 +52,7 @@ const login = async (credentials: { email: string; password: string }) => {
 const logout = async (Credential: { email: string }) => {
     try {
         const result = await Api.put(userRoutes.logout, Credential)
-        return result
+        return result.data
     } catch (error) {
         console.log(error);
         throw error;
@@ -68,7 +76,7 @@ const getProfile = async (email: string) => {
 
         const result = await Api.get(`${userRoutes.getProfile}?email=${email}`);
 
-        return result
+        return result.data
 
     } catch (error) {
         console.log("error in get profile user.ts",error);
@@ -83,7 +91,7 @@ const edituser = async (email: string, updatedDetails: Partial<UserData>) => {
                 "Content-Type": "multipart/form-data",
             },
         })
-        return result
+        return result.data
     } catch (error) {
         console.log(error);
         throw error;
@@ -97,7 +105,7 @@ const edituserDocuments = async (formData: FormData) => {
                 "Content-Type": "multipart/form-data",
             }
         })
-        return result
+        return result.data
 
     } catch (error) {
         console.log(error);
@@ -110,7 +118,6 @@ const getAllBikeList = async (params: any) => {
         const queryString = new URLSearchParams(params).toString();
         const BikeList = await Api.get(`${userRoutes.getAllBikes}?${queryString}`)
         return BikeList.data
-
     } catch (error) {
         console.error("Error in user get all bike list :", error);
         throw error;
@@ -119,13 +126,8 @@ const getAllBikeList = async (params: any) => {
 
 const getBikeDetails = async (id: string) => {
     try {
-        console.log("Fetching bike details with ID:", id);
-
         const bike = await Api.get(`${userRoutes.getBikeDeatils}/${id}`);
-        console.log("Response from backend:", bike.data);
-
         return bike.data
-
     } catch (error) {
         console.error("Error in user get bike details :", error);
         throw error;
@@ -136,6 +138,7 @@ const getBikeDetails = async (id: string) => {
 export {
     verifyOtp,
     resendOtp,
+    signup,
     login,
     logout,
     getProfile,

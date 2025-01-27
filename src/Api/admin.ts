@@ -23,20 +23,18 @@ const logout = async () => {
 
 const getAllUsers = async (query:string) => {
     try {
-        const result = await Api.get(`${adminRoutes.getAllUsers}${query}`);
-        console.log("result : ",result);
-        
-        return result
+        const result = await Api.get(`${adminRoutes.getAllUsers}${query}`);        
+        return result.data
     } catch (error) {
         console.error('Error in getAllUsers:', error);
-        // throw error;
+        throw error;
     }
 }
 
 const getSingleUser = async (id: string) => {
     try {
         const result = await Api.get(`${adminRoutes.getSingleUser}/${id}`);
-        return result
+        return result.data
     } catch (error) {
         console.log(error);
 

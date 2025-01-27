@@ -15,6 +15,8 @@ import {
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { IUser } from '../../../Interfaces/Admin/IAdmin';
+import { handleApiResponse } from '../../../Utils/apiUtils';
+import toast from 'react-hot-toast';
 
 
 
@@ -32,11 +34,14 @@ const AdminSingleUserPage = () => {
     const fetchUser = async () => {
       try {
         const response = await getSingleUser(id!);
-        if (response && response.data) {
-          console.log('User Data:', response.data.user);
-          setUser(response.data.user);
+
+        const data = handleApiResponse(response)
+
+        if (data) {
+          setUser(data);
         } else {
-          console.error('Unexpected response structure:', response);
+          console.error('Unexpected response structure:', response.message);
+          toast.error(response.message)
         }
       } catch (error) {
         console.error('Error fetching user:', error);

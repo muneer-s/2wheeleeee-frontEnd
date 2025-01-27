@@ -8,6 +8,7 @@ import {  saveUser } from "../../../Apps/slice/AuthSlice";
 
 
 import { UserData } from "../../../Interfaces/Interfaces";
+import { handleApiResponse } from "../../../Utils/apiUtils";
 
 
 const UserProfile: React.FC = () => {
@@ -33,12 +34,13 @@ const UserProfile: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await getProfile(userEmail);
-                console.log(1, response);
-                if(response.data.success){
-                    setUserProfile(response?.data.userDetails);
-                    setPic(response?.data.userDetails?.profile_picture || "");
+                const userDetails = handleApiResponse(response)
+
+                if(response.success){
+                    setUserProfile(userDetails);
+                    setPic(userDetails?.profile_picture || "");
                 }else{
-                    toast.error(response.data.message)
+                    toast.error(response.message)
                     await logout({ email: userEmail });
                 }
   
@@ -103,11 +105,14 @@ const UserProfile: React.FC = () => {
 
         try {
             const result = await edituser(userEmail, userProfile);
+
+            const data = handleApiResponse(result)
+
             const user = {
-                email: result?.data.user.email,
-                name: result?.data.user.name,
-                profile_picture: result?.data.user.profile_picture,
-                userId: result?.data.user.userId
+                email: data.user.email,
+                name: data.user.name,
+                profile_picture: data.user.profile_picture,
+                userId: data.user.userId
             };
 
             dispatch(saveUser(user))
@@ -212,9 +217,10 @@ const UserProfile: React.FC = () => {
 
 
             const result = await edituserDocuments(formData);
+            console.log(121212,result)
             
-            if (result?.statusText == "OK") {
-                toast.success("Documents updated successfully!");
+            if (result?.success) {
+                toast.success(result.message);
             } else {
                 toast.error("Documents updation Failed!")
             }

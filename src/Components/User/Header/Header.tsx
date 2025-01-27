@@ -23,7 +23,7 @@ const Header = () => {
     const email = userDetails.email
     const response = await logout({ email })
 
-    if (response?.data.success) {
+    if (response?.success) {
       dispatch(userLogout());
       navigate('/');
       toast.success("Logged out successfully.")

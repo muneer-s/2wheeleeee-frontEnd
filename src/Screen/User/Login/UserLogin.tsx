@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch, useAppSelector } from '../../../Apps/store';
 import { saveUser } from '../../../Apps/slice/AuthSlice';
 import { setUserCredential } from '../../../Apps/slice/AuthSlice';
-
+import { handleApiResponse } from '../../../Utils/apiUtils';
 
 const UserLogin: React.FC = () => {
     const navigate = useNavigate();
@@ -62,25 +62,40 @@ const UserLogin: React.FC = () => {
         setLoading(true)
         try {
             const response = await login({ email, password })
+            console.log(111,response)
 
-            if (response?.success && response.user) {
-                const user = {
-                    email: response.user.email,
-                    name: response.user.name,
-                    profile_picture: response.user.profile_picture,
-                    userId: response.user.userId
-                };
-                dispatch(saveUser(user))
-                dispatch(setUserCredential(response.userAccessToken))
-                toast.success('Logged in successfully');
-                navigate('/');
-            } else {
-                // toast.error(response?.message || 'Login failed.');
-                setError(response?.message || 'Invalid email or password');
-            }
+            const data = handleApiResponse(response);
+            const user = {
+                email: data.user.email,
+                name: data.user.name,
+                profile_picture: data.user.profile_picture,
+                userId: data.user.userId,
+            };
+            dispatch(saveUser(user));
+            dispatch(setUserCredential(data.userAccessToken));
+            toast.success(response.message);
+            navigate('/');
+
+            // if (response?.success && response.data.user) {
+            //     const user = {
+            //         email: response.data.user.email,
+            //         name: response.data.user.name,
+            //         profile_picture: response.data.user.profile_picture,
+            //         userId: response.data.user.userId
+            //     };
+            //     dispatch(saveUser(user))
+            //     dispatch(setUserCredential(response.data.userAccessToken))
+            //     toast.success(response.message);
+            //     navigate('/');
+
+
+            // } else {
+            //     // toast.error(response?.message || 'Login failed.');
+            //     setError(response?.message || 'Invalid email or password');
+            // }
         } catch (err: any) {
             setError(err.message || 'An error occurred during login');
-            // toast.error('login Failed');
+            toast.error(err.message || 'Login failed.');
         } finally {
             setLoading(false);
         }

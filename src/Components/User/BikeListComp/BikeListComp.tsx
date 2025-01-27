@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getAllBikeList } from "../../../Api/user";
 import { useNavigate } from "react-router-dom";
 import { IBikeDetails } from "../../../Interfaces/User/IUser";
+import { handleApiResponse } from "../../../Utils/apiUtils";
+import toast from "react-hot-toast";
 
 
 const BikeListComp = () => {
@@ -24,10 +26,14 @@ const BikeListComp = () => {
                 minRent,
                 maxRent,
             });
-            setBikes(response.bikeList);
-            setTotalPages(response.totalPages);
-        } catch (error) {
-            console.error("Error fetching bike data:", error);
+
+            const data = handleApiResponse(response)
+
+            setBikes(data.bikeList);
+            setTotalPages(data.totalPages);
+        } catch (err:any) {
+            console.error("Error fetching bike data:", err);
+            toast.error(err.message || 'INTERNAL SERVER ERROR')
         }
     };
 
@@ -57,7 +63,7 @@ const BikeListComp = () => {
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full mb-4 p-2 border rounded"
                     />
-                    
+
                     <select
                         value={fuelType}
                         onChange={(e) => setFuelType(e.target.value)}
@@ -138,7 +144,7 @@ const BikeListComp = () => {
                     className="p-3 px-6 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
-                    
+
                 >
                     Previous
                 </button>

@@ -1,6 +1,7 @@
 
 const userRoutes={
     singIn:'/user/login',
+    signup:'/user/userSignup',
     logout:'/user/logout',
     verifyOtp: "/otp/verifyOtp",
     resendOtp:"/otp/resendOtp",

@@ -8,6 +8,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 import { useAppSelector } from "../../../Apps/store";
 import { IBikeDetailsWithUserDetails } from "../../../Interfaces/User/IUser";
+import { handleApiResponse } from "../../../Utils/apiUtils";
+import toast from "react-hot-toast";
 
 
 const BikeSingleComp = () => {
@@ -24,11 +26,13 @@ const BikeSingleComp = () => {
         const fetchDetails = async () => {
             try {
                 const response = await getBikeDetails(id!);
-                console.log('bike details : ', response.bike);
 
-                setBikeDetails(response.bike);
+                const BikeData = handleApiResponse(response)
+
+                setBikeDetails(BikeData);
             } catch (error) {
                 console.error("Error fetching bike details:", error);
+                toast.error('Error while fetching Bike data')
             }
         };
 

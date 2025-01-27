@@ -11,6 +11,7 @@ import { IAdminUser } from '../../../Interfaces/Admin/IAdmin';
 import CustomTable from '../../../ReusableComponents/CustomTable';
 import Pagination from '../../../ReusableComponents/Pagination';
 import { Box, Select, MenuItem, TextField, Typography, TableRow, Button, TableCell } from '@mui/material';
+import { handleApiResponse } from '../../../Utils/apiUtils';
 
 
 const AdminAllusers = () => {
@@ -51,17 +52,15 @@ const AdminAllusers = () => {
         });
 
         const response = await getAllUsers(`?${queryParams.toString()}`);
-        console.log(11111,response?.data);
-        
 
-        if (response && response.data.success) {
-          
-          setUserList(response.data.usersList);
-          setTotalPages(response.data.totalPages);
-        } else {          
+        const data = handleApiResponse(response)
+
+        if (response && response.success) {
+          setUserList(data.usersList);
+          setTotalPages(data.totalPages);
+        } else {
           await logout()
           dispatch(adminLogout());
-
         }
       } catch (error: any) {
         // toast.error(error.response.message)
@@ -378,7 +377,7 @@ const AdminAllusers = () => {
 
   //   </div>
   // );
-  
+
 };
 
 export default AdminAllusers;

@@ -5,6 +5,7 @@ import { saveUser, setUserCredential } from '../../../Apps/slice/AuthSlice';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../Apps/store';
 import toast from 'react-hot-toast';
+import { handleApiResponse } from '../../../Utils/apiUtils';
 
 const OTPComponent: React.FC = () => {
     const navigate = useNavigate();
@@ -37,25 +38,34 @@ const OTPComponent: React.FC = () => {
         setOTP(e.target.value);
     };
 
+
+
     const handleVerify = async () => {
         if (!otp) {
             toast.error('Please enter the OTP.');
             return;
         }
 
+        if (isNaN(Number(otp))) {
+            toast.error('OTP must be a valid number.');
+            return;
+        }
+
         setLoading(true);
         try {
-            const result = await verifyOtp({ otp, userId });
+            const response = await verifyOtp({ otp, userId });
+            console.log('verufy otp : ' ,response)
+            const data = handleApiResponse(response)
 
-            if (result?.data.success) {
-                dispatch(saveUser(result.data.userData));
-                dispatch(setUserCredential(result.data.userAccessToken))
-                toast.success('Logged in successfully');
+            if (response?.success) {
+                dispatch(saveUser(data.userData));
+                dispatch(setUserCredential(data.userAccessToken))
+                toast.success(response.message);
                 navigate('/');
             } 
-        } catch (err) {
-            console.error('Error during OTP verification:', err);
-            toast.error('An error occurred during verification.');
+        } catch (err:any) {
+            console.error('Error during OTP verification:', err.response.data.message);
+            toast.error(err.response.data.message)
         }finally {
             setLoading(false);
         }
@@ -72,14 +82,12 @@ const OTPComponent: React.FC = () => {
         try {
 
             const result = await resendOtp({ email });
+            console.log(1212,result)
 
             if (result?.success) {
-                toast.success("OTP resent successfully")
+                toast.success(result.message)
                 setSeconds(60);
-            } else {
-                toast.error(result.message || "Failed to resend OTP.");
-
-            }
+            } 
         }
         catch (error) {
             console.error("Error resending OTP:", error);
