@@ -34,8 +34,9 @@ const HostSingleViewComp = () => {
       }
 
       const result = await verifyHost(bike._id, payload);
+      console.log(111,result)
 
-      if (result?.status === 200) {
+      if (result.success) {
         setIsHostVerified((prev: BikeData) => !prev);
         toast.success(
           isHostVerified
@@ -47,7 +48,6 @@ const HostSingleViewComp = () => {
     } catch (error) {
       console.error("Error verifying host:", error);
       toast.error("Failed to update host status.");
-
     } finally {
       setLoadingState((prev) => ({ ...prev, verifyHost: false }));
     }
@@ -60,6 +60,8 @@ const HostSingleViewComp = () => {
     setLoadingState((prev) => ({ ...prev, editExpiry: true }));
     try {
       const result = await isEditOn(bike._id);
+      console.log(2222,result)
+      
       if (result.success) {
         toast.success("Admin sent a request to edit bike details.");
       }

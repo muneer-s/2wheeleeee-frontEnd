@@ -66,10 +66,14 @@ const AdminSingleUserPage = () => {
 
     try {
       const response = await toggleIsUser(user._id);
-      console.log('-=-=-=-=-=-=-=-=-=', response);
 
-      if (!response || !response.data) {
-        throw new Error('Unexpected response structure');
+
+      const data = handleApiResponse(response)
+
+      if (data.isUser) {
+        toast.success("Approved")
+      } else {
+        toast.error("Rovoked")
       }
 
     } catch (error) {
@@ -86,7 +90,6 @@ const AdminSingleUserPage = () => {
 
     const originalIsBlocked = user.isBlocked;
 
-    // Temporarily update the state
     setUser((prevUser) =>
       prevUser ? { ...prevUser, isBlocked: !prevUser.isBlocked } : null
     );
@@ -94,11 +97,14 @@ const AdminSingleUserPage = () => {
     try {
 
       const response = await userBlockUnBlock(user?._id)
-      console.log('Block/Unblock Response:', response);
 
-      // if (!response || !response.data) {
-      //   throw new Error('Unexpected response structure');
-      // }
+      const data = handleApiResponse(response)
+
+      
+
+      if (!response || !response.data) {
+        throw new Error('Unexpected response structure');
+      }
 
 
     } catch (error) {

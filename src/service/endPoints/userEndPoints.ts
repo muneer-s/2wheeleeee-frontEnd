@@ -11,8 +11,9 @@ const userRoutes={
     editUserDocuments:'/user/editUserDocuments',
     forgotPassword:'/user/forgotPassword',
     getAllBikes:'/user/getAllBikes',
-    getBikeDeatils:'/user/getBikeDeatils'
-    
+    getBikeDeatils:'/user/getBikeDeatils',
+    checkBlockedStatus:'/user/checkBlockedStatus',
+
 
     
 }

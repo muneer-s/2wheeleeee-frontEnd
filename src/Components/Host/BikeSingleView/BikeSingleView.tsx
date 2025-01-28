@@ -5,6 +5,7 @@ import { deleteSelectedBike, singleBikeView } from "../../../Api/host";
 import toast from "react-hot-toast";
 import Swal from 'sweetalert2';
 import { IBike } from "../../../Interfaces/Host/IHost";
+import { handleApiResponse } from "../../../Utils/apiUtils";
 
 
 
@@ -22,7 +23,8 @@ const BikeSingleView = () => {
         const fetchBikeDetails = async () => {
             try {
                 const response = await singleBikeView(id as string);
-                setBike(response.bike);
+                const data = handleApiResponse(response)
+                setBike(data.bike);
             } catch (err) {
                 setError("Failed to fetch bike details.");
             } finally {
@@ -53,7 +55,7 @@ const BikeSingleView = () => {
                 const deleteResponse = await deleteSelectedBike(id as string);
 
                 if (deleteResponse.success) {
-                    toast.success("Bike deleted successfully!");
+                    toast.success(deleteResponse.message);
                     navigate(-1);
                 } else {
                     toast.error("Error while deleting bike");
@@ -206,14 +208,14 @@ const BikeSingleView = () => {
                     >
                         Delete
                     </button>
-                    {/* {bike?.isEdit && ( */}
+                    {bike?.isEdit && (
                     <button
                         className=" px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                         onClick={() => navigate(`/EditBike/${bike?._id}`)}
                     >
-                        Edit
+                        Edit Doc
                     </button>
-                    {/* )} */}
+                    )}
 
                 </div>
 

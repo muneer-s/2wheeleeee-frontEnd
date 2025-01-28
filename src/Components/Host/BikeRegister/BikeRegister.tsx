@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
-import { useAppSelector } from "../../../Apps/store";
 import { useNavigate } from "react-router-dom";
 import ImageCrop from "../../../Config/Crop/ImageCrop";
 
 
 
 const BikeRegister = () => {
-
-    const authState = useAppSelector((state) => state.auth);
-    const userDetails = authState.user
-    console.log("222", userDetails);
-
 
     const [formData, setFormData] = useState({
         companyName: "",
@@ -47,7 +41,6 @@ const BikeRegister = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    // Handle file input change (limit to 4 files and preview)
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target;
 
@@ -118,13 +111,11 @@ const BikeRegister = () => {
 
 
 
-    // Remove an image
     const handleRemoveImage = (index: number) => {
         const newImages = formData.images.filter((_, i) => i !== index);
         setFormData({ ...formData, images: newImages });
     };
 
-    // remove preview images
     const handleRemoveSingleImage = (key: "rcImage" | "insuranceImage" | "PolutionImage", setPreview: React.Dispatch<React.SetStateAction<string | null>>) => {
         setFormData({ ...formData, [key]: null });
         setPreview(null);
@@ -216,8 +207,6 @@ const BikeRegister = () => {
             return;
         }
 
-
-
         const submissionData = new FormData();
 
         submissionData.append("companyName", formData.companyName);
@@ -243,8 +232,8 @@ const BikeRegister = () => {
 
             const response = await saveBikeDetails(submissionData);
 
-            if (response?.status === 200) {
-                toast.success("Bike details registered successfully!");
+            if (response?.success) {
+                toast.success(response.message);
                 navigate('/hostSuccessPage')
             } else {
                 toast.error("Failed to register bike details. Try again.");

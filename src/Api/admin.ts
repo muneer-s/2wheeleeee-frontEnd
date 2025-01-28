@@ -45,7 +45,7 @@ const getSingleUser = async (id: string) => {
 const toggleIsUser = async (id: string) => {
     try {
         const result = await Api.put(`${adminRoutes.toggleIsUser}/${id}`)
-        return result
+        return result.data
     } catch (error) {
         console.log(error);
 
@@ -55,6 +55,7 @@ const toggleIsUser = async (id: string) => {
 const userBlockUnBlock = async (id: string) => {
     try {
         const result = await Api.put(`${adminRoutes.userBlockUnBlock}/${id}`)
+        return result.data
     } catch (error) {
         console.log(error);
 
@@ -76,21 +77,13 @@ const getAllBikeDetails = async (params: object) => {
 const verifyHost = async (id: string,payload:any=null) => {
     try {
         const result = await Api.put(`${adminRoutes.verifyHost}/${id}`,payload)
-        return result
+        return result.data
     } catch (error) {
         console.log(error);
     }
 }
 
-const checkBlockedStatus = async (email: string) => {
-    try {
-        const response = await Api.post(adminRoutes.checkBlockedStatus, { email });
-        return response;
-    } catch (error) {
-        console.error('Error checking blocked status:', error);
-        throw error;
-    }
-}
+
 
 const isEditOn = async(bikeId:string)=>{
     try {
@@ -114,6 +107,5 @@ export {
     getAllBikeDetails,
     verifyHost,
     userBlockUnBlock,
-    checkBlockedStatus,
     isEditOn
 }

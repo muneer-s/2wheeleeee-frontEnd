@@ -9,7 +9,7 @@ const saveBikeDetails = async (data: FormData) => {
                 "Content-Type": "multipart/form-data",
             },
         });
-        return response;
+        return response.data;
     } catch (error) {
         console.log(error as Error);
     }
@@ -19,7 +19,7 @@ const isAdminVerifyUser = async (userId: string) => {
     try {
 
         const response = await Api.get(hostRoutes.isAdminVerifyUser, { params: { userId } })
-        return response
+        return response.data
 
     } catch (error) {
         console.log(error);

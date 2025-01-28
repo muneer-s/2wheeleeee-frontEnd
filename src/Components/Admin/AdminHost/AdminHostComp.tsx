@@ -8,6 +8,7 @@ import { IAdminBikeData } from "../../../Interfaces/Admin/IAdmin";
 import { Box, Button, TextField, Select, MenuItem, TableRow, TableCell, SelectChangeEvent } from '@mui/material';
 import CustomTable from "../../../ReusableComponents/CustomTable";
 import Pagination from "../../../ReusableComponents/Pagination";
+import { handleApiResponse } from "../../../Utils/apiUtils";
 
 
 
@@ -28,9 +29,10 @@ const AdminHostComp = () => {
     const fetchBikeDetails = async () => {
         try {
             const response = await getAllBikeDetails({ page: currentPage, limit, search, filter, sort });
+            const data = handleApiResponse(response)
             if (response.success) {
-                setBikeList(response.bikeDetails.bikes);
-                setTotalBikes(response.bikeDetails.total);
+                setBikeList(data.bikes);
+                setTotalBikes(data.total);
             } else {
                 toast.error('Failed to fetch bike details');
                 await logout()

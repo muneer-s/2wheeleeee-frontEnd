@@ -123,6 +123,15 @@ const getAllBikeList = async (params: any) => {
         throw error;
     }
 }
+const checkBlockedStatus = async (email: string) => {
+    try {
+        const response = await Api.post(userRoutes.checkBlockedStatus, { email });
+        return response.data;
+    } catch (error) {
+        console.error('Error checking blocked status:', error);
+        throw error;
+    }
+}
 
 const getBikeDetails = async (id: string) => {
     try {
@@ -146,5 +155,6 @@ export {
     edituserDocuments,
     forgotPassword,
     getAllBikeList,
-    getBikeDetails
+    getBikeDetails,
+    checkBlockedStatus
 }

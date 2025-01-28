@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 import { logout } from "../../../Api/user";
 import { useEffect, useState } from "react";
 import defaultDp from '../../../assets/defaultDP.png'
-import { checkBlockedStatus } from "../../../Api/admin";
+import { checkBlockedStatus } from "../../../Api/user";
+import { handleApiResponse } from "../../../Utils/apiUtils";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -38,8 +39,9 @@ const Header = () => {
         try {
           const email = userDetails.email
           const response = await checkBlockedStatus(email)
+          const data = handleApiResponse(response)
 
-          if (response?.data?.isBlocked) {
+          if (data?.isBlocked) {
             toast.error("Your account has been blocked by the admin.")
             handleLogout()
           }
@@ -56,7 +58,7 @@ const Header = () => {
     <header className="bg-white px-4 py-2 flex items-center justify-between shadow-md w-full mx-auto md:px-8">
       {/* Logo */}
       <div className="text-2xl font-bold text-sky-500">2Wheleeee</div>
-     
+
       {/* Hamburger menu (Mobile) */}
       {/* Hamburger menu (Mobile) */}
       <div className="md:hidden">
@@ -83,9 +85,8 @@ const Header = () => {
 
       {/* Navigation */}
       <nav
-        className={`${
-          mobileMenuOpen ? "block" : "hidden"
-        } md:flex md:items-center md:space-x-8 absolute md:static top-12 left-0 w-full bg-white md:bg-transparent md:w-auto z-10`}
+        className={`${mobileMenuOpen ? "block" : "hidden"
+          } md:flex md:items-center md:space-x-8 absolute md:static top-12 left-0 w-full bg-white md:bg-transparent md:w-auto z-10`}
       >
         <ul className="flex flex-col md:flex-row md:space-x-8">
           <li>

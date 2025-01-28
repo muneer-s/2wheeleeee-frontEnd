@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../Apps/store";
 import { deleteSelectedBike, fetchBikeData } from "../../../Api/host";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { handleApiResponse } from "../../../Utils/apiUtils";
 
 const HostListView = () => {
 
@@ -19,9 +20,9 @@ const HostListView = () => {
         const fetchBikeDatas = async () => {
             try {
                 const response = await fetchBikeData(userId)
-                console.log(11, response);
+                const data = handleApiResponse(response)
 
-                setBikes(response.userAndbikes)
+                setBikes(data.userAndbikes)
 
             } catch (error) {
                 console.error("Error fetching bike data:", error);
@@ -51,7 +52,7 @@ const HostListView = () => {
                 const deleteResponse = await deleteSelectedBike(id); 
 
                 if (deleteResponse.success) {
-                    toast.success("Bike deleted successfully!");
+                    toast.success(deleteResponse.message);
                     setBikes((prevBikes) => prevBikes.filter((bike) => bike._id !== id)); 
                 } else {
                     toast.error("Error while deleting bike");
@@ -64,11 +65,6 @@ const HostListView = () => {
             toast.error("An error occurred while deleting the bike.");
         }
     };
-
-
-
-
-
 
 
     const renderContent = () => {
@@ -111,20 +107,20 @@ const HostListView = () => {
                                             </button>
 
                                             <button
-                                                className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                                className="w-full px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-blue-600"
                                                 onClick={() => navigate(`/EditBikeDetails/${bike._id}`)}
                                             >
                                                 Edit
                                             </button>
 
-                                            {/* {bike.isEdit && (
+                                            {bike.isEdit && (
                                                 <button
                                                     className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                                                     onClick={() => navigate(`/EditBike/${bike._id}`)}
                                                 >
-                                                    Edit
+                                                    Edit Doc
                                                 </button>
-                                            )} */}
+                                            )}
 
 
 

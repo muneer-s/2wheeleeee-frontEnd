@@ -4,6 +4,7 @@ import hostHome2 from '../../../assets/hostHome2.png';
 import hostHome3 from '../../../assets/hostHome3.png';
 import { useAppSelector } from '../../../Apps/store';
 import { isAdminVerifyUser } from '../../../Api/host';
+import { handleApiResponse } from '../../../Utils/apiUtils';
 
 function Body() {
   const navigate = useNavigate()
@@ -15,11 +16,12 @@ function Body() {
   const gotoRegisterPage = async () => {
     const response = await isAdminVerifyUser(userId)
 
-    if (response?.data?.user?.isUser) {
+    const data = handleApiResponse(response)
+
+    if (data.user?.isUser) {
       navigate('/hostBikeListPage')
     } else {
       navigate('/hostWaitingPage')
-      console.log('Admin verification failed');
     }
   }
 
