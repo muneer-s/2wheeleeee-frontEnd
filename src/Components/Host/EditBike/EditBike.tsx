@@ -3,11 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { editBike, singleBikeView } from "../../../Api/host";
 import { BikeData } from "../../../Interfaces/BikeInterface";
 import toast from "react-hot-toast";
+import { handleApiResponse } from "../../../Utils/apiUtils";
 
 const EditBike = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-
+console.log(111,id)
     const [bikeData, setBikeData] = useState<BikeData | null>(null);
     const [newInsuranceImage, setNewInsuranceImage] = useState<File | null>(null);
     const [newPolutionImage, setNewPolutionImage] = useState<File | null>(null);
@@ -20,11 +21,15 @@ const EditBike = () => {
         const fetchBikeDetails = async () => {
             try {
                 const response = await singleBikeView(id as string);
+                console.log(response)
+
+                const data = handleApiResponse(response)
+                console.log(22,data)
                 if (response.success) {
-                    console.log(response.bike)
-                    setBikeData(response.bike);
-                    setInsurancePreview(response.bike.insuranceImage);
-                    setPolutionPreview(response.bike.PolutionImage);
+                    console.log(data.bike)
+                    setBikeData(data.bike);
+                    setInsurancePreview(data.bike.insuranceImage);
+                    setPolutionPreview(data.bike.PolutionImage);
                 } else {
                     console.error("Failed to fetch bike details.");
                 }

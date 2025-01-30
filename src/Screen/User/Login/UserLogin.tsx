@@ -46,7 +46,7 @@ const UserLogin: React.FC = () => {
             errors.password =
                 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
         }
-        
+
 
         setValidationErrors(errors);
         return Object.keys(errors).length === 0;
@@ -62,7 +62,7 @@ const UserLogin: React.FC = () => {
         setLoading(true)
         try {
             const response = await login({ email, password })
-            console.log(111,response)
+            console.log(111, response)
 
             const data = handleApiResponse(response);
             const user = {
@@ -76,23 +76,6 @@ const UserLogin: React.FC = () => {
             toast.success(response.message);
             navigate('/');
 
-            // if (response?.success && response.data.user) {
-            //     const user = {
-            //         email: response.data.user.email,
-            //         name: response.data.user.name,
-            //         profile_picture: response.data.user.profile_picture,
-            //         userId: response.data.user.userId
-            //     };
-            //     dispatch(saveUser(user))
-            //     dispatch(setUserCredential(response.data.userAccessToken))
-            //     toast.success(response.message);
-            //     navigate('/');
-
-
-            // } else {
-            //     // toast.error(response?.message || 'Login failed.');
-            //     setError(response?.message || 'Invalid email or password');
-            // }
         } catch (err: any) {
             setError(err.message || 'An error occurred during login');
             toast.error(err.message || 'Login failed.');
@@ -169,9 +152,9 @@ const UserLogin: React.FC = () => {
 
                     </button>
                 </form>
-                {/* <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p>
+                {/* <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p> */}
 
-
+                {/*
                 <div className="text-center my-4">OR</div>
 
                 <button className="w-full flex items-center justify-center gap-2 bg-white py-2 border border-gray-300 rounded shadow hover:shadow-md transition">

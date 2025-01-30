@@ -21,6 +21,7 @@ interface IUserDetailsBikeSingle {
 }
 
 export interface IBikeDetailsWithUserDetails {
+    _id: any;
     companyName: string;
     modelName: string;
     rentAmount: number;

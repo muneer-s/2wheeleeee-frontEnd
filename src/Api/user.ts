@@ -138,8 +138,19 @@ const getBikeDetails = async (id: string) => {
         const bike = await Api.get(`${userRoutes.getBikeDeatils}/${id}`);
         return bike.data
     } catch (error) {
-        console.error("Error in user get bike details :", error);
+        console.error("Error in user get bike details : ", error);
         throw error;
+    }
+}
+
+const orderPlacing = async (orderData: { bikeId: string; startDate: string; endDate: string; userId: string; paymentMethod: string }) => {
+    try {
+        const response = await Api.post(userRoutes.placeOrder, orderData);
+        return response.data;
+        
+    } catch (error) {
+        console.log('Error in order placing : ',error)
+        throw error
     }
 }
 
@@ -156,5 +167,6 @@ export {
     forgotPassword,
     getAllBikeList,
     getBikeDetails,
-    checkBlockedStatus
+    checkBlockedStatus,
+    orderPlacing
 }

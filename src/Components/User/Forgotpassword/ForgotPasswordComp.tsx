@@ -61,13 +61,11 @@ const ForgotPasswordComp: React.FC = () => {
                             </label>
                             <input
                                 id="email"
-                                type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
                                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent ${emailError ? 'border-red-500' : ''
                                     }`} 
-                                required
                             />
                             {emailError && (
                                 <p className="text-red-500 text-sm mt-1">{emailError}</p>

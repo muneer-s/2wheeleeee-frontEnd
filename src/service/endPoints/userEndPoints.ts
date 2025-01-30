@@ -13,7 +13,7 @@ const userRoutes={
     getAllBikes:'/user/getAllBikes',
     getBikeDeatils:'/user/getBikeDeatils',
     checkBlockedStatus:'/user/checkBlockedStatus',
-
+    placeOrder:'/order/placeOrder',
 
     
 }
