@@ -29,7 +29,7 @@ import UserBikeSinglePage from './Screen/User/UserBikeSingleViewPage/UserBikeSin
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ForbiddenPage from './Components/403/ForbiddenPage';
-
+import OrderSuccess from './Components/User/OrderSuccessPage/OrderSuccess';
 
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <Toaster/>
+        <Toaster />
 
         <Router>
           <Routes>
@@ -46,35 +46,36 @@ function App() {
             <Route path='/login' element={<UserLogin />} />
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} />
-            <Route path='/forgotPassword' element={<ForgotPasswordScreen/>} />
-            <Route path='/pageNotFound' element={<ForbiddenPage/>} />
-            
-            <Route path='/UserBikeListPage' element={<UserBikeListPage/>} />
-            <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage/>} />
+            <Route path='/forgotPassword' element={<ForgotPasswordScreen />} />
+            <Route path='/pageNotFound' element={<ForbiddenPage />} />
+
+            <Route path='/UserBikeListPage' element={<UserBikeListPage />} />
+            <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage />} />
 
 
-            
-            <Route path='/hostHome' element={ <UserProtecteRoute><HostHome /></UserProtecteRoute>} />
-            <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage/></UserProtecteRoute>} />
-            <Route path='/hostList' element={<UserProtecteRoute><HostRegisterPage/></UserProtecteRoute>} />
-            <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage/></UserProtecteRoute>} />
+
+            <Route path='/hostHome' element={<UserProtecteRoute><HostHome /></UserProtecteRoute>} />
+            <Route path='/OrderSuccess' element={<UserProtecteRoute><OrderSuccess /></UserProtecteRoute>} />
+            <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage /></UserProtecteRoute>} />
+            <Route path='/hostList' element={<UserProtecteRoute><HostRegisterPage /></UserProtecteRoute>} />
+            <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage /></UserProtecteRoute>} />
             <Route path='/hostSuccessPage' element={<UserProtecteRoute><Success /></UserProtecteRoute>} />
-            <Route path='/hostWaitingPage' element={<UserProtecteRoute><WaitingPage/></UserProtecteRoute>} />
-            <Route path='/hostBikeListPage' element={<UserProtecteRoute><HostBikeList/></UserProtecteRoute>} />
-            <Route path='/HostBikeViewPage/:id' element={<UserProtecteRoute><HostBikeViewPage/></UserProtecteRoute>} />
-            <Route path='/EditBike/:id' element={<UserProtecteRoute><EditBike/></UserProtecteRoute>} />
+            <Route path='/hostWaitingPage' element={<UserProtecteRoute><WaitingPage /></UserProtecteRoute>} />
+            <Route path='/hostBikeListPage' element={<UserProtecteRoute><HostBikeList /></UserProtecteRoute>} />
+            <Route path='/HostBikeViewPage/:id' element={<UserProtecteRoute><HostBikeViewPage /></UserProtecteRoute>} />
+            <Route path='/EditBike/:id' element={<UserProtecteRoute><EditBike /></UserProtecteRoute>} />
 
 
 
             {/* admin side */}
-            <Route path='/adminLogin' element={<AdminLogin/>}/>
-            
-            <Route path="/adminDashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>}/>
-            <Route path="/adminUserList" element={<AdminProtectedRoute><AdminUserList /></AdminProtectedRoute>}/>
-            <Route path="/adminHostList" element={<AdminProtectedRoute><AdminHostList /></AdminProtectedRoute>}/>
-            <Route path="/usersinglepage/:id" element={<AdminProtectedRoute><AdminSingleUserPage/></AdminProtectedRoute>} />
+            <Route path='/adminLogin' element={<AdminLogin />} />
 
-            <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView/></AdminProtectedRoute>} />
+            <Route path="/adminDashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+            <Route path="/adminUserList" element={<AdminProtectedRoute><AdminUserList /></AdminProtectedRoute>} />
+            <Route path="/adminHostList" element={<AdminProtectedRoute><AdminHostList /></AdminProtectedRoute>} />
+            <Route path="/usersinglepage/:id" element={<AdminProtectedRoute><AdminSingleUserPage /></AdminProtectedRoute>} />
+
+            <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView /></AdminProtectedRoute>} />
 
 
           </Routes>

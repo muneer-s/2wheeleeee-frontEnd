@@ -23,9 +23,9 @@ const resendOtp = async ({ email }: { email: string }) => {
         throw error;
     }
 }
-const signup = async(userData:{name:string,email:string,password:string})=>{
+const signup = async (userData: { name: string, email: string, password: string }) => {
     try {
-        const result = await Api.post(userRoutes.signup,userData)
+        const result = await Api.post(userRoutes.signup, userData)
         return result.data;
 
     } catch (error) {
@@ -79,7 +79,7 @@ const getProfile = async (email: string) => {
         return result.data
 
     } catch (error) {
-        console.log("error in get profile user.ts",error);
+        console.log("error in get profile user.ts", error);
         throw error
     }
 }
@@ -143,16 +143,40 @@ const getBikeDetails = async (id: string) => {
     }
 }
 
-const orderPlacing = async (orderData: { bikeId: string; startDate: string; endDate: string; userId: string; paymentMethod: string }) => {
+const orderPlacing = async (orderData: { bikeId: string; startDate: string; endDate: string; userId: string; paymentMethod: string; bikePrize: Number; email?: string }) => {
     try {
         const response = await Api.post(userRoutes.placeOrder, orderData);
         return response.data;
-        
+
     } catch (error) {
-        console.log('Error in order placing : ',error)
+        console.log('Error in order placing : ', error)
         throw error
     }
 }
+
+const createOrder = async (orderData: any) => {
+    try {
+        const response = await Api.post(userRoutes.createOrder, orderData);
+        console.log("///////////:", response)
+        return response.data;
+    } catch (error) {
+        console.log('Error in order creating : ', error)
+        throw error
+    }
+}
+
+const getWalletBalance = async (walletId: string) => {
+    try {
+        //const response = await Api.get(userRoutes.getWallet,walletId);
+        const response = await Api.get(`${userRoutes.getWallet}/${walletId}`);
+
+        //const response = await Api.get(`/wallet/${walletId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching wallet balance:", error);
+        return { success: false, message: "Failed to fetch wallet balance" };
+    }
+};
 
 
 export {
@@ -168,5 +192,7 @@ export {
     getAllBikeList,
     getBikeDetails,
     checkBlockedStatus,
-    orderPlacing
+    orderPlacing,
+    createOrder,
+    getWalletBalance,
 }

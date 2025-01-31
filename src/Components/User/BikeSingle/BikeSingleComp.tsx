@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { getBikeDetails, orderPlacing } from "../../../Api/user";
+import { createOrder, getBikeDetails, getProfile, getWalletBalance, orderPlacing } from "../../../Api/user";
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,10 +11,25 @@ import { useAppSelector } from "../../../Apps/store";
 import { IBikeDetailsWithUserDetails } from "../../../Interfaces/User/IUser";
 import { handleApiResponse } from "../../../Utils/apiUtils";
 import toast from "react-hot-toast";
+import Api from "../../../service/axios";
+import userRoutes from "../../../service/endPoints/userEndPoints";
+import { isAdminVerifyUser } from "../../../Api/host";
+
+
+
+
+
+
+
+
+
+
 
 
 const BikeSingleComp = () => {
     const { id } = useParams<{ id: string }>();
+    const { Razorpay } = useRazorpay();
+
 
 
     const [bikeDetails, setBikeDetails] = useState<IBikeDetailsWithUserDetails | null>(null);
@@ -27,19 +43,19 @@ const BikeSingleComp = () => {
     //const [paymentMethod, setPaymentMethod] = useState("");
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [amount, setAmount] = useState<number | null>(null);
+    const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
 
     const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
 
-
-
-
     const today = new Date().toISOString().split("T")[0];
 
     const authState = useAppSelector((state) => state.auth);
+    const userEmail = authState.user.email
     const userIsPresent = authState.user
+    const userId = userIsPresent.userId
 
     const navigate = useNavigate()
 
@@ -60,6 +76,39 @@ const BikeSingleComp = () => {
         fetchDetails();
     }, [id]);
 
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getProfile(userEmail);
+                const userDetails = handleApiResponse(response)
+
+                console.log(111111,response)
+                console.log(222222,userDetails)
+
+                if (response.success) {
+
+                    if (userDetails.wallet) {
+                        console.log(99999,userDetails.wallet)
+                        const walletResponse = await getWalletBalance(userDetails.wallet);
+                        console.log(555,walletResponse)
+
+                        if (walletResponse.success) {
+                            setWalletBalance(walletResponse.data.balance);
+                        } else {
+                            toast.error(walletResponse.message);
+                        }
+                    }
+                } else {
+                    toast.error(response.message)
+                }
+            } catch (error) {
+                console.error('catch Error get profile:', error);
+            }
+        }
+        fetchData();
+    }, [userEmail]);
+
     if (!bikeDetails) return <p>Loading bike details...</p>;
 
     const { companyName,
@@ -70,10 +119,8 @@ const BikeSingleComp = () => {
         registerNumber,
         insuranceExpDate,
         polutionExpDate,
-        rcImage,
-        insuranceImage,
-        PolutionImage,
         userDetails } = bikeDetails;
+
 
     // zooming
     const handleMouseOver = (index: number) => {
@@ -112,10 +159,7 @@ const BikeSingleComp = () => {
                 const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
                 setTotalRent(differenceInDays * rentAmount);
             } else if (endDateObj > startDateObj) {
-                //const differenceInTime = endDateObj.getTime() - startDateObj.getTime() + 1;
-                //const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
                 const differenceInDays = Math.ceil((endDateObj.getTime() - startDateObj.getTime()) / (1000 * 3600 * 24)) + 1;
-
                 setTotalRent(differenceInDays * rentAmount);
             } else {
                 setTotalRent(0);
@@ -125,7 +169,7 @@ const BikeSingleComp = () => {
         }
     };
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
 
         if (!endDate || !startDate) {
             setError("Please select the start date and end date");
@@ -145,31 +189,130 @@ const BikeSingleComp = () => {
         setError("");
 
         try {
-            if(!userIsPresent){
+            if (!userIsPresent) {
                 toast.error("Please login first")
                 navigate('/login')
                 return
             }
 
-           
+            const response1 = await isAdminVerifyUser(userId)
+            const data = handleApiResponse(response1)
+
+            if (!data.user?.isUser) {
+                toast.error("Sorry !! Can't Make Booking , User is Not Verified !!")
+                return
+            }
 
             const orderData = {
-                bikeId : bikeDetails._id,
+                bikeId: bikeDetails._id,
                 startDate,
                 endDate,
                 userId: userIsPresent.userId,
                 paymentMethod,
-              };
+                amount: totalRent,
+                bikePrize: bikeDetails.rentAmount,
+                email:userEmail
+            };
 
-              const response = await orderPlacing(orderData);
-              toast.success(response.message)
-        
-              console.log('Order placed successfully:', response);
-            } catch (error) {
-              console.error('Error placing order:', error);
-              alert('Failed to place order. Please try again.');
-            }
+            const response = await orderPlacing(orderData);
+
+            toast.success(response.message)
+            navigate(`/OrderSuccess`);
+        } catch (error: any) {
+            console.error('Error when wallet payments :', error);
+            toast.error(error.response.data.message);
+        }
     };
+
+    const handleRazorpayPayment = async () => {
+
+        if (!endDate || !startDate) {
+            setError("Please select the start date and end date");
+            return;
+        }
+
+        if (new Date(endDate) < new Date(startDate)) {
+            setError("End date must be greater than start date.");
+            return;
+        }
+
+        if (!paymentMethod) {
+            setError("Please select a payment method.");
+            return;
+        }
+
+        setError("");
+
+        if (!userIsPresent) {
+            toast.error("Please login first")
+            navigate('/login')
+            return
+        }
+        const response1 = await isAdminVerifyUser(userId)
+        const data = handleApiResponse(response1)
+
+        if (!data.user?.isUser) {
+            toast.error("Sorry !! Can't Make Booking , User is Not Verified !!")
+            return
+        }
+
+        if (!totalRent) {
+            toast.error("Total rent amount is missing.");
+            return;
+        }
+        const datas = {
+            amount: totalRent,
+            currency: "INR",
+        }
+        await Api.post(userRoutes.createOrder, datas).then((res) => {
+            if (res.data) {
+                const options: RazorpayOrderOptions = {
+                    //key: import.meta.env.VITE_RAZOR_PAY_API,
+                    key: "rzp_test_z23iGXXlSrspI8",
+                    amount: res.data.amount, // amount in paise
+                    currency: res.data.currency,
+                    name: "2Wheeleeee",
+                    description: "Order Transaction",
+                    order_id: res.data.order_id, // generate order_id on server
+                    handler: (response) => {
+                        console.log(response);
+                        const orderId = response.razorpay_order_id;
+                        const amount = res.data.amount;
+                        const method = "razorpay";
+                        Api.post(userRoutes.placeOrder, {
+                            orderId,
+                            startDate,
+                            endDate,
+                            bikeId: bikeDetails?._id,
+                            bikePrize: bikeDetails.rentAmount,
+                            paymentMethod: method,
+                            amount,
+                            userId: userIsPresent?.userId,
+                        })
+                            .then((res) => {
+                                if (res.data) {
+                                    console.log("res", res.data);
+                                    toast.success("Order placed successfully")
+                                    navigate(`/OrderSuccess`);
+                                }
+                            });
+                    },
+                    prefill: {
+                        name: userIsPresent?.name || "Guest User",
+                        email: userIsPresent?.email || "guest@example.com",
+                        contact: userIsPresent?.phoneNumber || "9999999999",
+                    },
+                    theme: {
+                        color: "#F37254",
+                    },
+                };
+
+                const razorpayInstance = new Razorpay(options);
+                razorpayInstance.open();
+            }
+        });
+    };
+
 
     return (
         <div className="min-h-screen container mx-auto p-6 bg-gradient-to-b from-white to-sky-300">
@@ -200,46 +343,43 @@ const BikeSingleComp = () => {
 
 
             {/* Bike Details */}
-            <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 text-center flex">
-                <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6 mb-6 mt-6 text-center w-2/3">
+
+            <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg  p-6 mb-6 mt-6 text-center flex">
+                <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg  p-6 mb-6 mt-6 text-center w-2/3">
 
                     <h1 className="text-xl items-center font-bold mb-4">Bike Details</h1>
 
-                    <div className="flex justify-between">
-                        <div className="ml-36">
-                            <p><strong>Model Name:</strong> {modelName}</p>
-                            <p><strong>Company Name:</strong> {companyName}</p>
-                            <p><strong>Rent:</strong> ₹{rentAmount}/day</p>
-                            <p><strong>Fuel Type:</strong> {fuelType}</p>
-                        </div>
-                        <div className="">
-                            <p><strong>Register Number:</strong> {registerNumber}</p>
-                            <p><strong>Reg No:</strong> {registerNumber}</p>
-                            <p>
-                                <strong>Insurance Exp Date:</strong> {new Date(insuranceExpDate).toISOString().split("T")[0]}{" "}
-                                {new Date(insuranceExpDate) <= new Date() ? (
-                                    <span className="text-red-500">(Expired)</span>
-                                ) : (
-                                    <span className="text-green-500">(Valid)</span>
-                                )}
-                            </p>
-                            <p>
-                                <strong>Polution Exp Date:</strong> {new Date(polutionExpDate).toISOString().split("T")[0]}{" "}
-                                {new Date(polutionExpDate) <= new Date() ? (
-                                    <span className="text-red-500">(Expired)</span>
-                                ) : (
-                                    <span className="text-green-500">(Valid)</span>
-                                )}
-                            </p>
-                        </div>
+                    <div className="mt-10 justify-center">
+                        <p className="mb-3"><strong>Model Name:</strong> {modelName}</p>
+                        <p className="mb-3"><strong>Company Name:</strong> {companyName}</p>
+                        <p className="mb-3"><strong>Rent:</strong> ₹{rentAmount}/day</p>
+                        <p className="mb-3"><strong>Fuel Type:</strong> {fuelType}</p>
+                        <p className="mb-3"><strong>Register Number:</strong> {registerNumber}</p>
+                        <p className="mb-3"><strong>Reg No:</strong> {registerNumber}</p>
+                        <p className="mb-3">
+                            <strong>Insurance Exp Date:</strong> {new Date(insuranceExpDate).toISOString().split("T")[0]}{" "}
+                            {new Date(insuranceExpDate) <= new Date() ? (
+                                <span className="text-red-500">(Expired)</span>
+                            ) : (
+                                <span className="text-green-500">(Valid)</span>
+                            )}
+                        </p>
+                        <p className="mb-3">
+                            <strong>Polution Exp Date:</strong> {new Date(polutionExpDate).toISOString().split("T")[0]}{" "}
+                            {new Date(polutionExpDate) <= new Date() ? (
+                                <span className="text-red-500">(Expired)</span>
+                            ) : (
+                                <span className="text-green-500">(Valid)</span>
+                            )}
+                        </p>
                     </div>
                 </div>
                 {/* Place the Order Section */}
 
-                <div className="ml-36 bg-sky-500 w-1/3 rounded p-6 text-white">
+                <div className="ml-36 bg-gradient-to-b from-white to-sky-300 w-1/3 rounded p-6 text-black">
 
                     {/* Updated Heading  */}
-                    <h1 className="text-2xl font-bold text-center mb-4">Place the Order</h1>
+                    <h1 className="text-2xl font-bold text-center mb-4">Book Your Bike</h1>
                     {error && <p className="text-red-500 mt-2">{error}</p>}
 
                     <p><strong>Rent amount per day:</strong> ₹{rentAmount}/day</p>
@@ -258,8 +398,8 @@ const BikeSingleComp = () => {
                             className="p-2 w-1/2 rounded text-black"
                         />
                     </div>
-                    {/* End Date Field */}
 
+                    {/* End Date Field */}
                     <div className="mt-2 flex items-center">
                         <label className="w-1/2 font-semibold">End Date:</label>
                         <input
@@ -279,8 +419,10 @@ const BikeSingleComp = () => {
                     <p className="mt-4 text-lg"><strong>Total Rent:</strong> ₹{totalRent}</p>
 
                     {/* Payment Method Selection */}
-                    <div className="mt-4 bg-sky-500 p-3">
+                    <div className="mt-4 bg-sky-300 p-3 rounded-md">
                         <label className="block font-semibold mb-2">Select Payment Method:</label>
+
+                        {/* Razorpay Option */}
                         <div className="flex items-center gap-3">
                             <input
                                 type="checkbox"
@@ -291,49 +433,68 @@ const BikeSingleComp = () => {
                             />
                             <label htmlFor="razorpay">Razorpay</label>
                         </div>
+
+                        {/* Wallet Option */}
                         <div className="flex items-center gap-3 mt-2">
                             <input
                                 type="checkbox"
                                 id="wallet"
                                 checked={paymentMethod === "wallet"}
                                 onChange={() => setPaymentMethod("wallet")}
+                                disabled={walletBalance !== null && walletBalance < totalRent}
                                 className="w-4 h-4"
                             />
                             <label htmlFor="wallet">Wallet</label>
                         </div>
+                        {/* Show Wallet Balance when Wallet is selected */}
+                        {paymentMethod === "wallet" && (
+                            <p className="mt-2 text-gray-800">
+                                <strong>Wallet Balance:</strong> ₹{walletBalance !== null ? walletBalance : 'Fetching...'}
+                            </p>
+                        )}
+                        {/* Show warning if Wallet balance is insufficient */}
+                        {paymentMethod === "wallet" && walletBalance !== null && walletBalance < totalRent && (
+                            <p className="text-red-500 mt-2">Insufficient balance to proceed with Wallet payment.</p>
+                        )}
+
                     </div>
 
 
 
                     {/* Order Now Button */}
-                    <button
-                        className="bg-blue-950 rounded-md p-3 w-full mt-6 font-semibold hover:bg-blue-800"
-                        onClick={handleSubmit}
-                    >
-                        Order Now
-                    </button>
 
-                    
+
+                    <button
+                        className="bg-blue-950 text-white rounded-md p-3 w-full mt-6 font-semibold hover:bg-blue-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        onClick={paymentMethod === "razorpay" ? handleRazorpayPayment : handleSubmit}
+                        disabled={paymentMethod === "wallet" && walletBalance !== null && walletBalance < totalRent}
+
+                    >
+                        Book Now
+                    </button>
 
                 </div>
 
             </div>
 
-            {userIsPresent && userDetails && (
-                <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg shadow p-6">
-                    <h2 className="text-xl font-bold mb-4">Owner Details</h2>
-                    <p><strong>Name:</strong> {userDetails.name}</p>
-                    <p><strong>Email:</strong> {userDetails.email}</p>
-                    <p><strong>Phone:</strong> {userDetails.phoneNumber || "Not provided"}</p>
-                    <p><strong>Address:</strong> {userDetails.address || "Not provided"}</p>
-                    <img
-                        src={userDetails.profile_picture || "https://via.placeholder.com/150"}
-                        alt={`${userDetails.name}'s Profile`}
-                        className="w-24 h-24 object-cover rounded-full mt-4"
-                    />
-                </div>
-            )}
-        </div>
+
+            {
+                userIsPresent && userDetails && (
+                    <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg  p-6">
+                        <h2 className="text-xl font-bold mb-4">Owner Details</h2>
+                        <p><strong>Name:</strong> {userDetails.name}</p>
+                        <p><strong>Email:</strong> {userDetails.email}</p>
+                        <p><strong>Phone:</strong> {userDetails.phoneNumber || "Not provided"}</p>
+                        <p><strong>Address:</strong> {userDetails.address || "Not provided"}</p>
+                        <img
+                            src={userDetails.profile_picture || "https://via.placeholder.com/150"}
+                            alt={`${userDetails.name}'s Profile`}
+                            className="w-24 h-24 object-cover rounded-full mt-4"
+                        />
+                    </div>
+                )
+            }
+        </div >
 
     );
 };

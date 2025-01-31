@@ -1,14 +1,12 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { edituser, edituserDocuments, getProfile, logout } from "../../../Api/user";
 import { useAppSelector } from "../../../Apps/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {  saveUser } from "../../../Apps/slice/AuthSlice";
-// type SetImageFunction = React.Dispatch<React.SetStateAction<string | null>>;
-
-
+import { saveUser } from "../../../Apps/slice/AuthSlice";
 import { UserData } from "../../../Interfaces/Interfaces";
 import { handleApiResponse } from "../../../Utils/apiUtils";
+import MyWallet from "../Wallet/MyWallet";
 
 
 const UserProfile: React.FC = () => {
@@ -17,8 +15,6 @@ const UserProfile: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>("Personal Details");
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-
     const [frontImage, setFrontImage] = useState<File | null>(null);
     const [backImage, setBackImage] = useState<File | null>(null);
 
@@ -26,9 +22,7 @@ const UserProfile: React.FC = () => {
     const userEmail = authState.user.email
     const userId = authState.user.userId
 
-
     let dispatch = useDispatch()
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,14 +30,13 @@ const UserProfile: React.FC = () => {
                 const response = await getProfile(userEmail);
                 const userDetails = handleApiResponse(response)
 
-                if(response.success){
+                if (response.success) {
                     setUserProfile(userDetails);
                     setPic(userDetails?.profile_picture || "");
-                }else{
+                } else {
                     toast.error(response.message)
                     await logout({ email: userEmail });
                 }
-  
             } catch (error) {
                 console.error('catch Error get profile:', error);
             }
@@ -81,7 +74,6 @@ const UserProfile: React.FC = () => {
 
         if (!userProfile?.profile_picture) newErrors.profile_picture = "Profile Picture is required"
 
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -100,9 +92,7 @@ const UserProfile: React.FC = () => {
             return;
         }
 
-        setIsSubmitting(true); // Disable the button
-
-
+        setIsSubmitting(true);
         try {
             const result = await edituser(userEmail, userProfile);
 
@@ -124,7 +114,7 @@ const UserProfile: React.FC = () => {
                 "An error occurred while updating the profile. Please try again later."
             );
         } finally {
-            setIsSubmitting(false); // Re-enable the button
+            setIsSubmitting(false);
         }
 
     };
@@ -139,7 +129,7 @@ const UserProfile: React.FC = () => {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, setImage: React.Dispatch<React.SetStateAction<File | null>>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setImage(file); // Save the File object
+            setImage(file);
         }
     };
 
@@ -159,18 +149,21 @@ const UserProfile: React.FC = () => {
             const today = new Date();
             const expirationDate = new Date(userProfile.license_Exp_Date);
 
-            if (expirationDate < today) {
-                newErrors.license_Exp_Date = "License Expiration Date is expired.";
+            const sixMonthsFromToday = new Date();
+            sixMonthsFromToday.setMonth(today.getMonth() + 6);
+
+            if (expirationDate < sixMonthsFromToday) {
+                newErrors.license_Exp_Date = "License Expiration Date must be at least 6 months from today.";
             }
+        }
+
+        if (!frontImage || !backImage) {
+            newErrors.license_picture = "License Images are required"
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     }
-
-
-
-
 
     const handleSubmitDocuments = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -180,32 +173,21 @@ const UserProfile: React.FC = () => {
             return;
         }
 
-        if (
-            !userProfile?.dateOfBirth ||
-            !userProfile?.phoneNumber ||
-            !userProfile?.address ||
-            !userProfile?.profile_picture
-        ) {
+        if (!userProfile?.dateOfBirth || !userProfile?.phoneNumber || !userProfile?.address || !userProfile?.profile_picture) {
             toast.error("User profile is not complete. Please fill in the basic details first.");
             console.error("User profile data is missing.");
             return;
         }
-        setIsSubmitting(true); // Disable the button
-
-
+        setIsSubmitting(true);
         try {
             const formData = new FormData();
 
-            const licenseExpDate =
-                typeof userProfile.license_Exp_Date === "string"
-                    ? new Date(userProfile.license_Exp_Date)
-                    : userProfile.license_Exp_Date;
+            const licenseExpDate = typeof userProfile.license_Exp_Date === "string" ? new Date(userProfile.license_Exp_Date) : userProfile.license_Exp_Date;
 
             formData.append("userId", userId);
             formData.append("license_number", userProfile.license_number || "");
             formData.append("license_Exp_Date", licenseExpDate?.toISOString() || "");
 
-            // Append files if available
             if (frontImage) {
                 formData.append("frontImage", frontImage);
             }
@@ -213,12 +195,8 @@ const UserProfile: React.FC = () => {
                 formData.append("backImage", backImage);
             }
 
-            //console.log([...formData.entries()]); 
-
-
             const result = await edituserDocuments(formData);
-            console.log(121212,result)
-            
+
             if (result?.success) {
                 toast.success(result.message);
             } else {
@@ -236,15 +214,12 @@ const UserProfile: React.FC = () => {
         }
     }
 
-
     const renderContent = () => {
         switch (activeTab) {
             case "Personal Details":
                 return (
                     <div className="mb-8">
                         <h2 className="text-lg font-semibold text-gray-800 mb-4">Basic Details</h2>
-
-
                         <div className="w-full md:w-3/4 pl-4">
                             {/* Profile Image */}
                             <div className="flex items-center justify-center mb-8">
@@ -274,7 +249,6 @@ const UserProfile: React.FC = () => {
                                     </div>
                                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
-
                                     <div className="mb-4">
                                         <label className="block text-gray-500 mb-0.5">Email</label>
                                         <input
@@ -286,8 +260,6 @@ const UserProfile: React.FC = () => {
                                         />
                                     </div>
                                     {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-
-
 
                                     <div className="mb-4">
                                         <label className="block text-gray-500 mb-0.5">Phone Number</label>
@@ -307,8 +279,6 @@ const UserProfile: React.FC = () => {
                                     </div>
                                     {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber}</p>}
 
-
-
                                     <div className="mb-4">
                                         <label className="block text-gray-500 mb-0.5">DOB</label>
                                         <input
@@ -325,8 +295,6 @@ const UserProfile: React.FC = () => {
                                     </div>
                                     {errors.dateOfBirth && <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>}
 
-
-
                                     <div className="mb-4">
                                         <label className="block text-gray-500 mb-0.5">Address</label>
                                         <input
@@ -339,7 +307,6 @@ const UserProfile: React.FC = () => {
                                         {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
                                     </div>
 
-
                                     <div className="mb-4">
                                         <label className="block text-gray-500 mb-0.5">Profile Image</label>
                                         <input
@@ -347,14 +314,12 @@ const UserProfile: React.FC = () => {
                                             placeholder="profile image"
                                             onChange={(e) => {
                                                 if (e.target.files && e.target.files[0]) {
-                                                    setNewProfile(e.target.files[0]); // Pass the File object to your state
+                                                    setNewProfile(e.target.files[0]);
                                                 }
                                             }}
                                         />
                                         {errors.profile_picture && <p className="text-red-500 text-sm">{errors.profile_picture}</p>}
                                     </div>
-
-
 
                                     <button
                                         type="submit"
@@ -482,6 +447,8 @@ const UserProfile: React.FC = () => {
                                                 ) : null}
                                             </div>
                                         </div>
+                                        {errors.license_picture && <p className="text-red-500 text-sm">{errors.license_picture}</p>}
+
                                     </div>
 
 
@@ -510,13 +477,7 @@ const UserProfile: React.FC = () => {
                     </div>
                 );
 
-            case "Orders":
-                return (
-                    <div>
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Orders</h2>
-                        <p>No orders yet.</p>
-                    </div>
-                );
+            case "My Wallet": return <MyWallet/>
 
             case "Booking History":
                 return (
@@ -541,7 +502,7 @@ const UserProfile: React.FC = () => {
                     <div className="w-full md:w-1/4 border-r border-gray-200 pr-4">
                         <ul className="space-y-4 text-gray-700">
                             <li className={`font-semibold cursor-pointer ${activeTab === "Personal Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Personal Details")}>Personal Details</li>
-                            <li className={`cursor-pointer ${activeTab === "Orders" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Orders")}>Orders</li>
+                            <li className={`cursor-pointer ${activeTab === "My Wallet" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("My Wallet")}>My Wallet</li>
                             <li className={`cursor-pointer ${activeTab === "Booking History" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Booking History")}>Booking History</li>
                         </ul>
                     </div>

@@ -30,8 +30,5 @@ export interface IBikeDetailsWithUserDetails {
     registerNumber: string;
     insuranceExpDate: Date ;
     polutionExpDate: Date ;
-    rcImage: string | null;
-    insuranceImage: string | null;
-    PolutionImage: string | null;
     userDetails: IUserDetailsBikeSingle;
 }

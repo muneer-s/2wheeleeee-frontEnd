@@ -14,7 +14,8 @@ const userRoutes={
     getBikeDeatils:'/user/getBikeDeatils',
     checkBlockedStatus:'/user/checkBlockedStatus',
     placeOrder:'/order/placeOrder',
-
+    createOrder:'/order/createOrder',
+    getWallet:'/wallet/getWallet'
     
 }
 
