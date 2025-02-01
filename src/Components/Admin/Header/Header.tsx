@@ -18,7 +18,6 @@ const AdminHeader: React.FC = () => {
         if (!adminData) {
             dispatch(adminLogout());
             navigate('/adminLogin');
-            // toast.error('Session expired. Please log in again.');
         }
     }, [adminData, dispatch, navigate]);
 
@@ -110,7 +109,7 @@ const AdminHeader: React.FC = () => {
 
 
                 <NavLink
-                    to="/admin/orders"
+                    to="/adminOrderList"
                     className={({ isActive }) =>
                         isActive
                             ? 'underline text-white block lg:inline-block mt-2 lg:mt-0'
@@ -118,18 +117,6 @@ const AdminHeader: React.FC = () => {
                     }
                 >
                     Orders
-                </NavLink>
-
-
-                <NavLink
-                    to="/admin/payments"
-                    className={({ isActive }) =>
-                        isActive
-                            ? 'underline text-white block lg:inline-block mt-2 lg:mt-0'
-                            : 'hover:underline block lg:inline-block mt-2 lg:mt-0'
-                    }
-                >
-                    Payments
                 </NavLink>
 
 

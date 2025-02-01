@@ -8,6 +8,8 @@ const adminRoutes={
     verifyHost:'/admin/verifyHost',
     userBlockUnBlock:'/admin/userBlockUnBlock',
     isEditOn:'/admin/isEditOn',
+    OrderList:'/admin/orderList',
+    OrderDetails:'/admin/OrderDetails',
    
 }
 

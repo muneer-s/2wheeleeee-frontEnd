@@ -30,7 +30,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ForbiddenPage from './Components/403/ForbiddenPage';
 import OrderSuccess from './Components/User/OrderSuccessPage/OrderSuccess';
-
+import AdminOrdersList from './Screen/Admin/AdminOrdersList/AdminOrdersList';
+import AdminOrderDetails from './Components/Admin/AdminOrderDetail/AdminOrderDetails';
+import UserOrderDetails from './Components/User/UserOrderDetails/UserOrderDetails';
 
 function App() {
 
@@ -51,6 +53,7 @@ function App() {
 
             <Route path='/UserBikeListPage' element={<UserBikeListPage />} />
             <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage />} />
+            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails /></UserProtecteRoute>} />
 
 
 
@@ -76,6 +79,8 @@ function App() {
             <Route path="/usersinglepage/:id" element={<AdminProtectedRoute><AdminSingleUserPage /></AdminProtectedRoute>} />
 
             <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView /></AdminProtectedRoute>} />
+            <Route path="/adminOrderList" element={<AdminProtectedRoute><AdminOrdersList /></AdminProtectedRoute>} />
+            <Route path="/admin/orders/:orderId" element={<AdminProtectedRoute><AdminOrderDetails /></AdminProtectedRoute>} />
 
 
           </Routes>

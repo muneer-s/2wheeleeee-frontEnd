@@ -15,8 +15,10 @@ const userRoutes={
     checkBlockedStatus:'/user/checkBlockedStatus',
     placeOrder:'/order/placeOrder',
     createOrder:'/order/createOrder',
-    getWallet:'/wallet/getWallet'
-    
+    getWallet:'/wallet/getWallet',
+    OrderList:'/user/orderList',
+    OrderDetails:'/user/OrderDetails',
+
 }
 
 export default userRoutes

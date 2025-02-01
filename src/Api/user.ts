@@ -167,10 +167,8 @@ const createOrder = async (orderData: any) => {
 
 const getWalletBalance = async (walletId: string) => {
     try {
-        //const response = await Api.get(userRoutes.getWallet,walletId);
         const response = await Api.get(`${userRoutes.getWallet}/${walletId}`);
 
-        //const response = await Api.get(`/wallet/${walletId}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching wallet balance:", error);
@@ -178,6 +176,26 @@ const getWalletBalance = async (walletId: string) => {
     }
 };
 
+
+const userOrderList = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.OrderList}?userId=${userId}`);
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching order list for admin", error)
+        throw error
+    }
+}
+
+const userGetOrderDetails = async (orderId: string)=>{
+    try {
+        const response = await Api.get(`${userRoutes.OrderDetails}/${orderId}`)
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching order details for admin", error)
+        throw error
+    }
+}
 
 export {
     verifyOtp,
@@ -195,4 +213,6 @@ export {
     orderPlacing,
     createOrder,
     getWalletBalance,
+    userOrderList,
+    userGetOrderDetails
 }

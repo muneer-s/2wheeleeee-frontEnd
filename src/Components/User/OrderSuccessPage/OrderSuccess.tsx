@@ -13,7 +13,7 @@ const OrderSuccess = () => {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="bg-white shadow-2xl rounded-lg p-10 flex flex-col items-center text-center"
             >
-                {/* Animated Check Icon */}
+                {/* animated Check Icon */}
                 <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -27,7 +27,7 @@ const OrderSuccess = () => {
                     Thank you for choosing us. Your rental booking has been confirmed.
                 </p>
 
-                {/* Back to Home Button */}
+                {/* back to Home Button */}
                 <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}

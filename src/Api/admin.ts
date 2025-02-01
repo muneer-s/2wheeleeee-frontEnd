@@ -21,9 +21,9 @@ const logout = async () => {
     }
 }
 
-const getAllUsers = async (query:string) => {
+const getAllUsers = async (query: string) => {
     try {
-        const result = await Api.get(`${adminRoutes.getAllUsers}${query}`);        
+        const result = await Api.get(`${adminRoutes.getAllUsers}${query}`);
         return result.data
     } catch (error) {
         console.error('Error in getAllUsers:', error);
@@ -64,7 +64,7 @@ const userBlockUnBlock = async (id: string) => {
 
 const getAllBikeDetails = async (params: object) => {
     try {
-        const response = await Api.get(adminRoutes.getAllBikeDetails,{params})
+        const response = await Api.get(adminRoutes.getAllBikeDetails, { params })
         return response.data
 
     } catch (error) {
@@ -74,9 +74,9 @@ const getAllBikeDetails = async (params: object) => {
 }
 
 
-const verifyHost = async (id: string,payload:any=null) => {
+const verifyHost = async (id: string, payload: any = null) => {
     try {
-        const result = await Api.put(`${adminRoutes.verifyHost}/${id}`,payload)
+        const result = await Api.put(`${adminRoutes.verifyHost}/${id}`, payload)
         return result.data
     } catch (error) {
         console.log(error);
@@ -85,14 +85,34 @@ const verifyHost = async (id: string,payload:any=null) => {
 
 
 
-const isEditOn = async(bikeId:string)=>{
+const isEditOn = async (bikeId: string) => {
     try {
         const response = await Api.put(`${adminRoutes.isEditOn}/${bikeId}`);
         return response.data
-        
+
     } catch (error) {
         console.error('Error in isedit on:', error);
         throw error;
+    }
+}
+
+const orderList = async () => {
+    try {
+        const response = await Api.get(adminRoutes.OrderList)
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching order list for admin", error)
+        throw error
+    }
+}
+
+const getOrderDetails = async (orderId: string)=>{
+    try {
+        const response = await Api.get(`${adminRoutes.OrderDetails}/${orderId}`)
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching order details for admin", error)
+        throw error
     }
 }
 
@@ -107,5 +127,7 @@ export {
     getAllBikeDetails,
     verifyHost,
     userBlockUnBlock,
-    isEditOn
+    isEditOn,
+    orderList,
+    getOrderDetails
 }

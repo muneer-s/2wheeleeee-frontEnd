@@ -17,15 +17,10 @@ const MyWallet = () => {
                 const response = await getProfile(userEmail);
                 const userDetails = handleApiResponse(response)
 
-                console.log(111111,response)
-                console.log(222222,userDetails)
-
                 if (response.success) {
 
                     if (userDetails.wallet) {
-                        console.log(99999,userDetails.wallet)
                         const walletResponse = await getWalletBalance(userDetails.wallet);
-                        console.log(555,walletResponse)
 
                         if (walletResponse.success) {
                             setWalletBalance(walletResponse.data.balance);
@@ -33,12 +28,10 @@ const MyWallet = () => {
                             toast.error(walletResponse.message);
                         }
                     }
-                } else {
-                    toast.error(response.message)
-                    await logout({ email: userEmail });
-                }
-            } catch (error) {
+                } 
+            } catch (error:any) {
                 console.error('catch Error get profile:', error);
+                toast.error(error.response.data.message);
             }
         }
         fetchData();

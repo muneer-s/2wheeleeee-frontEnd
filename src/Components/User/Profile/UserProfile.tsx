@@ -7,7 +7,7 @@ import { saveUser } from "../../../Apps/slice/AuthSlice";
 import { UserData } from "../../../Interfaces/Interfaces";
 import { handleApiResponse } from "../../../Utils/apiUtils";
 import MyWallet from "../Wallet/MyWallet";
-
+import UserOrderList from "../OrderList/UserOrderList";
 
 const UserProfile: React.FC = () => {
     const [userProfile, setUserProfile] = useState<UserData | null>(null);
@@ -480,12 +480,7 @@ const UserProfile: React.FC = () => {
             case "My Wallet": return <MyWallet/>
 
             case "Booking History":
-                return (
-                    <div>
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Booking History</h2>
-                        <p>No booking history found.</p>
-                    </div>
-                );
+                return <UserOrderList/>
 
             default:
                 return null;
