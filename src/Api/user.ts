@@ -154,11 +154,10 @@ const orderPlacing = async (orderData: { bikeId: string; startDate: string; endD
     }
 }
 
-const createOrder = async (orderData: any) => {
-    try {
-        const response = await Api.post(userRoutes.createOrder, orderData);
-        console.log("///////////:", response)
-        return response.data;
+const createOrder = async (datas: any) => {
+    try {    
+        const response = await Api.post(userRoutes.createOrder, datas);
+        return response;
     } catch (error) {
         console.log('Error in order creating : ', error)
         throw error
@@ -196,6 +195,8 @@ const userGetOrderDetails = async (orderId: string)=>{
         throw error
     }
 }
+
+
 
 export {
     verifyOtp,

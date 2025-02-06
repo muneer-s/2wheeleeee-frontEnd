@@ -18,19 +18,9 @@ import { isAdminVerifyUser } from "../../../Api/host";
 
 
 
-
-
-
-
-
-
-
-
 const BikeSingleComp = () => {
     const { id } = useParams<{ id: string }>();
     const { Razorpay } = useRazorpay();
-
-
 
     const [bikeDetails, setBikeDetails] = useState<IBikeDetailsWithUserDetails | null>(null);
     const [zoomed, setZoomed] = useState<number | null>(null);
@@ -38,9 +28,7 @@ const BikeSingleComp = () => {
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    //const [error, setError] = useState<string>("");
     const [totalRent, setTotalRent] = useState(0);
-    //const [paymentMethod, setPaymentMethod] = useState("");
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [amount, setAmount] = useState<number | null>(null);
     const [walletBalance, setWalletBalance] = useState<number | null>(null);
@@ -60,10 +48,18 @@ const BikeSingleComp = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
+        if (!userId) {
+            toast.error("Please log in to access this page");
+            navigate("/login");
+        }
+    }, [userIsPresent, navigate]);
+
+
+    useEffect(() => {
+
         const fetchDetails = async () => {
             try {
                 const response = await getBikeDetails(id!);
-
                 const BikeData = handleApiResponse(response)
 
                 setBikeDetails(BikeData);
@@ -73,8 +69,10 @@ const BikeSingleComp = () => {
             }
         };
 
-        fetchDetails();
-    }, [id]);
+        if (userIsPresent) {
+            fetchDetails();
+        }    
+    }, [id,userIsPresent]);
 
 
     useEffect(() => {
@@ -83,15 +81,10 @@ const BikeSingleComp = () => {
                 const response = await getProfile(userEmail);
                 const userDetails = handleApiResponse(response)
 
-                console.log(111111,response)
-                console.log(222222,userDetails)
-
                 if (response.success) {
 
                     if (userDetails.wallet) {
-                        console.log(99999,userDetails.wallet)
                         const walletResponse = await getWalletBalance(userDetails.wallet);
-                        console.log(555,walletResponse)
 
                         if (walletResponse.success) {
                             setWalletBalance(walletResponse.data.balance);
@@ -106,8 +99,11 @@ const BikeSingleComp = () => {
                 console.error('catch Error get profile:', error);
             }
         }
-        fetchData();
-    }, [userEmail]);
+        if (userIsPresent) {
+            fetchData();
+        }    
+    }, [userEmail,userIsPresent]);
+    
 
     if (!bikeDetails) return <p>Loading bike details...</p>;
 
@@ -264,12 +260,13 @@ const BikeSingleComp = () => {
             amount: totalRent,
             currency: "INR",
         }
-        await Api.post(userRoutes.createOrder, datas).then((res) => {
+        
+        await createOrder(datas).then((res) => {
             if (res.data) {
                 const options: RazorpayOrderOptions = {
-                    //key: import.meta.env.VITE_RAZOR_PAY_API,
-                    key: "rzp_test_z23iGXXlSrspI8",
-                    amount: res.data.amount, // amount in paise
+                    // key: "rzp_test_z23iGXXlSrspI8",
+                    key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                    amount: res.data.amount,
                     currency: res.data.currency,
                     name: "2Wheeleeee",
                     description: "Order Transaction",

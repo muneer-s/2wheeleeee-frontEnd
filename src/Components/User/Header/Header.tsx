@@ -60,7 +60,6 @@ const Header = () => {
       <div className="text-2xl font-bold text-sky-500">2Wheleeee</div>
 
       {/* Hamburger menu (Mobile) */}
-      {/* Hamburger menu (Mobile) */}
       <div className="md:hidden">
         <button
           className="text-gray-700 focus:outline-none"
@@ -142,12 +141,7 @@ const Header = () => {
                   >
                     Host
                   </li>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/orders")}
-                  >
-                    Orders
-                  </li>
+                  
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
                     onClick={handleLogout}

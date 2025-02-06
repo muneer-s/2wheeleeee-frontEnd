@@ -82,6 +82,67 @@ const editBike = async (bikeId: string | undefined, formData: FormData) => {
     }
 }
 
+const hostOrderList = async (id: string) => {
+    try {
+        const response = await Api.get(`${hostRoutes.OrderList}?Id=${id}`);
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching order list for admin", error)
+        throw error
+    }
+}
+
+
+const hostGetOrderDetails = async (orderId: string)=>{
+    try {
+        const response = await Api.get(`${hostRoutes.OrderDetails}/${orderId}`)
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching order details for admin", error)
+        throw error
+    }
+}
+
+const createOffer = async (formData: {offerName: string;discount: string;startDate: string;endDate: string;description: string;createdBy:string}) => {
+    try {
+        const response = await Api.post(hostRoutes.CreateOffer, formData);
+        return response.data;
+    } catch (error) {
+        console.log("Error when creating offer");
+        throw error;
+    }
+};
+
+const viewOffers = async(userId:string)=>{
+    try {
+        const response = await Api.get(`${hostRoutes.ViewOffers}?userId=${userId}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+
+const deleteOffer = async(id:string)=>{
+    try {
+        const response = await Api.delete(`${hostRoutes.deleteOffer}/${id}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+const updateOffer = async(id: string, updatedData: any)=>{
+    try {
+        const response = await Api.put(`${hostRoutes.updateOffer}/${id}`,updatedData)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
 
 
 
@@ -91,5 +152,11 @@ export {
     fetchBikeData,
     singleBikeView,
     deleteSelectedBike,
-    editBike
+    editBike,
+    hostOrderList,
+    hostGetOrderDetails,
+    createOffer,
+    viewOffers,
+    deleteOffer,
+    updateOffer
 }

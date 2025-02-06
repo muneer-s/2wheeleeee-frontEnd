@@ -5,7 +5,15 @@ const hostRoutes={
     fetchBikeData:'/bike/fetchBikeData',
     bikeSingleView:'/bike/bikeSingleView',
     deleteBike:'/bike/deleteBike',
-    editBike:'/bike/editBike'
+    editBike:'/bike/editBike',
+    OrderList:'/bike/orderList',
+    OrderDetails:'/bike/OrderDetails',
+    CreateOffer:'/offer/Offer',
+    ViewOffers:'/offer/Offer',
+    deleteOffer:'/offer/deleteOffer',
+    updateOffer:'/offer/updateOffer',
+
+
 }
 
 export default hostRoutes

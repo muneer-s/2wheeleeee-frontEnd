@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import Header from "../Header/Header";
+import Header from "../../User/Header/Header";
+
+
 import { userGetOrderDetails } from "../../../Api/user";
+import { hostGetOrderDetails } from "../../../Api/host";
 
 interface IOrder {
     startDate: string;
@@ -30,7 +33,7 @@ interface IOrderResponse {
     user: IUser;
 }
 
-const UserOrderDetails = () => {
+const HostOrderDetailsView = () => {
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
 
@@ -41,7 +44,7 @@ const UserOrderDetails = () => {
                 return;
             }
             try {
-                const response = await userGetOrderDetails(orderId);
+                const response = await hostGetOrderDetails(orderId);
                 if (response?.success) {
                     setOrderDetails(response.data);
                 } else {
@@ -60,7 +63,7 @@ const UserOrderDetails = () => {
         return <p className="text-center text-gray-600 mt-10">Loading order details...</p>;
     }
 
-    const { order, bike, owner } = orderDetails;
+    const { order, bike ,user } = orderDetails;
 
     const statusColors: Record<string, string> = {
         "Pending": "bg-yellow-500",
@@ -121,11 +124,13 @@ const UserOrderDetails = () => {
 
                 {/* Owner Details */}
                 <div className="grid md:grid-cols-2 gap-6">
+                    
+
                     <div className="bg-gray-100 p-4 rounded-lg">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Bike Owner Details</h2>
-                        <p className="text-gray-700"><strong>Name:</strong> {owner.name}</p>
-                        <p className="text-gray-700"><strong>Phone:</strong> {owner.phoneNumber}</p>
-                        <p className="text-gray-700"><strong>Address:</strong> {owner.address}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">User Details</h2>
+                        <p className="text-gray-700"><strong>Name:</strong> {user.name}</p>
+                        <p className="text-gray-700"><strong>Phone:</strong> {user.phoneNumber}</p>
+                        <p className="text-gray-700"><strong>Address:</strong> {user.address}</p>
                     </div>
 
                     
@@ -137,4 +142,4 @@ const UserOrderDetails = () => {
     );
 };
 
-export default UserOrderDetails;
+export default HostOrderDetailsView;
