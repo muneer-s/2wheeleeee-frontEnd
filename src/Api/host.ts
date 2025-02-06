@@ -93,7 +93,7 @@ const hostOrderList = async (id: string) => {
 }
 
 
-const hostGetOrderDetails = async (orderId: string)=>{
+const hostGetOrderDetails = async (orderId: string) => {
     try {
         const response = await Api.get(`${hostRoutes.OrderDetails}/${orderId}`)
         return response.data
@@ -103,7 +103,7 @@ const hostGetOrderDetails = async (orderId: string)=>{
     }
 }
 
-const createOffer = async (formData: {offerName: string;discount: string;startDate: string;endDate: string;description: string;createdBy:string}) => {
+const createOffer = async (formData: { offerName: string; discount: string; startDate: string; endDate: string; description: string; createdBy: string }) => {
     try {
         const response = await Api.post(hostRoutes.CreateOffer, formData);
         return response.data;
@@ -113,7 +113,7 @@ const createOffer = async (formData: {offerName: string;discount: string;startDa
     }
 };
 
-const viewOffers = async(userId:string)=>{
+const viewOffers = async (userId: string) => {
     try {
         const response = await Api.get(`${hostRoutes.ViewOffers}?userId=${userId}`)
         return response.data
@@ -123,7 +123,7 @@ const viewOffers = async(userId:string)=>{
 }
 
 
-const deleteOffer = async(id:string)=>{
+const deleteOffer = async (id: string) => {
     try {
         const response = await Api.delete(`${hostRoutes.deleteOffer}/${id}`)
         return response.data
@@ -132,10 +132,22 @@ const deleteOffer = async(id:string)=>{
     }
 }
 
-const updateOffer = async(id: string, updatedData: any)=>{
+const updateOffer = async (id: string, updatedData: any) => {
     try {
-        const response = await Api.put(`${hostRoutes.updateOffer}/${id}`,updatedData)
+        const response = await Api.put(`${hostRoutes.updateOffer}/${id}`, updatedData)
         return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+
+const applyOfferToBike = async (bikeId: string, offerId: string) => {
+    try {
+        const response = await Api.put(hostRoutes.applyOffer, { bikeId, offerId })
+        return response.data
+
+
     } catch (error) {
         throw error
     }
@@ -158,5 +170,6 @@ export {
     createOffer,
     viewOffers,
     deleteOffer,
-    updateOffer
+    updateOffer,
+    applyOfferToBike
 }

@@ -82,11 +82,11 @@ const HostListView = () => {
                             {bikes.length > 0 ? (
                                 bikes.map((bike) => (
                                     <div
-                                        key={bike._id} // Use a unique identifier here (like `_id`) instead of `index` for production
+                                        key={bike._id}
                                         className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-lg p-4 space-y-4"
                                     >
                                         <img
-                                            src={bike.images[0] || "https://via.placeholder.com/150"} // Display the first image
+                                            src={bike.images[0] || "https://via.placeholder.com/150"}
                                             alt={bike.modelName}
                                             className="w-full h-40 object-cover rounded-lg"
                                         />
@@ -119,6 +119,23 @@ const HostListView = () => {
                                                 </button>
                                             )}
 
+                                            {bike.offerApplied ? (
+                                                <button
+                                                    className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-red-600"
+                                                    onClick={() => navigate(`/removeOffer/${bike._id}`)}
+                                                >
+                                                    Remove Offer
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
+                                                    onClick={() => navigate(`/applyOffer/${bike._id}`)}
+                                                >
+                                                    Apply Offer
+                                                </button>
+                                            )}
+
+
 
 
                                             <button
@@ -127,6 +144,8 @@ const HostListView = () => {
                                             >
                                                 Delete
                                             </button>
+
+
 
 
 
@@ -186,7 +205,7 @@ const HostListView = () => {
                                 Add Offers
                             </li>
                             <li className={`font-semibold cursor-pointer ${activeTab === "View Offers" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("View Offers")}>
-                            View Offers
+                                View Offers
                             </li>
 
 

@@ -12,6 +12,7 @@ const hostRoutes={
     ViewOffers:'/offer/Offer',
     deleteOffer:'/offer/deleteOffer',
     updateOffer:'/offer/updateOffer',
+    applyOffer:'/offer/applyOffer'
 
 
 }

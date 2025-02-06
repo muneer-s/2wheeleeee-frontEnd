@@ -34,6 +34,7 @@ import AdminOrdersList from './Screen/Admin/AdminOrdersList/AdminOrdersList';
 import AdminOrderDetails from './Components/Admin/AdminOrderDetail/AdminOrderDetails';
 import UserOrderDetails from './Components/User/UserOrderDetails/UserOrderDetails';
 import HostOrderDetailsView from './Components/Host/OrderSingleView/HostOrderDetailsView';
+import ApplyOffer from './Components/Host/ApplyOfferToBike/ApplyOffer';
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
             <Route path='/HostBikeViewPage/:id' element={<UserProtecteRoute><HostBikeViewPage /></UserProtecteRoute>} />
             <Route path='/EditBike/:id' element={<UserProtecteRoute><EditBike /></UserProtecteRoute>} />
             <Route path='/host/orders/:orderId' element={<UserProtecteRoute><HostOrderDetailsView /></UserProtecteRoute>} />
+            <Route path='/applyOffer/:id' element={<UserProtecteRoute><ApplyOffer /></UserProtecteRoute>} />
 
 
 
