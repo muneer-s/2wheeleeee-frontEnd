@@ -31,7 +31,7 @@ const BikeListComp = () => {
 
             setBikes(data.bikeList);
             setTotalPages(data.totalPages);
-        } catch (err:any) {
+        } catch (err: any) {
             console.error("Error fetching bike data:", err);
             toast.error(err.message || 'INTERNAL SERVER ERROR')
         }
@@ -102,10 +102,8 @@ const BikeListComp = () => {
                 {/* Bike List Section */}
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                     {bikes.map((bike) => {
-                        const isInsuranceExpired =
-                            new Date(bike.insuranceExpDate) <= new Date();
-                        const isPolutionExpired =
-                            new Date(bike.polutionExpDate) <= new Date();
+                        const isInsuranceExpired = new Date(bike.insuranceExpDate) <= new Date();
+                        const isPolutionExpired = new Date(bike.polutionExpDate) <= new Date();
                         const isExpired = isInsuranceExpired || isPolutionExpired;
 
                         return (
@@ -121,7 +119,19 @@ const BikeListComp = () => {
                                 <h2 className="text-lg font-semibold mt-2">{bike.modelName}</h2>
                                 <p>{bike.companyName}</p>
                                 <p>Fuel: {bike.fuelType}</p>
-                                <p>Rent: ₹{bike.rentAmount}/day</p>
+
+
+                                {/* <p>Rent: ₹{bike.rentAmount}/day</p> */}
+
+                                {bike.offerApplied ? (
+                                    <p className="text-green-500 font-semibold">
+                                        Offer Price: ₹{bike.offerPrice}/day (Original: <span className="line-through text-gray-500">₹{bike.rentAmount}</span>)
+                                    </p>
+                                ) : (
+                                    <p>Rent: ₹{bike.rentAmount}/day</p>
+                                )}
+
+
                                 {isExpired && (
                                     <p className="text-red-500">Expired Documents</p>
                                 )}

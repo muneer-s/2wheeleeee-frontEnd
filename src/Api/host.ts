@@ -154,6 +154,28 @@ const applyOfferToBike = async (bikeId: string, offerId: string) => {
 }
 
 
+const removeOfferFromBike = async (bikeId: string) => {
+    try {
+        const response = await Api.put(hostRoutes.removeOffer, { bikeId })
+        return response.data
+    } catch (error) {
+        console.error("Error removing offer:", error);
+        return { success: false, message: "Failed to remove offer" };
+    }
+};
+
+
+const hostCompleteOrder = async (orderId: string)=>{
+    try {
+        const response = await Api.put(`${hostRoutes.completeOrder}/${orderId}`)
+        return response.data
+
+    } catch (error) {
+        throw error
+    }
+}
+
+
 
 
 
@@ -171,5 +193,7 @@ export {
     viewOffers,
     deleteOffer,
     updateOffer,
-    applyOfferToBike
+    applyOfferToBike,
+    removeOfferFromBike,
+    hostCompleteOrder
 }

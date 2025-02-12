@@ -18,6 +18,8 @@ const userRoutes={
     getWallet:'/wallet/getWallet',
     OrderList:'/user/orderList',
     OrderDetails:'/user/OrderDetails',
+    earlyReturns:'/user/earlyReturns',
+    returnOrder:'/user/returnOrder'
 
 }
 

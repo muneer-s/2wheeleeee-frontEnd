@@ -33,7 +33,7 @@
     "react-router-dom": "^6.28.0",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "sweetalert2": "^11.15.3"
+    "sweetalert2": "^11.16.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

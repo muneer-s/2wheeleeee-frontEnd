@@ -86,6 +86,11 @@ const ApplyOffer = () => {
                                         >
                                             Apply Offer
                                         </button>
+                                        <button
+                                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 ml-4"
+                                        onClick={()=>navigate(-1)}>
+                                            Back
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

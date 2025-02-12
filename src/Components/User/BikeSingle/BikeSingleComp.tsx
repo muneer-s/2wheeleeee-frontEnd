@@ -71,8 +71,8 @@ const BikeSingleComp = () => {
 
         if (userIsPresent) {
             fetchDetails();
-        }    
-    }, [id,userIsPresent]);
+        }
+    }, [id, userIsPresent]);
 
 
     useEffect(() => {
@@ -101,9 +101,9 @@ const BikeSingleComp = () => {
         }
         if (userIsPresent) {
             fetchData();
-        }    
-    }, [userEmail,userIsPresent]);
-    
+        }
+    }, [userEmail, userIsPresent]);
+
 
     if (!bikeDetails) return <p>Loading bike details...</p>;
 
@@ -153,10 +153,26 @@ const BikeSingleComp = () => {
             if (endDateObj.getTime() === startDateObj.getTime()) {
                 const differenceInTime = 24
                 const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-                setTotalRent(differenceInDays * rentAmount);
+                // if(bikeDetails.offerApplied){
+                //     setTotalRent(differenceInDays * bikeDetails.offerPrice);
+                // }else{
+                //     setTotalRent(differenceInDays * rentAmount);
+
+                // }
+
+                if (bikeDetails.offerApplied) {
+                    setTotalRent(differenceInDays * (bikeDetails.offerPrice ?? rentAmount));
+                } else {
+                    setTotalRent(differenceInDays * rentAmount);
+                }
+
             } else if (endDateObj > startDateObj) {
                 const differenceInDays = Math.ceil((endDateObj.getTime() - startDateObj.getTime()) / (1000 * 3600 * 24)) + 1;
-                setTotalRent(differenceInDays * rentAmount);
+                if (bikeDetails.offerApplied) {
+                    setTotalRent(differenceInDays * (bikeDetails.offerPrice ?? rentAmount));
+                } else {
+                    setTotalRent(differenceInDays * rentAmount);
+                }
             } else {
                 setTotalRent(0);
             }
@@ -205,9 +221,9 @@ const BikeSingleComp = () => {
                 endDate,
                 userId: userIsPresent.userId,
                 paymentMethod,
-                amount: totalRent,
+                amount: totalRent + 150,
                 bikePrize: bikeDetails.rentAmount,
-                email:userEmail
+                email: userEmail
             };
 
             const response = await orderPlacing(orderData);
@@ -260,11 +276,10 @@ const BikeSingleComp = () => {
             amount: totalRent,
             currency: "INR",
         }
-        
+
         await createOrder(datas).then((res) => {
             if (res.data) {
                 const options: RazorpayOrderOptions = {
-                    // key: "rzp_test_z23iGXXlSrspI8",
                     key: import.meta.env.VITE_RAZORPAY_KEY_ID,
                     amount: res.data.amount,
                     currency: res.data.currency,
@@ -349,7 +364,18 @@ const BikeSingleComp = () => {
                     <div className="mt-10 justify-center">
                         <p className="mb-3"><strong>Model Name:</strong> {modelName}</p>
                         <p className="mb-3"><strong>Company Name:</strong> {companyName}</p>
+
+
+
                         <p className="mb-3"><strong>Rent:</strong> ₹{rentAmount}/day</p>
+                        {/* Offer Section */}
+                        {bikeDetails.offerApplied && (
+                            <div className="mt-4 p-4 bg-yellow-200 border border-yellow-400 rounded-lg">
+                                <p className="text-lg font-semibold text-red-600">🔥 Limited Time Offer! 🔥</p>
+                                <p className="text-md font-bold">New Rent:  ₹{bikeDetails.offerPrice}/day</p>
+                            </div>
+                        )}
+
                         <p className="mb-3"><strong>Fuel Type:</strong> {fuelType}</p>
                         <p className="mb-3"><strong>Register Number:</strong> {registerNumber}</p>
                         <p className="mb-3"><strong>Reg No:</strong> {registerNumber}</p>
@@ -414,6 +440,8 @@ const BikeSingleComp = () => {
 
                     {/* Display Total Rent */}
                     <p className="mt-4 text-lg"><strong>Total Rent:</strong> ₹{totalRent}</p>
+                    <p className="mt-4 text-lg text-red-600"><strong>Service Charge:</strong> ₹150</p>
+                    <p className="mt-4 text-lg"><strong>Total:</strong> ₹{totalRent + 150}</p>
 
                     {/* Payment Method Selection */}
                     <div className="mt-4 bg-sky-300 p-3 rounded-md">
@@ -438,7 +466,7 @@ const BikeSingleComp = () => {
                                 id="wallet"
                                 checked={paymentMethod === "wallet"}
                                 onChange={() => setPaymentMethod("wallet")}
-                                disabled={walletBalance !== null && walletBalance < totalRent}
+                                disabled={walletBalance !== null && walletBalance < (totalRent + 150)}
                                 className="w-4 h-4"
                             />
                             <label htmlFor="wallet">Wallet</label>
@@ -450,7 +478,7 @@ const BikeSingleComp = () => {
                             </p>
                         )}
                         {/* Show warning if Wallet balance is insufficient */}
-                        {paymentMethod === "wallet" && walletBalance !== null && walletBalance < totalRent && (
+                        {paymentMethod === "wallet" && walletBalance !== null && walletBalance < (totalRent + 150) && (
                             <p className="text-red-500 mt-2">Insufficient balance to proceed with Wallet payment.</p>
                         )}
 
@@ -464,7 +492,7 @@ const BikeSingleComp = () => {
                     <button
                         className="bg-blue-950 text-white rounded-md p-3 w-full mt-6 font-semibold hover:bg-blue-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
                         onClick={paymentMethod === "razorpay" ? handleRazorpayPayment : handleSubmit}
-                        disabled={paymentMethod === "wallet" && walletBalance !== null && walletBalance < totalRent}
+                        disabled={paymentMethod === "wallet" && walletBalance !== null && walletBalance < (totalRent + 150)}
 
                     >
                         Book Now

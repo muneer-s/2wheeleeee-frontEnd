@@ -8,6 +8,9 @@ export interface IBikeDetails {
     registerNumber: string;
     insuranceExpDate: Date ;
     polutionExpDate: Date ;
+    offer:string | null;
+    offerApplied:boolean | null;
+    offerPrice:number | null;
 }
 
 
@@ -31,4 +34,7 @@ export interface IBikeDetailsWithUserDetails {
     insuranceExpDate: Date ;
     polutionExpDate: Date ;
     userDetails: IUserDetailsBikeSingle;
+    offer:string | null;
+    offerApplied:boolean | null;
+    offerPrice:number | null;
 }

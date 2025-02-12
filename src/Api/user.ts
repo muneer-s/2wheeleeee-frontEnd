@@ -175,7 +175,6 @@ const getWalletBalance = async (walletId: string) => {
     }
 };
 
-
 const userOrderList = async (userId: string) => {
     try {
         const response = await Api.get(`${userRoutes.OrderList}?userId=${userId}`);
@@ -191,7 +190,28 @@ const userGetOrderDetails = async (orderId: string)=>{
         const response = await Api.get(`${userRoutes.OrderDetails}/${orderId}`)
         return response.data
     } catch (error) {
-        console.log("Error is fetching order details for admin", error)
+        console.log("Error is fetching order details", error)
+        throw error
+    }
+}
+
+
+const earlyReturns = async (orderId:string)=>{
+    try {
+        const response = await Api.put(`${userRoutes.earlyReturns}/${orderId}`)
+        return response.data
+    } catch (error) {
+        console.log("Error when user try to return the bike early ", error)
+        throw error
+    }
+}
+
+const returnOrder = async (orderId:string)=>{
+    try {
+        const response = await Api.put(`${userRoutes.returnOrder}/${orderId}`)
+        return response.data
+    } catch (error) {
+        console.log("Error when user try to return the bike ", error)
         throw error
     }
 }
@@ -215,5 +235,7 @@ export {
     createOrder,
     getWalletBalance,
     userOrderList,
-    userGetOrderDetails
+    userGetOrderDetails,
+    earlyReturns,
+    returnOrder
 }

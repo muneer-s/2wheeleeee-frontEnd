@@ -5,7 +5,7 @@ import Header from "../../User/Header/Header";
 
 
 import { userGetOrderDetails } from "../../../Api/user";
-import { hostGetOrderDetails } from "../../../Api/host";
+import { hostCompleteOrder, hostGetOrderDetails } from "../../../Api/host";
 
 interface IOrder {
     startDate: string;
@@ -36,6 +36,7 @@ interface IOrderResponse {
 const HostOrderDetailsView = () => {
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -59,22 +60,45 @@ const HostOrderDetailsView = () => {
         fetchOrderDetails();
     }, [orderId]);
 
+
+
+    const handleCompleteOrder = async () => {
+        if (!orderId) return;
+        setLoading(true);
+        try {
+            const response = await hostCompleteOrder(orderId);
+            if (response?.success) {
+                toast.success("Order marked as completed!");
+                setOrderDetails((prev) => prev ? { ...prev, order: { ...prev.order, status: "Completed" } } : prev);
+            } else {
+                toast.error("Failed to update order status.");
+            }
+        } catch (error: any) {
+            toast.error("Error updating order status.");
+            console.error("Error:", error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (!orderDetails) {
         return <p className="text-center text-gray-600 mt-10">Loading order details...</p>;
     }
 
-    const { order, bike ,user } = orderDetails;
+    const { order, bike, user } = orderDetails;
 
     const statusColors: Record<string, string> = {
         "Pending": "bg-yellow-500",
+        "Early Return": "bg-blue-500",
+        "Return": "bg-purple-500",
         "Completed": "bg-green-500",
-        "Cancelled": "bg-red-500",
+
     };
 
     return (
         <div>
 
-            <Header/>
+            <Header />
             <div className="mt-10 max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
                 <h1 className="text-3xl font-bold text-gray-800 mb-6">Order Details</h1>
 
@@ -109,6 +133,18 @@ const HostOrderDetailsView = () => {
                             </tr>
                         </tbody>
                     </table>
+                    {/* Show Complete Button if order is "Early Return" or "Return" */}
+                    {["Early Return", "Return"].includes(order.status) && (
+                        <button
+                            onClick={handleCompleteOrder}
+                            className="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-200 disabled:bg-gray-400"
+                            disabled={loading}
+                        >
+                            {loading ? "Completing..." : "Mark as Completed"}
+                        </button>
+                    )}
+
+
                 </div>
 
                 {/* Bike Details */}
@@ -124,7 +160,7 @@ const HostOrderDetailsView = () => {
 
                 {/* Owner Details */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    
+
 
                     <div className="bg-gray-100 p-4 rounded-lg">
                         <h2 className="text-xl font-semibold text-gray-700 mb-2">User Details</h2>
@@ -133,7 +169,7 @@ const HostOrderDetailsView = () => {
                         <p className="text-gray-700"><strong>Address:</strong> {user.address}</p>
                     </div>
 
-                    
+
                 </div>
 
             </div>
