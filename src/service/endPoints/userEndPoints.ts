@@ -19,7 +19,10 @@ const userRoutes={
     OrderList:'/user/orderList',
     OrderDetails:'/user/OrderDetails',
     earlyReturns:'/user/earlyReturns',
-    returnOrder:'/user/returnOrder'
+    returnOrder:'/user/returnOrder',
+
+    getReviews:'/user/getReviews',
+    submitReview:'/user/submitReview',
 
 }
 

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { createOrder, getBikeDetails, getProfile, getWalletBalance, orderPlacing } from "../../../Api/user";
+import { createOrder, getBikeDetails, getProfile, getReviews, getWalletBalance, orderPlacing } from "../../../Api/user";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import { useAppSelector } from "../../../Apps/store";
 import { IBikeDetailsWithUserDetails } from "../../../Interfaces/User/IUser";
 import { handleApiResponse } from "../../../Utils/apiUtils";
@@ -14,6 +12,8 @@ import toast from "react-hot-toast";
 import Api from "../../../service/axios";
 import userRoutes from "../../../service/endPoints/userEndPoints";
 import { isAdminVerifyUser } from "../../../Api/host";
+import { FaStar } from "react-icons/fa";
+import Review from "./Components/Review";
 
 
 
@@ -38,6 +38,9 @@ const BikeSingleComp = () => {
     const [error, setError] = useState<string | null>(null);
 
 
+    const isMounted = useRef(false);
+
+
     const today = new Date().toISOString().split("T")[0];
 
     const authState = useAppSelector((state) => state.auth);
@@ -56,7 +59,6 @@ const BikeSingleComp = () => {
 
 
     useEffect(() => {
-
         const fetchDetails = async () => {
             try {
                 const response = await getBikeDetails(id!);
@@ -325,7 +327,6 @@ const BikeSingleComp = () => {
         });
     };
 
-
     return (
         <div className="min-h-screen container mx-auto p-6 bg-gradient-to-b from-white to-sky-300">
 
@@ -484,10 +485,7 @@ const BikeSingleComp = () => {
 
                     </div>
 
-
-
                     {/* Order Now Button */}
-
 
                     <button
                         className="bg-blue-950 text-white rounded-md p-3 w-full mt-6 font-semibold hover:bg-blue-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -503,22 +501,27 @@ const BikeSingleComp = () => {
             </div>
 
 
-            {
-                userIsPresent && userDetails && (
-                    <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg  p-6">
-                        <h2 className="text-xl font-bold mb-4">Owner Details</h2>
-                        <p><strong>Name:</strong> {userDetails.name}</p>
-                        <p><strong>Email:</strong> {userDetails.email}</p>
-                        <p><strong>Phone:</strong> {userDetails.phoneNumber || "Not provided"}</p>
-                        <p><strong>Address:</strong> {userDetails.address || "Not provided"}</p>
-                        <img
-                            src={userDetails.profile_picture || "https://via.placeholder.com/150"}
-                            alt={`${userDetails.name}'s Profile`}
-                            className="w-24 h-24 object-cover rounded-full mt-4"
-                        />
-                    </div>
-                )
+            {userIsPresent && userDetails && (
+                <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg  p-6">
+                    <h2 className="text-xl font-bold mb-4">Owner Details</h2>
+                    <p><strong>Name:</strong> {userDetails.name}</p>
+                    <p><strong>Email:</strong> {userDetails.email}</p>
+                    <p><strong>Phone:</strong> {userDetails.phoneNumber || "Not provided"}</p>
+                    <p><strong>Address:</strong> {userDetails.address || "Not provided"}</p>
+                    <img
+                        src={userDetails.profile_picture || "https://via.placeholder.com/150"}
+                        alt={`${userDetails.name}'s Profile`}
+                        className="w-24 h-24 object-cover rounded-full mt-4"
+                    />
+                </div>
+            )
             }
+
+            <Review bikeId={bikeDetails._id}/>
+
+            
+
+
         </div >
 
     );

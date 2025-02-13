@@ -155,7 +155,7 @@ const orderPlacing = async (orderData: { bikeId: string; startDate: string; endD
 }
 
 const createOrder = async (datas: any) => {
-    try {    
+    try {
         const response = await Api.post(userRoutes.createOrder, datas);
         return response;
     } catch (error) {
@@ -185,7 +185,7 @@ const userOrderList = async (userId: string) => {
     }
 }
 
-const userGetOrderDetails = async (orderId: string)=>{
+const userGetOrderDetails = async (orderId: string) => {
     try {
         const response = await Api.get(`${userRoutes.OrderDetails}/${orderId}`)
         return response.data
@@ -196,7 +196,7 @@ const userGetOrderDetails = async (orderId: string)=>{
 }
 
 
-const earlyReturns = async (orderId:string)=>{
+const earlyReturns = async (orderId: string) => {
     try {
         const response = await Api.put(`${userRoutes.earlyReturns}/${orderId}`)
         return response.data
@@ -206,12 +206,30 @@ const earlyReturns = async (orderId:string)=>{
     }
 }
 
-const returnOrder = async (orderId:string)=>{
+const returnOrder = async (orderId: string) => {
     try {
         const response = await Api.put(`${userRoutes.returnOrder}/${orderId}`)
         return response.data
     } catch (error) {
         console.log("Error when user try to return the bike ", error)
+        throw error
+    }
+}
+
+const getReviews = async (bikeId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.getReviews}/${bikeId}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+const submitReview = async (reviewData: any) => {
+    try {
+        const response = await Api.post(userRoutes.submitReview, reviewData)
+        return response.data
+    } catch (error) {
         throw error
     }
 }
@@ -237,5 +255,7 @@ export {
     userOrderList,
     userGetOrderDetails,
     earlyReturns,
-    returnOrder
+    returnOrder,
+    getReviews,
+    submitReview
 }

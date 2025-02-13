@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import Header from "../Header/Header";
-import { earlyReturns, returnOrder, userGetOrderDetails } from "../../../Api/user";
+import { earlyReturns, getReviews, returnOrder, submitReview, userGetOrderDetails } from "../../../Api/user";
 import Swal from "sweetalert2";
+import { FaStar } from "react-icons/fa";
+import { useAppSelector } from "../../../Apps/store";
+
+
 
 interface IOrder {
     _id: string;
@@ -15,6 +19,7 @@ interface IOrder {
 }
 
 interface IBike {
+    _id: string
     images: string[];
     modelName: string;
 }
@@ -31,10 +36,25 @@ interface IOrderResponse {
     owner: IUser;
     user: IUser;
 }
+export interface IReview {
+    reviewerName: string;
+    rating: number;
+    feedback: string;
+    createdAt: string;
+}
 
 const UserOrderDetails = () => {
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
+    const [rating, setRating] = useState<number>(0);
+    const [hover, setHover] = useState<number>(0);
+    const [feedback, setFeedback] = useState<string>("");
+    const [reviews, setReviews] = useState<IReview[]>([]);
+
+    const authState = useAppSelector((state) => state.auth);
+    const userDetails = authState.user
+    const userId = userDetails.userId
+
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -57,6 +77,10 @@ const UserOrderDetails = () => {
 
         fetchOrderDetails();
     }, [orderId]);
+
+
+    
+
 
     if (!orderDetails) {
         return <p className="text-center text-gray-600 mt-10">Loading order details...</p>;
@@ -155,8 +179,33 @@ const UserOrderDetails = () => {
         }
     }
 
+    const handleReviewSubmit = async () => {
+        if (!rating) {
+            toast.error("Please select a rating.");
+            return;
+        }
 
+        try {
+            const response = await submitReview({
+                reviewerId: userId,
+                bikeId: orderDetails?.bike._id,
+                rating,
+                feedback,
+            });
 
+            if (response?.success) {
+                toast.success("Review submitted successfully!");
+                // fetchReviews(orderDetails?.bike._id!);
+                setRating(0);
+                setFeedback("");
+            } else {
+                toast.error("Failed to submit review.");
+            }
+        } catch (error) {
+            console.error("Error submitting review:", error);
+            toast.error("Something went wrong.");
+        }
+    };
 
 
 
@@ -261,16 +310,69 @@ const UserOrderDetails = () => {
                 </div>
 
                 {/* Owner Details */}
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-gray-100 p-4 rounded-lg">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Bike Owner Details</h2>
-                        <p className="text-gray-700"><strong>Name:</strong> {owner.name}</p>
-                        <p className="text-gray-700"><strong>Phone:</strong> {owner.phoneNumber}</p>
-                        <p className="text-gray-700"><strong>Address:</strong> {owner.address}</p>
-                    </div>
-
-
+                <div className="bg-gray-100 p-4 rounded-lg mb-6">
+                    <h2 className="text-xl font-semibold text-gray-700 mb-2">Bike Owner Details</h2>
+                    <table className="w-full text-gray-700">
+                        <tbody>
+                            <tr>
+                                <td className="font-semibold py-1">Name:</td>
+                                <td>{owner.name}</td>
+                            </tr>
+                            <tr>
+                                <td className="font-semibold py-1">Phone:</td>
+                                <td>{owner.phoneNumber}</td>
+                            </tr>
+                            <tr>
+                                <td className="font-semibold py-1">Address:</td>
+                                <td>{owner.address}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
+
+
+                {orderDetails?.order.status === "Completed" && (
+                    <div className="bg-gray-300 p-4 rounded-lg mb-6 mt-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">Rate Your Experience</h2>
+
+                        {/* ⭐ Star Rating System */}
+                        <div className="flex mb-4">
+                            {[...Array(5)].map((_, index) => {
+                                const starValue = index + 1;
+                                return (
+                                    <FaStar
+                                        key={index}
+                                        className={`cursor-pointer transition duration-200 ${starValue <= (hover || rating) ? "text-yellow-500" : "text-gray-500"
+                                            }`}
+                                        size={30}
+                                        onMouseEnter={() => setHover(starValue)}
+                                        onMouseLeave={() => setHover(0)}
+                                        onClick={() => setRating(starValue)}
+                                    />
+                                );
+                            })}
+                        </div>
+
+                        {/* ✍️ Feedback Text Area */}
+                        <textarea
+                            value={feedback}
+                            onChange={(e) => setFeedback(e.target.value)}
+                            className="w-full h-24 p-2 border rounded-lg"
+                            placeholder="Write your feedback here..."
+                        ></textarea>
+
+                        {/* ✅ Submit Button */}
+                        <button
+                            onClick={handleReviewSubmit}
+                            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        >
+                            Submit Review
+                        </button>
+                    </div>
+                )}
+
+                
 
             </div>
         </div>

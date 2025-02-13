@@ -229,15 +229,12 @@ const BikeRegister = () => {
         setIsSubmitting(true);
 
         try {
-
             const response = await saveBikeDetails(submissionData);
 
             if (response?.success) {
                 toast.success(response.message);
                 navigate('/hostSuccessPage')
-            } else {
-                toast.error("Failed to register bike details. Try again.");
-            }
+            } 
         } catch (error) {
             toast.error("An error occurred while submitting the data.");
             console.error("Error:", error);

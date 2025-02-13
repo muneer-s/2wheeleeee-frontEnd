@@ -51,7 +51,7 @@ const UserOrderList = () => {
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
 
-  const headers = ['Order ID', 'Bike ID', 'Start Date', 'End Date', 'Amount', 'Status'];
+  const headers = ['Order ID', 'Start Date', 'End Date', 'Amount', 'Status'];
 
   return (
     <div>
@@ -65,7 +65,6 @@ const UserOrderList = () => {
           renderRow={(order) => (
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
-              <TableCell>{order.bikeId}</TableCell>
               <TableCell>{formatDate(order.startDate)}</TableCell>
               <TableCell>{formatDate(order.endDate)}</TableCell>
               <TableCell>₹{order.amount}</TableCell>
