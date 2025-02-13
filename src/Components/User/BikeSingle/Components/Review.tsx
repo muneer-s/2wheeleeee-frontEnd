@@ -2,17 +2,15 @@ import React, { useState, useEffect } from "react";
 import { getReviews } from "../../../../Api/user";
 import { FaStar } from "react-icons/fa";
 
-// export interface IReview {
-//     reviewerName: string;
-//     rating: number;
-//     feedback: string;
-//     createdAt: string;
-// }
 
+export interface IReviewer {
+    _id: string;
+    name: string;
+}
 export interface IReview {
     _id: string;
     bikeId: string;
-    reviewerId: string;
+    reviewerId: IReviewer;
     rating: number;
     feedback: string;
     createdAt: string;
@@ -25,10 +23,9 @@ const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {
     const fetchReviews = async (bikeId: string) => {
         try {
             const response = await getReviews(bikeId);
-            console.log(98,response);
+            console.log(98,response.data.data);
             
             if (response?.success) {
-                // setReviews(response.data);
                 setReviews(response.data.data);
             }
         } catch (error) {
@@ -36,7 +33,6 @@ const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {
         }
     };
 
-    // 🔄 Fetch reviews when component mounts or bikeId changes
     useEffect(() => {
         if (bikeId) {
             fetchReviews(bikeId);
@@ -51,7 +47,8 @@ const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {
                 <div className="bg-gray-100 p-4 rounded-lg">
                     {reviews.map((review, index) => (
                         <div key={index} className="border-b pb-4 mb-4">
-                            <p className="font-semibold">{review.reviewerId}</p>
+                            <p className="font-semibold">{(review.reviewerId as IReviewer).name}</p>
+
                             <div className="flex">
                                 {[...Array(5)].map((_, starIndex) => (
                                     <FaStar

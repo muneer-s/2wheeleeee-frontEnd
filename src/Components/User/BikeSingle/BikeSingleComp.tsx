@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { createOrder, getBikeDetails, getProfile, getReviews, getWalletBalance, orderPlacing } from "../../../Api/user";
+import { createOrder, getBikeDetails, getProfile, getWalletBalance, orderPlacing } from "../../../Api/user";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 import Api from "../../../service/axios";
 import userRoutes from "../../../service/endPoints/userEndPoints";
 import { isAdminVerifyUser } from "../../../Api/host";
-import { FaStar } from "react-icons/fa";
 import Review from "./Components/Review";
 
 
@@ -22,6 +21,8 @@ const BikeSingleComp = () => {
     const { id } = useParams<{ id: string }>();
     const { Razorpay } = useRazorpay();
 
+    const navigate = useNavigate()
+
     const [bikeDetails, setBikeDetails] = useState<IBikeDetailsWithUserDetails | null>(null);
     const [zoomed, setZoomed] = useState<number | null>(null);
     const [transformOrigin, setTransformOrigin] = useState<string>("50% 50%");
@@ -29,17 +30,11 @@ const BikeSingleComp = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [totalRent, setTotalRent] = useState(0);
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [amount, setAmount] = useState<number | null>(null);
     const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
 
     const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-
-
-    const isMounted = useRef(false);
-
 
     const today = new Date().toISOString().split("T")[0];
 
@@ -48,7 +43,6 @@ const BikeSingleComp = () => {
     const userIsPresent = authState.user
     const userId = userIsPresent.userId
 
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (!userId) {
@@ -333,26 +327,45 @@ const BikeSingleComp = () => {
             <button className="bg-sky-200 rounded pl-3 pr-3" onClick={() => navigate(-1)}>Back</button>
             <div>
                 <div className="mb-4">
-                    <Slider {...settings}>
-                        {images.map((image, index) => (
-                            <div key={index} className="relative">
-                                <img
-                                    src={image || "https://via.placeholder.com/150"}
-                                    alt={`${companyName} ${modelName}`}
-                                    className={`mx-auto w-auto h-64 object-cover transition-transform duration-300 ${zoomed === index ? "scale-[2.3]" : "scale-100"
-                                        }`}
-                                    style={{
-                                        transformOrigin: transformOrigin,
-                                    }}
-                                    onMouseOver={() => handleMouseOver(index)}
-                                    onMouseMove={handleMouseMove}
-                                    onMouseLeave={handleMouseLeave}
-                                />
-                            </div>
-                        ))}
-                    </Slider>
+                    {images.length > 1 ? (
+                        <Slider {...settings}>
+                            {images.map((image, index) => (
+                                <div key={index} className="relative">
+                                    <img
+                                        src={image || "https://via.placeholder.com/150"}
+                                        alt={`${companyName} ${modelName}`}
+                                        className={`mx-auto w-auto h-64 object-cover transition-transform duration-300 ${zoomed === index ? "scale-[2.3]" : "scale-100"
+                                            }`}
+                                        style={{
+                                            transformOrigin: transformOrigin,
+                                        }}
+                                        onMouseOver={() => handleMouseOver(index)}
+                                        onMouseMove={handleMouseMove}
+                                        onMouseLeave={handleMouseLeave}
+                                    />
+                                </div>
+                            ))}
+                        </Slider>
+                    ) : (
+                        <div className="relative">
+                            <img
+                                src={images[0] || "https://via.placeholder.com/150"}
+                                alt={`${companyName} ${modelName}`}
+                                className={`mx-auto w-auto h-64 object-cover transition-transform duration-300 ${zoomed === 0 ? "scale-[2.3]" : "scale-100"
+                                    }`}
+                                style={{
+                                    transformOrigin: transformOrigin,
+                                }}
+                                onMouseOver={() => handleMouseOver(0)}
+                                onMouseMove={handleMouseMove}
+                                onMouseLeave={handleMouseLeave}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
+
+
 
 
             {/* Bike Details */}
@@ -517,9 +530,9 @@ const BikeSingleComp = () => {
             )
             }
 
-            <Review bikeId={bikeDetails._id}/>
+            <Review bikeId={bikeDetails._id} />
 
-            
+
 
 
         </div >
