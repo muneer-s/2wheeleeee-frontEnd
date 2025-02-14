@@ -35,6 +35,15 @@ import AdminOrderDetails from './Components/Admin/AdminOrderDetail/AdminOrderDet
 import UserOrderDetails from './Components/User/UserOrderDetails/UserOrderDetails';
 import HostOrderDetailsView from './Components/Host/OrderSingleView/HostOrderDetailsView';
 import ApplyOffer from './Components/Host/ApplyOfferToBike/ApplyOffer';
+import Chat from './Components/User/Chat/Chat';
+import ChatWidget from './Components/User/Chat/ChatUi';
+// import {io} from 'socket.io-client'
+import io from 'socket.io-client';
+
+const socket = io(import.meta.env.VITE_BACKEND_URL,{
+  transports: ['polling', 'websocket'],
+})
+
 
 function App() {
 
@@ -55,7 +64,8 @@ function App() {
 
             <Route path='/UserBikeListPage' element={<UserBikeListPage />} />
             <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage />} />
-            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails /></UserProtecteRoute>} />
+            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails socket={socket} /></UserProtecteRoute>} />
+            <Route path="/user/chat" element={<UserProtecteRoute><Chat /></UserProtecteRoute>} />
 
 
 

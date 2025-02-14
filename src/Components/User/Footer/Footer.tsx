@@ -1,5 +1,12 @@
 
 const Footer = () => {
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <footer className="bg-black text-white py-10">
       <div className="container mx-auto text-center">
@@ -17,10 +24,47 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-3">Our Links</h4>
             <ul className="space-y-2">
-              <li><a href="#home" className="hover:text-gray-400">Home</a></li>
-              <li><a href="#about" className="hover:text-gray-400">About Us</a></li>
-              <li><a href="#contact" className="hover:text-gray-400">Contact Us</a></li>
-              <li><a href="#services" className="hover:text-gray-400">Services</a></li>
+
+
+              <li>
+                <a href="/" className="hover:text-gray-400">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#about"
+                  className="hover:text-gray-400"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("about-us");
+                  }}>
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="#contact"
+                  className="hover:text-gray-400"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("feedback");
+                  }}
+                >
+                  Feedbacks
+                </a>
+              </li>
+              <li>
+                <a href="#services"
+                  className="hover:text-gray-400"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("Services");
+                  }}
+                >
+                  Services
+                </a>
+              </li>
+
+
             </ul>
           </div>
 
