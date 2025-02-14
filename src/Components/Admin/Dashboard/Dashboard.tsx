@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { orderList } from "../../../Api/admin";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import OrderList from "./Components/OrderList";
 import OrderGraph from "./Components/OrderGraph";
 import ReportManagement from "./Components/ReportManagement";
@@ -19,7 +18,6 @@ interface IOrder {
 
 const Dashboard = () => {
   const [orders, setOrders] = useState<IOrder[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -41,10 +39,10 @@ const Dashboard = () => {
     <>
       <div></div>
 
-      <div>
-      <OrderGraph orders={orders} />  {/* 📊 Graphs */}
-      <ReportManagement orders={orders} />  {/* 📋 Reports */}
-      <OrderList orders={orders} />  {/* 📝 Order Table */}
+      <div className="bg-yellow-50">
+      <OrderGraph orders={orders} />  {/*  Graphs */}
+      <ReportManagement orders={orders} />  {/*  Reports */}
+      <OrderList orders={orders} />  {/* Order Table */}
       </div>
     </>
   );

@@ -20,10 +20,8 @@ interface OrderGraphProps {
 const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
     const [filter, setFilter] = useState("all");
 
-    // ✅ Filter Orders Based on Status
     const filteredOrders = filter === "all" ? orders : orders.filter(order => order.status === filter);
 
-    // ✅ Group Orders by Date for Bar Chart
     const ordersByDate: Record<string, number> = {};
     filteredOrders.forEach(order => {
         const date = new Date(order.startDate).toLocaleDateString();
@@ -35,7 +33,7 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
         count,
     }));
 
-    // ✅ Count Order Status for Pie Chart
+    // count Order Status for Pie Chart
     const statusCounts: Record<string, number> = {};
     orders.forEach(order => {
         statusCounts[order.status] = (statusCounts[order.status] || 0) + 1;
@@ -49,10 +47,10 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
     const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
     return (
-        <div>
-            <FormControl style={{ width: "200px", marginBottom: "20px", marginTop: "20px" }}>
-                <InputLabel style={{ marginBottom: "2px" }}>Status Filter</InputLabel>
-                <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
+        <div >
+            <FormControl style={{ width: "220px", marginBottom: "20px", marginTop: "30px" }}>
+                <InputLabel style={{ marginBottom: "2px" ,color:"black",fontWeight: "bold", fontSize: "26px" }}>Status Filter</InputLabel>
+                <Select style={{marginTop:'14px'}} value={filter} onChange={(e) => setFilter(e.target.value)}>
                     <MenuItem value="all">All</MenuItem>
                     <MenuItem value="Completed">Completed</MenuItem>
                     <MenuItem value="Booked">Booked</MenuItem>
@@ -60,9 +58,9 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
                 </Select>
             </FormControl>
 
-            {/* ✅ Bar Chart: Orders by Date */}
-            <h3>Orders Over Time</h3>
-            <ResponsiveContainer width="100%" height={300}>
+            {/*  Bar Chart: Orders by Date */}
+            <h3 style={{background:'#ffebee',marginTop:"20px", fontWeight: "bold", fontSize: "26px"}}>Orders Over Time</h3>
+            <ResponsiveContainer width="100%" height={300} style={{background:'#ffebee',marginBottom:"20px"}}>
                 <BarChart data={barChartData}>
                     <XAxis dataKey="date" />
                     <YAxis />
@@ -71,9 +69,9 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
                 </BarChart>
             </ResponsiveContainer>
 
-            {/* ✅ Pie Chart: Order Status */}
-            <h3>Order Status Breakdown</h3>
-            <ResponsiveContainer width="100%" height={300}>
+            {/*  Pie Chart: Order Status */}
+            <h3 style={{background:'#ffebee',marginTop:"20px", fontWeight:"bold", fontSize:"26px"}} >Order Status Breakdown</h3>
+            <ResponsiveContainer style={{background:'#ffebee'}} width="100%" height={300}>
                 <PieChart>
                     <Pie data={pieChartData} dataKey="value" nameKey="name" outerRadius={100} label>
                         {pieChartData.map((_, index) => (

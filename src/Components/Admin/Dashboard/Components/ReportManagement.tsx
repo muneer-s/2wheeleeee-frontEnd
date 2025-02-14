@@ -17,7 +17,6 @@ interface ReportManagementProps {
 }
 
 const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
-  // ✅ 1️⃣ Most Booked 10 Bikes
   const mostBookedBikes = useMemo(() => {
     const bikeCounts: Record<string, number> = {};
 
@@ -31,7 +30,6 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
       .slice(0, 10);
   }, [orders]);
 
-  // ✅ 2️⃣ Most Booked Month
   const mostBookedMonth = useMemo(() => {
     const monthCounts: Record<string, number> = {};
 
@@ -45,7 +43,7 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
     return sortedMonths.length ? sortedMonths[0][0] : "No data available";
   }, [orders]);
 
-  // ✅ 3️⃣ Revenue Trend Over Time
+  // Revenue Trend Over Time
   const revenueByMonth = useMemo(() => {
     const revenueMap: Record<string, number> = {};
 
@@ -61,12 +59,12 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
   }, [orders]);
 
   return (
-    <div>
-      <h2>📊 Report Management</h2>
+    <div style={{marginTop:"20px" , marginBottom:'40px'}}>
+      <h2 style={{fontWeight:"bold",fontSize:"30px" }}>📊 Report Management</h2>
 
-      {/* ✅ Most Booked 10 Bikes */}
-      <h3>🏍️ Most Booked 10 Bikes</h3>
-      <TableContainer component={Paper}>
+      {/*  Most Booked 10 Bikes */}
+      <h3 style={{marginTop:"20px" , fontWeight:"bold", fontSize:"20px" }}>🏍️ Most Booked 10 Bikes</h3>
+      <TableContainer style={{background:'#fffde7'}} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
@@ -85,11 +83,11 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
         </Table>
       </TableContainer>
 
-      {/* ✅ Most Booked Month */}
-      <h3>📅 Most Booked Month</h3>
-      <p><strong>{mostBookedMonth}</strong></p>
+      {/* Most Booked Month */}
+      <h3 style={{marginTop:"30px" , fontWeight:"bold", fontSize:"20px"}}>📅 Most Booked Month</h3>
+      <p style={{marginTop:"20px" , marginBottom:"20px"}}><strong>{mostBookedMonth}</strong></p>
 
-      {/* ✅ Revenue Over Time (Line Chart) */}
+      {/* Revenue Over Time (Line Chart) */}
       <h3>💰 Revenue Trend</h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={revenueByMonth}>

@@ -17,25 +17,30 @@ const OrderList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
   const headers = ["Bike ID", "Start Date", "End Date", "Amount", "Status", "User ID", "Payment Method"];
 
   return (
-    <div>
+    <div className="bg-red-50 p-4 rounded-lg">
       {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        <CustomTable
-          headers={headers}
-          data={orders}
-          renderRow={(order) => (
-            <TableRow key={order._id}>
-              <TableCell>{order.bikeId}</TableCell>
-              <TableCell>{formatDate(order.startDate)}</TableCell>
-              <TableCell>{formatDate(order.endDate)}</TableCell>
-              <TableCell>₹{order.amount}</TableCell>
-              <TableCell>{order.status}</TableCell>
-              <TableCell>{order.userId}</TableCell>
-              <TableCell>{order.method}</TableCell>
-            </TableRow>
-          )}
-        />
+        <>
+          <h2 className="mb-4 font-bold text-2xl">Order List</h2>
+          <div className="bg-red-50 p-2 rounded-lg">
+            <CustomTable
+              headers={headers}
+              data={orders}
+              renderRow={(order) => (
+                <TableRow key={order._id} className="bg-red-50">
+                  <TableCell>{order.bikeId}</TableCell>
+                  <TableCell>{formatDate(order.startDate)}</TableCell>
+                  <TableCell>{formatDate(order.endDate)}</TableCell>
+                  <TableCell>₹{order.amount}</TableCell>
+                  <TableCell>{order.status}</TableCell>
+                  <TableCell>{order.userId}</TableCell>
+                  <TableCell>{order.method}</TableCell>
+                </TableRow>
+              )}
+            />
+          </div>
+        </>
       )}
     </div>
   );

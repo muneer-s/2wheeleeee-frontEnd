@@ -40,7 +40,7 @@ import ChatWidget from './Components/User/Chat/ChatUi';
 // import {io} from 'socket.io-client'
 import io from 'socket.io-client';
 
-const socket = io(import.meta.env.VITE_BACKEND_URL,{
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
   transports: ['polling', 'websocket'],
 })
 
@@ -69,6 +69,8 @@ function App() {
 
 
 
+
+            {/* host side */}
             <Route path='/hostHome' element={<UserProtecteRoute><HostHome /></UserProtecteRoute>} />
             <Route path='/OrderSuccess' element={<UserProtecteRoute><OrderSuccess /></UserProtecteRoute>} />
             <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage /></UserProtecteRoute>} />
