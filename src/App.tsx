@@ -28,7 +28,6 @@ import UserBikeListPage from './Screen/User/UserBikeListPage/UserBikeListPage';
 import UserBikeSinglePage from './Screen/User/UserBikeSingleViewPage/UserBikeSinglePage';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ForbiddenPage from './Components/403/ForbiddenPage';
 import OrderSuccess from './Components/User/OrderSuccessPage/OrderSuccess';
 import AdminOrdersList from './Screen/Admin/AdminOrdersList/AdminOrdersList';
 import AdminOrderDetails from './Components/Admin/AdminOrderDetail/AdminOrderDetails';
@@ -39,6 +38,8 @@ import Chat from './Components/User/Chat/Chat';
 import ChatWidget from './Components/User/Chat/ChatUi';
 // import {io} from 'socket.io-client'
 import io from 'socket.io-client';
+import PageNotFound from './Components/404/PageNotFound';
+
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
   transports: ['polling', 'websocket'],
@@ -51,7 +52,6 @@ function App() {
     <>
       <Provider store={store}>
         <Toaster />
-
         <Router>
           <Routes>
             {/* user side */}
@@ -60,14 +60,12 @@ function App() {
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} />
             <Route path='/forgotPassword' element={<ForgotPasswordScreen />} />
-            <Route path='/pageNotFound' element={<ForbiddenPage />} />
+            <Route path='/pageNotFound' element={<PageNotFound />} />
 
             <Route path='/UserBikeListPage' element={<UserBikeListPage />} />
             <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage />} />
             <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails socket={socket} /></UserProtecteRoute>} />
             <Route path="/user/chat" element={<UserProtecteRoute><Chat /></UserProtecteRoute>} />
-
-
 
 
             {/* host side */}
@@ -98,10 +96,12 @@ function App() {
             <Route path="/adminOrderList" element={<AdminProtectedRoute><AdminOrdersList /></AdminProtectedRoute>} />
             <Route path="/admin/orders/:orderId" element={<AdminProtectedRoute><AdminOrderDetails /></AdminProtectedRoute>} />
 
-
+            {/* Catch-all for 404 */}
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
       </Provider>
+
     </>
   )
 }

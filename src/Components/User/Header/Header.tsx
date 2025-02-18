@@ -60,7 +60,7 @@ const Header = () => {
             handleLogout()
           }
         } catch (error) {
-          console.error("Error checking blocked status:", error);
+          console.error("Error checking blocked status:", error)
         }
       }
     };

@@ -2,6 +2,7 @@ import userRoutes from "../service/endPoints/userEndPoints.ts";
 import Api from "../service/axios.ts";
 
 import { UserData } from "../Interfaces/Interfaces.ts";
+import { IUserFeedback } from "../Components/User/Feedback/FeedbackForm.tsx";
 
 const verifyOtp = async (data: { otp: string, userId: string | null }) => {
     try {
@@ -73,9 +74,7 @@ const forgotPassword = async (email: string) => {
 
 const getProfile = async (email: string) => {
     try {
-
         const result = await Api.get(`${userRoutes.getProfile}?email=${email}`);
-
         return result.data
 
     } catch (error) {
@@ -234,7 +233,15 @@ const submitReview = async (reviewData: any) => {
     }
 }
 
-
+const createFeedback = async (datas: IUserFeedback) => {
+    try {
+        const response = await Api.post(userRoutes.createFeedback, datas);
+        return response.data;
+    } catch (error) {
+        console.log('Error during creating feedback  : ', error)
+        throw error
+    }
+}
 
 export {
     verifyOtp,
@@ -257,5 +264,6 @@ export {
     earlyReturns,
     returnOrder,
     getReviews,
-    submitReview
+    submitReview,
+    createFeedback
 }

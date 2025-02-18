@@ -20,25 +20,9 @@ const AdminAllusers = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
   const [filter, setFilter] = useState<{ isBlocked?: boolean; isUser?: boolean }>({});
-  // const [debouncedSearch, setDebouncedSearch] = useState<string>('');
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
-
-
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedSearch(search);
-  //   }, 500);
-
-  //   return () => {
-  //     clearTimeout(handler);
-  //   };
-  // }, [search]);
-
-
-
-
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -58,14 +42,12 @@ const AdminAllusers = () => {
         if (response && response.success) {
           setUserList(data.usersList);
           setTotalPages(data.totalPages);
-        } else {
-          await logout()
-          dispatch(adminLogout());
         }
       } catch (error: any) {
-        // toast.error(error.response.message)
-        toast.error('Error fetching users...')
+        toast.error(error.response.data.message)
         console.error('Error fetching users:', error);
+        await logout()
+        dispatch(adminLogout());
 
       }
     };

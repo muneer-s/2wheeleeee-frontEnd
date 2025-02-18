@@ -15,7 +15,6 @@ export const authSlice = createSlice({
             state.adminData = action.payload;
             localStorage.setItem('adminInfo', JSON.stringify(action.payload));
         },
-        
         saveUser: (state, action) => {
             state.user = action.payload;
             localStorage.setItem('userAddress', JSON.stringify(action.payload));

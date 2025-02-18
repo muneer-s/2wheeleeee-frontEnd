@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 
 interface IOrder {
   _id: string;
-  bikeId: string;
+  bikeId: IBike;
   amount: number;
   startDate: string;
   endDate: string;
@@ -16,12 +16,17 @@ interface ReportManagementProps {
   orders: IOrder[];
 }
 
+interface IBike{
+  _id:string,
+  modelName:string
+}
+
 const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
   const mostBookedBikes = useMemo(() => {
     const bikeCounts: Record<string, number> = {};
 
     orders.forEach(order => {
-      bikeCounts[order.bikeId] = (bikeCounts[order.bikeId] || 0) + 1;
+      bikeCounts[order.bikeId.modelName] = (bikeCounts[order.bikeId.modelName] || 0) + 1;
     });
 
     return Object.entries(bikeCounts)
@@ -64,11 +69,11 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
 
       {/*  Most Booked 10 Bikes */}
       <h3 style={{marginTop:"20px" , fontWeight:"bold", fontSize:"20px" }}>🏍️ Most Booked 10 Bikes</h3>
-      <TableContainer style={{background:'#fffde7'}} component={Paper}>
+      <TableContainer style={{background:'#ffebee'}} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Bike ID</TableCell>
+              <TableCell>Bike</TableCell>
               <TableCell>Booking Count</TableCell>
             </TableRow>
           </TableHead>
@@ -82,10 +87,12 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <div className="bg-black h-10"></div>
 
       {/* Most Booked Month */}
       <h3 style={{marginTop:"30px" , fontWeight:"bold", fontSize:"20px"}}>📅 Most Booked Month</h3>
       <p style={{marginTop:"20px" , marginBottom:"20px"}}><strong>{mostBookedMonth}</strong></p>
+      <div className="bg-red-50 h-10"></div>
 
       {/* Revenue Over Time (Line Chart) */}
       <h3>💰 Revenue Trend</h3>

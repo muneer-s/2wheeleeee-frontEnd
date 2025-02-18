@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch, useAppSelector } from '../../../Apps/store';
 import { saveUser } from '../../../Apps/slice/AuthSlice';
 import { setUserCredential } from '../../../Apps/slice/AuthSlice';
+
 import { handleApiResponse } from '../../../Utils/apiUtils';
 
 const UserLogin: React.FC = () => {
@@ -60,9 +61,8 @@ const UserLogin: React.FC = () => {
         setLoading(true)
         try {
             const response = await login({ email, password })
-            console.log(111, response)
-
             const data = handleApiResponse(response);
+
             const user = {
                 email: data.user.email,
                 name: data.user.name,
@@ -76,7 +76,6 @@ const UserLogin: React.FC = () => {
 
         } catch (err: any) {
             setError(err.message || 'An error occurred during login');
-            toast.error(err.message || 'Login failed.');
         } finally {
             setLoading(false);
         }

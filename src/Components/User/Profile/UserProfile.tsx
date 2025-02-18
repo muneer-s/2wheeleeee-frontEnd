@@ -3,11 +3,14 @@ import { edituser, edituserDocuments, getProfile, logout } from "../../../Api/us
 import { useAppSelector } from "../../../Apps/store";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { saveUser } from "../../../Apps/slice/AuthSlice";
+import { saveUser, userLogout } from "../../../Apps/slice/AuthSlice";
 import { UserData } from "../../../Interfaces/Interfaces";
 import { handleApiResponse } from "../../../Utils/apiUtils";
 import MyWallet from "../Wallet/MyWallet";
 import UserOrderList from "../OrderList/UserOrderList";
+import FeedbackForm from "../Feedback/FeedbackForm";
+
+
 
 const UserProfile: React.FC = () => {
     const [userProfile, setUserProfile] = useState<UserData | null>(null);
@@ -29,16 +32,29 @@ const UserProfile: React.FC = () => {
             try {
                 const response = await getProfile(userEmail);
                 const userDetails = handleApiResponse(response)
+                console.log("profile data : ", response);
 
                 if (response.success) {
                     setUserProfile(userDetails);
                     setPic(userDetails?.profile_picture || "");
-                } else {
-                    toast.error(response.message)
-                    await logout({ email: userEmail });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error('catch Error get profile:', error);
+                if(error.response.status==401 || error.response.status ==403 ){
+                    toast.error(error.response.data.message)
+                    await logout({ email: userEmail });
+                    dispatch(userLogout())
+                }else{
+                    toast.error(error.response.data.message)
+                }
+
+
+                // else{
+                //     await logout({ email: userEmail });
+                //     dispatch(userLogout())
+                //     toast.error(error.message)
+                // }
+
             }
         }
         fetchData();
@@ -477,10 +493,13 @@ const UserProfile: React.FC = () => {
                     </div>
                 );
 
-            case "My Wallet": return <MyWallet/>
+            case "My Wallet": return <MyWallet />
 
             case "Booking History":
-                return <UserOrderList/>
+                return <UserOrderList />
+
+            case "Feedback":
+                return <FeedbackForm role={'User'}/>
 
             default:
                 return null;
@@ -499,6 +518,7 @@ const UserProfile: React.FC = () => {
                             <li className={`font-semibold cursor-pointer ${activeTab === "Personal Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Personal Details")}>Personal Details</li>
                             <li className={`cursor-pointer ${activeTab === "My Wallet" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("My Wallet")}>My Wallet</li>
                             <li className={`cursor-pointer ${activeTab === "Booking History" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Booking History")}>Booking History</li>
+                            <li className={`cursor-pointer ${activeTab === "Feedback" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Feedback")}>Feedback</li>
                         </ul>
                     </div>
 

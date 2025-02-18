@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 const Body = () => {
 
   const navigate = useNavigate()
+  
   return (
     <div className="bg-white text-center py-12 w-full">
 
@@ -88,15 +89,13 @@ const Body = () => {
               "I had an amazing experience with ZWheelers. Listing my bike was straightforward and the rental process was smooth and secure."
             </p>
             <h4 className="text-lg font-semibold">Anas</h4>
-            <p className="text-gray-500 text-sm">Host</p>
           </div>
           <div className="p-4 bg-[rgb(170,223,242)] shadow-md rounded-md w-80">
-            <p className="text-yellow-500 mb-2">★★★★★</p>
+            <p className="text-yellow-500 mb-2">★★★★</p>
             <p className="text-gray-700 text-sm mb-4">
               "As a renter, ZWheelers exceeded my expectations. I found the perfect bike just a few blocks away from my apartment, and the owner was friendly and accommodating."
             </p>
             <h4 className="text-lg font-semibold">Manu</h4>
-            <p className="text-gray-500 text-sm">Customer</p>
           </div>
           <div className="p-4 bg-[rgb(170,223,242)] shadow-md rounded-md w-80">
             <p className="text-yellow-500 mb-2">★★★★★</p>
@@ -104,7 +103,6 @@ const Body = () => {
               "I've been using ZWheelers for a few months now. Both as a bike owner and a renter, the reliability of the platform allows me to choose renters who will enjoy my bike and ride it responsibly."
             </p>
             <h4 className="text-lg font-semibold">Neeraj</h4>
-            <p className="text-gray-500 text-sm">Customer</p>
           </div>
         </div>
       </div>

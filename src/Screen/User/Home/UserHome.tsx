@@ -5,11 +5,13 @@ import Footer from '../../../Components/User/Footer/Footer.js'
 const UserHome = () => {
   return (
     <>
-    <div>
-        <Header/>
-        <Body/>
-        <Footer/>
-    </div>
+      <div>
+       
+          <Header />
+          <Body />
+          <Footer />
+
+      </div>
 
     </>
   )

@@ -83,7 +83,7 @@ const AdminHostComp = () => {
     
           <Box display="flex" justifyContent="space-between " mb={4} flexWrap="wrap" gap={2}>
             <TextField
-              label="Search by User Name"
+              label="Search by Owner Name"
               variant="outlined"
               value={search}
               onChange={handleSearch}
@@ -103,7 +103,7 @@ const AdminHostComp = () => {
           <CustomTable
             headers={[
               'Bike Image',
-              'User Name',
+              'Owner Name',
               'Company Name',
               'Model Name',
               'Rent Amount',

@@ -357,7 +357,7 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                                 <td className="font-semibold py-1">Address:</td>
                                 <td>{owner.address}</td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <td>
                                     <button
                                         className="px-2 py-2 rounded bg-red-500 text-white flex items-center"
@@ -369,7 +369,7 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                                     </button>
                                 </td>
 
-                            </tr>
+                            </tr> */}
 
                         </tbody>
                     </table>
@@ -418,7 +418,7 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                 )}
 
 
-
+{/* 
                 {isOpen ? (
                     <ChatWidget
                         isChatOpen={isOpen}
@@ -429,7 +429,7 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                     />
                 ) : (
                     ""
-                )}
+                )} */}
 
 
 

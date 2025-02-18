@@ -4,7 +4,7 @@ import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 interface IOrder {
     _id: string;
-    bikeId: string;
+    bikeId: IBike;
     amount: number;
     startDate: string;
     endDate: string;
@@ -16,6 +16,12 @@ interface IOrder {
 interface OrderGraphProps {
     orders: IOrder[];
 }
+
+
+interface IBike{
+    _id:string,
+    modelName:string
+  }
 
 const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
     const [filter, setFilter] = useState("all");
@@ -68,6 +74,7 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
                     <Bar dataKey="count" fill="#8884d8" />
                 </BarChart>
             </ResponsiveContainer>
+            <div className="bg-black h-10"></div>
 
             {/*  Pie Chart: Order Status */}
             <h3 style={{background:'#ffebee',marginTop:"20px", fontWeight:"bold", fontSize:"26px"}} >Order Status Breakdown</h3>

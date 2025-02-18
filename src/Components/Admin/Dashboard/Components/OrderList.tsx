@@ -3,7 +3,7 @@ import CustomTable from "../../../../ReusableComponents/CustomTable";
 
 interface IOrder {
   _id: string;
-  bikeId: string;
+  bikeId: IBike;
   amount: number;
   startDate: string;
   endDate: string;
@@ -12,9 +12,14 @@ interface IOrder {
   method: string;
 }
 
+interface IBike{
+  _id:string,
+  modelName:string
+}
+
 const OrderList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
-  const headers = ["Bike ID", "Start Date", "End Date", "Amount", "Status", "User ID", "Payment Method"];
+  const headers = ["Bike ", "Start Date", "End Date", "Amount", "Status", "User ID", "Payment Method"];
 
   return (
     <div className="bg-red-50 p-4 rounded-lg">
@@ -29,7 +34,7 @@ const OrderList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
               data={orders}
               renderRow={(order) => (
                 <TableRow key={order._id} className="bg-red-50">
-                  <TableCell>{order.bikeId}</TableCell>
+                  <TableCell>{order.bikeId.modelName}</TableCell>
                   <TableCell>{formatDate(order.startDate)}</TableCell>
                   <TableCell>{formatDate(order.endDate)}</TableCell>
                   <TableCell>₹{order.amount}</TableCell>
