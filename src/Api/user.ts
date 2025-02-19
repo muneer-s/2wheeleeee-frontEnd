@@ -2,7 +2,7 @@ import userRoutes from "../service/endPoints/userEndPoints.ts";
 import Api from "../service/axios.ts";
 
 import { UserData } from "../Interfaces/Interfaces.ts";
-import { IUserFeedback } from "../Components/User/Feedback/FeedbackForm.tsx";
+import { IUserFeedback, IUserFeedbacks } from "../Components/User/Feedback/FeedbackForm.tsx";
 
 const verifyOtp = async (data: { otp: string, userId: string | null }) => {
     try {
@@ -233,7 +233,7 @@ const submitReview = async (reviewData: any) => {
     }
 }
 
-const createFeedback = async (datas: IUserFeedback) => {
+const createFeedback = async (datas: IUserFeedbacks) => {
     try {
         const response = await Api.post(userRoutes.createFeedback, datas);
         return response.data;
@@ -257,8 +257,6 @@ const getUserFeedback = async (userId: string) => {
 const updateFeedback = async (feedbackId: string, feedbackData: { rating: number; comment: string }) => {
     try {
         const response = await Api.put(`${userRoutes.feedback}/${feedbackId}`, feedbackData);
-
-        //const response = await Api.put(`/api/feedback/${feedbackId}`, feedbackData);
         return response.data;
     } catch (error) {
         console.log('Error during updating feedback  : ', error)
@@ -266,7 +264,6 @@ const updateFeedback = async (feedbackId: string, feedbackData: { rating: number
     }
 };
 
-// Delete user's feedback
 const deleteFeedback = async (feedbackId: string) => {
     try {
         const response = await Api.delete(`${userRoutes.feedback}/${feedbackId}`);
@@ -275,8 +272,18 @@ const deleteFeedback = async (feedbackId: string) => {
         console.log('Error during deleting feedback  : ', error)
         throw error
     }
-   
 };
+
+
+const allFeedbacks = async()=>{
+    try {
+        const response = await Api.get(userRoutes.allFeedbacks)
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching feedbacks list for user", error)
+        throw error
+    }
+}
 
 export {
     verifyOtp,
@@ -303,5 +310,6 @@ export {
     createFeedback,
     getUserFeedback,
     updateFeedback,
-    deleteFeedback
+    deleteFeedback,
+    allFeedbacks
 }

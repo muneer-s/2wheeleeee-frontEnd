@@ -1,9 +1,45 @@
 import { useNavigate } from "react-router-dom";
+import { allFeedbacks } from "../../../Api/user";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+export interface IFeedback {
+  _id: string;
+  userId: IUser;
+  rating: number;
+  feedback: string;
+  createdAt: string;
+}
+
+interface IUser {
+  _id: string
+  name: string
+  email: string
+}
+
 
 const Body = () => {
 
   const navigate = useNavigate()
-  
+
+
+  const [feedbacks, setFeedbacks] = useState<IFeedback[]>([]);
+
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await allFeedbacks();
+        setFeedbacks(response.data);
+      } catch (error: any) {
+        console.error("Error fetching feedbacks", error);
+        //toast.error(error.response.data.message);
+      }
+    };
+
+    fetchFeedbacks();
+  }, []);
+
+
   return (
     <div className="bg-white text-center py-12 w-full">
 
@@ -78,35 +114,27 @@ const Body = () => {
 
       </div>
 
+      {feedbacks.length > 0 && (
+        <div id='feedback' className="py-12 bg-white">
+          <h2 className="text-3xl font-bold mb-6 text-sky-500">Feedback</h2>
+          <h3 className="text-2xl font-bold mb-6">What Our Customers Say</h3>
 
-      <div id='feedback' className="py-12 bg-white">
-        <h2 className="text-3xl font-bold mb-6 text-sky-500">Feedback</h2>
-        <h3 className="text-2xl font-bold mb-6">What Our Customers Say</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 justify-items-center">
-          <div className="p-4 bg-[rgb(170,223,242)] shadow-md rounded-md w-80">
-            <p className="text-yellow-500 mb-2">★★★★★</p>
-            <p className="text-gray-700 text-sm mb-4">
-              "I had an amazing experience with ZWheelers. Listing my bike was straightforward and the rental process was smooth and secure."
-            </p>
-            <h4 className="text-lg font-semibold">Anas</h4>
-          </div>
-          <div className="p-4 bg-[rgb(170,223,242)] shadow-md rounded-md w-80">
-            <p className="text-yellow-500 mb-2">★★★★</p>
-            <p className="text-gray-700 text-sm mb-4">
-              "As a renter, ZWheelers exceeded my expectations. I found the perfect bike just a few blocks away from my apartment, and the owner was friendly and accommodating."
-            </p>
-            <h4 className="text-lg font-semibold">Manu</h4>
-          </div>
-          <div className="p-4 bg-[rgb(170,223,242)] shadow-md rounded-md w-80">
-            <p className="text-yellow-500 mb-2">★★★★★</p>
-            <p className="text-gray-700 text-sm mb-4">
-              "I've been using ZWheelers for a few months now. Both as a bike owner and a renter, the reliability of the platform allows me to choose renters who will enjoy my bike and ride it responsibly."
-            </p>
-            <h4 className="text-lg font-semibold">Neeraj</h4>
+          <div
+            className={`grid gap-y-8 justify-items-center 
+      ${feedbacks.length === 1 ? "grid-cols-1" : feedbacks.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}
+          >
+            {feedbacks.slice(0, 3).map((fb) => (
+              <div key={fb._id} className="p-4 bg-[rgb(170,223,242)] shadow-md rounded-md w-80">
+                <p className="text-yellow-500 mb-2">
+                  {"★".repeat(fb.rating)}{"☆".repeat(5 - fb.rating)}
+                </p>
+                <p className="text-gray-700 text-sm mb-4">"{fb.feedback}"</p>
+                <h4 className="text-lg font-semibold">{fb.userId.name}</h4>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-
+      )}
 
 
 

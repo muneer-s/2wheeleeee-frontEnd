@@ -11,7 +11,7 @@ const adminRoutes={
     OrderList:'/admin/orderList',
     OrderDetails:'/admin/OrderDetails',
     getAllFeedbacks:'/admin/getAllFeedbacks',
-    deleteFeedbacks:'/admin/deleteFeedbacks'
+    deleteFeedbacks:'/admin/feedback',
    
 }
 

@@ -9,7 +9,6 @@ import { handleApiResponse } from "../../../Utils/apiUtils";
 import MyWallet from "../Wallet/MyWallet";
 import UserOrderList from "../OrderList/UserOrderList";
 import FeedbackForm from "../Feedback/FeedbackForm";
-import MyFeedback from "../MyFeedback.tsx/MyFeedback";
 
 interface ProfilePageProps {
     socket: any;
@@ -504,10 +503,7 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
                 return <UserOrderList  socket={socket} />
 
             case "Feedback":
-                return <FeedbackForm role={'User'} />
-
-            case "My Feedback":
-                return <MyFeedback/>
+                return <FeedbackForm />
 
             default:
                 return null;
@@ -527,7 +523,6 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
                             <li className={`cursor-pointer ${activeTab === "My Wallet" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("My Wallet")}>My Wallet</li>
                             <li className={`cursor-pointer ${activeTab === "Booking History" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Booking History")}>Booking History</li>
                             <li className={`cursor-pointer ${activeTab === "Feedback" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Feedback")}>Feedback</li>
-                            <li className={`cursor-pointer ${activeTab === "My Feedback" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("My Feedback")}>My Feedback</li>
                         </ul>
                     </div>
 

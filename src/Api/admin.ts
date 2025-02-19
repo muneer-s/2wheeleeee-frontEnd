@@ -128,6 +128,17 @@ const getAllFeedbacks = async()=>{
 }
 
 
+const deleteFeedback = async(feedbackId:string)=>{
+    try {
+        const response = await Api.delete(`${adminRoutes.deleteFeedbacks}/${feedbackId}`);
+        return response.data;
+    } catch (error) {
+        console.log("Error when admin delete feedback", error)
+        throw error
+    }
+}
+
+
 
 export {
     login,
@@ -141,5 +152,6 @@ export {
     isEditOn,
     orderList,
     getOrderDetails,
-    getAllFeedbacks
+    getAllFeedbacks,
+    deleteFeedback
 }

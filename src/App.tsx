@@ -37,12 +37,11 @@ import ApplyOffer from './Components/Host/ApplyOfferToBike/ApplyOffer';
 import ChatWidget from './Components/User/Chat/ChatUi';
 
 import ChatWidget1 from './Components/User/Chat/ChatUi';
-
+import AdminFeedbackListPage from './Screen/Admin/FeedbackList/AdminFeedbackListPage';
 
 // import {io} from 'socket.io-client'
 import io from 'socket.io-client';
 import PageNotFound from './Components/404/PageNotFound';
-import FeedbackList from './Components/Admin/FeedbackList/FeedbackList';
 
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
@@ -97,7 +96,7 @@ function App() {
             <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView /></AdminProtectedRoute>} />
             <Route path="/adminOrderList" element={<AdminProtectedRoute><AdminOrdersList /></AdminProtectedRoute>} />
             <Route path="/admin/orders/:orderId" element={<AdminProtectedRoute><AdminOrderDetails /></AdminProtectedRoute>} />
-            <Route path='/adminFeedbackList' element={<AdminProtectedRoute><FeedbackList/></AdminProtectedRoute>} />
+            <Route path='/adminFeedbackList' element={<AdminProtectedRoute><AdminFeedbackListPage/></AdminProtectedRoute>} />
 
             {/* Catch-all for 404 */}
             <Route path="*" element={<PageNotFound />} />

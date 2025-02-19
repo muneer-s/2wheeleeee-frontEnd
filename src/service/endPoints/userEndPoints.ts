@@ -24,7 +24,8 @@ const userRoutes={
     getReviews:'/user/getReviews',
     submitReview:'/user/submitReview',
     createFeedback:'/feedback/createFeedback',
-    feedback:'/feedback/feedback'
+    feedback:'/feedback/feedback',
+    allFeedbacks:'/feedback/allFeedbacks'
 
 }
 
