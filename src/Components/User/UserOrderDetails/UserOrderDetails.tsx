@@ -9,8 +9,16 @@ import { useAppSelector } from "../../../Apps/store";
 import Api from "../../../service/axios";
 
 import { Socket } from "socket.io-client";
-import ChatWidget from "../../../Components/User/Chat/ChatUi";
+// import ChatWidget from "../../../Components/User/Chat/ChatUi";
+import io from 'socket.io-client';
+import ChatWidget from "../Chat/MainChatUI";
+import ChatWidget1 from "../Chat/ChatUi";
 
+
+
+// const socket = io(import.meta.env.VITE_BACKEND_URL, {
+//     transports: ['polling', 'websocket'],
+// })
 
 interface IOrder {
     _id: string;
@@ -232,9 +240,9 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
             } else {
                 toast.error("Failed to submit review.");
             }
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error submitting review:", error);
-            toast.error("Something went wrong.");
+            toast.error(error.response.data.message);
         }
     };
 
@@ -357,7 +365,7 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                                 <td className="font-semibold py-1">Address:</td>
                                 <td>{owner.address}</td>
                             </tr>
-                            {/* <tr>
+                            <tr>
                                 <td>
                                     <button
                                         className="px-2 py-2 rounded bg-red-500 text-white flex items-center"
@@ -369,7 +377,7 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                                     </button>
                                 </td>
 
-                            </tr> */}
+                            </tr>
 
                         </tbody>
                     </table>
@@ -418,8 +426,8 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                 )}
 
 
-{/* 
-                {isOpen ? (
+
+                {/* {isOpen ? (
                     <ChatWidget
                         isChatOpen={isOpen}
                         onClose={handleClose}
@@ -430,6 +438,21 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                 ) : (
                     ""
                 )} */}
+
+
+
+
+                {isOpen ? (
+                    <ChatWidget1
+                        isChatOpen={isOpen}
+                        onClose={handleClose}
+                        hostId={hostId}
+                        chatId={chatId}
+                        socket={socket}
+                    />
+                ) : (
+                    ""
+                )}
 
 
 

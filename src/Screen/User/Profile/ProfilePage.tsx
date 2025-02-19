@@ -1,11 +1,18 @@
 
 import Header from "../../../Components/User/Header/Header"
 import UserProfile from "../../../Components/User/Profile/UserProfile"
-const ProfilePage = () => {
+
+
+interface ProfilePageProps {
+  socket: any; 
+}
+
+
+const ProfilePage: React.FC<ProfilePageProps> = ({ socket }) => {
   return (
     <>
     <Header/>
-    <UserProfile/>
+    <UserProfile socket={socket} />
     </>
   )
 }

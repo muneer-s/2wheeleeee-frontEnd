@@ -19,7 +19,7 @@ const Body = () => {
           </p>
           <button
             className="bg-transparent text-sky-500 font-semibold py-2 px-6 border border-sky-500 rounded hover:bg-sky-500 hover:text-white"
-            onClick={() => navigate('/UserBikeListPage')}
+            onClick={() => navigate('/BikeListPage')}
           >
             Rent a Bike
           </button>

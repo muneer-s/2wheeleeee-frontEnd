@@ -243,6 +243,41 @@ const createFeedback = async (datas: IUserFeedback) => {
     }
 }
 
+const getUserFeedback = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.feedback}/${userId}`)
+        return response.data
+    } catch (error) {
+        console.log('Error during getting feedback  : ', error)
+        throw error
+    }
+}
+
+
+const updateFeedback = async (feedbackId: string, feedbackData: { rating: number; comment: string }) => {
+    try {
+        const response = await Api.put(`${userRoutes.feedback}/${feedbackId}`, feedbackData);
+
+        //const response = await Api.put(`/api/feedback/${feedbackId}`, feedbackData);
+        return response.data;
+    } catch (error) {
+        console.log('Error during updating feedback  : ', error)
+        throw error
+    }
+};
+
+// Delete user's feedback
+const deleteFeedback = async (feedbackId: string) => {
+    try {
+        const response = await Api.delete(`${userRoutes.feedback}/${feedbackId}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error during deleting feedback  : ', error)
+        throw error
+    }
+   
+};
+
 export {
     verifyOtp,
     resendOtp,
@@ -265,5 +300,8 @@ export {
     returnOrder,
     getReviews,
     submitReview,
-    createFeedback
+    createFeedback,
+    getUserFeedback,
+    updateFeedback,
+    deleteFeedback
 }

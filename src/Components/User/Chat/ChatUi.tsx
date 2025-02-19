@@ -43,7 +43,7 @@ interface activeUserProps {
   userId: string;
 }
 
-const ChatWidget: React.FC<ChatWidgetProps> = ({
+const ChatWidget1: React.FC<ChatWidgetProps> = ({
   isChatOpen,
   hostId,
   onClose,
@@ -307,4 +307,4 @@ const authState = useAppSelector((state) => state.auth);
   );
 };
 
-export default ChatWidget;
+export default ChatWidget1;

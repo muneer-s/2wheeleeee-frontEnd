@@ -119,6 +119,17 @@ const AdminHeader: React.FC = () => {
                     Orders
                 </NavLink>
 
+                <NavLink
+                    to="/adminFeedbackList"
+                    className={({ isActive }) =>
+                        isActive
+                            ? 'underline text-white block lg:inline-block mt-2 lg:mt-0'
+                            : 'hover:underline block lg:inline-block mt-2 lg:mt-0'
+                    }
+                >
+                    Feedbacks
+                </NavLink>
+
 
                 <button
                     onClick={handleLogout}

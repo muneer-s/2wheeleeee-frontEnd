@@ -8,6 +8,8 @@ import { handleApiResponse } from "../../../Utils/apiUtils";
 import UserOrderList from "../HostOrderList/OrderList";
 import CreateOffer from "../OfferCreate.tsx/CreateOffer";
 import ViewOffers from "../ViewOffers/ViewOffers";
+import FeedbackForm from "../../User/Feedback/FeedbackForm";
+import MyFeedback from "../../User/MyFeedback.tsx/MyFeedback";
 
 
 const HostListView = () => {
@@ -169,22 +171,12 @@ const HostListView = () => {
                                                         Apply Offer
                                                     </button>
                                                 )}
-
-
-
-
                                                 <button
                                                     className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                                                     onClick={() => deleteBike(bike._id)}
                                                 >
                                                     Delete
                                                 </button>
-
-
-
-
-
-
                                             </div>
                                         </div>
                                     ))
@@ -204,6 +196,10 @@ const HostListView = () => {
                     return <CreateOffer />
                 case "View Offers":
                     return <ViewOffers />
+                case "Feedback":
+                    return <FeedbackForm role={'Host'}/> 
+                case "My Feedback":
+                    return <MyFeedback/>
 
                 default:
                     return null;
@@ -241,6 +237,12 @@ const HostListView = () => {
                                 </li>
                                 <li className={`font-semibold cursor-pointer ${activeTab === "View Offers" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("View Offers")}>
                                     View Offers
+                                </li>
+                                <li className={`font-semibold cursor-pointer ${activeTab === "Feedback" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Feedback")}>
+                                    Feedback
+                                </li>
+                                <li className={`font-semibold cursor-pointer ${activeTab === "My Feedback" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("My Feedback")}>
+                                    My Feedback
                                 </li>
 
 

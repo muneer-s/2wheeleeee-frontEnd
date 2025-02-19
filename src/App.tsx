@@ -34,11 +34,15 @@ import AdminOrderDetails from './Components/Admin/AdminOrderDetail/AdminOrderDet
 import UserOrderDetails from './Components/User/UserOrderDetails/UserOrderDetails';
 import HostOrderDetailsView from './Components/Host/OrderSingleView/HostOrderDetailsView';
 import ApplyOffer from './Components/Host/ApplyOfferToBike/ApplyOffer';
-import Chat from './Components/User/Chat/Chat';
 import ChatWidget from './Components/User/Chat/ChatUi';
+
+import ChatWidget1 from './Components/User/Chat/ChatUi';
+
+
 // import {io} from 'socket.io-client'
 import io from 'socket.io-client';
 import PageNotFound from './Components/404/PageNotFound';
+import FeedbackList from './Components/Admin/FeedbackList/FeedbackList';
 
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
@@ -62,16 +66,15 @@ function App() {
             <Route path='/forgotPassword' element={<ForgotPasswordScreen />} />
             <Route path='/pageNotFound' element={<PageNotFound />} />
 
-            <Route path='/UserBikeListPage' element={<UserBikeListPage />} />
-            <Route path='/UserBikeSinglePage/:id' element={<UserBikeSinglePage />} />
+            <Route path='/BikeListPage' element={<UserBikeListPage />} />
+            <Route path='/BikeSinglePage/:id' element={<UserBikeSinglePage />} />
             <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails socket={socket} /></UserProtecteRoute>} />
-            <Route path="/user/chat" element={<UserProtecteRoute><Chat /></UserProtecteRoute>} />
+            <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage socket={socket}/></UserProtecteRoute>} />
 
 
             {/* host side */}
             <Route path='/hostHome' element={<UserProtecteRoute><HostHome /></UserProtecteRoute>} />
             <Route path='/OrderSuccess' element={<UserProtecteRoute><OrderSuccess /></UserProtecteRoute>} />
-            <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage /></UserProtecteRoute>} />
             <Route path='/hostList' element={<UserProtecteRoute><HostRegisterPage /></UserProtecteRoute>} />
             <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage /></UserProtecteRoute>} />
             <Route path='/hostSuccessPage' element={<UserProtecteRoute><Success /></UserProtecteRoute>} />
@@ -81,7 +84,6 @@ function App() {
             <Route path='/EditBike/:id' element={<UserProtecteRoute><EditBike /></UserProtecteRoute>} />
             <Route path='/host/orders/:orderId' element={<UserProtecteRoute><HostOrderDetailsView /></UserProtecteRoute>} />
             <Route path='/applyOffer/:id' element={<UserProtecteRoute><ApplyOffer /></UserProtecteRoute>} />
-
 
 
             {/* admin side */}
@@ -95,6 +97,7 @@ function App() {
             <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView /></AdminProtectedRoute>} />
             <Route path="/adminOrderList" element={<AdminProtectedRoute><AdminOrdersList /></AdminProtectedRoute>} />
             <Route path="/admin/orders/:orderId" element={<AdminProtectedRoute><AdminOrderDetails /></AdminProtectedRoute>} />
+            <Route path='/adminFeedbackList' element={<AdminProtectedRoute><FeedbackList/></AdminProtectedRoute>} />
 
             {/* Catch-all for 404 */}
             <Route path="*" element={<PageNotFound />} />

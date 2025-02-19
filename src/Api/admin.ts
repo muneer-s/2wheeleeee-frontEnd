@@ -117,6 +117,17 @@ const getOrderDetails = async (orderId: string)=>{
 }
 
 
+const getAllFeedbacks = async()=>{
+    try {
+        const response = await Api.get(adminRoutes.getAllFeedbacks)
+        return response.data
+    } catch (error) {
+        console.log("Error is fetching feedbacks list for admin", error)
+        throw error
+    }
+}
+
+
 
 export {
     login,
@@ -129,5 +140,6 @@ export {
     userBlockUnBlock,
     isEditOn,
     orderList,
-    getOrderDetails
+    getOrderDetails,
+    getAllFeedbacks
 }

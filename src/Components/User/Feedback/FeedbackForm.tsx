@@ -1,9 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useAppSelector } from "../../../Apps/store";
 import { FaStar } from "react-icons/fa"; // Import FontAwesome Star Icon
 import toast from "react-hot-toast";
-import { string } from "yup";
 import { createFeedback } from "../../../Api/user";
 
 interface FeedbackFormProps {
@@ -20,8 +18,8 @@ export interface IUserFeedback {
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ role }) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
-    const [hover, setHover] = useState<number | null>(null); // Track hover effect
-    const [error, setError] = useState<string>(""); // For storing error message
+    const [hover, setHover] = useState<number | null>(null);
+    const [error, setError] = useState<string>("");
 
     const authState = useAppSelector((state) => state.auth);
     const userDetails = authState.user;
@@ -29,8 +27,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ role }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Validation: Ensure both rating and comment are provided
 
         if (!rating || !comment.trim()) {
             setError("Both rating and comment are required.");

@@ -8,7 +8,7 @@ interface IOrder {
     amount: number;
     startDate: string;
     endDate: string;
-    userId: string;
+    userId: IUser;
     status: string;
     method: string;
 }
@@ -17,6 +17,11 @@ interface OrderGraphProps {
     orders: IOrder[];
 }
 
+
+interface IUser{
+    _id:string
+    name:string
+  }
 
 interface IBike{
     _id:string,

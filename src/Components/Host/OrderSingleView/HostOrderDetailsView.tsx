@@ -2,10 +2,20 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import Header from "../../User/Header/Header";
-
-
 import { userGetOrderDetails } from "../../../Api/user";
 import { hostCompleteOrder, hostGetOrderDetails } from "../../../Api/host";
+import ChatWidget1 from "../../User/Chat/ChatUi";
+import Api from "../../../service/axios";
+import { useAppSelector } from "../../../Apps/store";
+import { Socket } from "socket.io-client";
+import io from 'socket.io-client';
+
+
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+    transports: ['polling', 'websocket'],
+})
+
+
 
 interface IOrder {
     startDate: string;
@@ -20,7 +30,12 @@ interface IBike {
     modelName: string;
 }
 
+interface OrderFCProps {
+    socket: typeof Socket;
+}
+
 interface IUser {
+    _id:string
     name: string;
     phoneNumber: number;
     address: string;
@@ -33,10 +48,20 @@ interface IOrderResponse {
     user: IUser;
 }
 
-const HostOrderDetailsView = () => {
+
+    const HostOrderDetailsView  = () => {
+
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
     const [loading, setLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [userId, setUserId] = useState("");
+    const [chatId, setChatId] = useState("");
+
+
+    const authState = useAppSelector((state) => state.auth);
+      const userDetails = authState.user
+      const ownerId = userDetails.userId
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -61,6 +86,23 @@ const HostOrderDetailsView = () => {
     }, [orderId]);
 
 
+    const buttonTrigger = (userId: string) => {
+        setUserId(userId);
+        Api
+            .post("/chat/accesschat", { receiverId: userId, senderId: ownerId })
+            .then((res) => {
+                console.log(13, res.data.data);
+
+                if (res.data) {
+                    setChatId(res.data.data._id);
+                    setIsOpen(true);
+                }
+            });
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
 
     const handleCompleteOrder = async () => {
         if (!orderId) return;
@@ -167,7 +209,29 @@ const HostOrderDetailsView = () => {
                         <p className="text-gray-700"><strong>Name:</strong> {user.name}</p>
                         <p className="text-gray-700"><strong>Phone:</strong> {user.phoneNumber}</p>
                         <p className="text-gray-700"><strong>Address:</strong> {user.address}</p>
+                        
+                                    <button
+                                        className="px-2 py-2 rounded bg-red-500 text-white flex items-center"
+                                        onClick={() =>
+                                            buttonTrigger(user._id)
+                                        }
+                                    >
+                                        Connect Host
+                                    </button>
+                               
                     </div>
+
+                    {isOpen ? (
+                    <ChatWidget1
+                        isChatOpen={isOpen}
+                        onClose={handleClose}
+                        hostId={userId}
+                        chatId={chatId}
+                        socket={socket}
+                    />
+                ) : (
+                    ""
+                )}
 
 
                 </div>

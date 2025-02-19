@@ -17,14 +17,20 @@ interface IOrder {
   userId: string;
   status: string;
 }
+interface ProfilePageProps {
+  socket: any; // Change `any` to a more specific type if known
+}
 
-const UserOrderList = () => {
+const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
+
   const [orders, setOrders] = useState<IOrder[]>([]);
   const navigate = useNavigate();
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
   console.log(11111,userDetails)
+  console.log(22222,socket);
+  
   const userId = userDetails.userId
 
   useEffect(() => {

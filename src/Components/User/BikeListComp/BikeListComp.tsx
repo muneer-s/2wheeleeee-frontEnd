@@ -137,7 +137,7 @@ const BikeListComp = () => {
                                 )}
                                 <button
                                     className="w-full bg-sky-500 text-white py-1 mt-2 rounded"
-                                    onClick={() => navigate(`/UserBikeSinglePage/${bike._id}`)}
+                                    onClick={() => navigate(`/BikeSinglePage/${bike._id}`)}
                                 >
                                     View
                                 </button>

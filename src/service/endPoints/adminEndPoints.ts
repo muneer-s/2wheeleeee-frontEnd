@@ -10,6 +10,8 @@ const adminRoutes={
     isEditOn:'/admin/isEditOn',
     OrderList:'/admin/orderList',
     OrderDetails:'/admin/OrderDetails',
+    getAllFeedbacks:'/admin/getAllFeedbacks',
+    deleteFeedbacks:'/admin/deleteFeedbacks'
    
 }
 

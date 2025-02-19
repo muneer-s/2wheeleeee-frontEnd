@@ -7,7 +7,7 @@ interface IOrder {
   amount: number;
   startDate: string;
   endDate: string;
-  userId: string;
+  userId: IUser;
   status: string;
   method: string;
 }
@@ -15,6 +15,10 @@ interface IOrder {
 interface IBike{
   _id:string,
   modelName:string
+}
+interface IUser{
+  _id:string
+  name:string
 }
 
 const OrderList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
@@ -39,7 +43,7 @@ const OrderList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
                   <TableCell>{formatDate(order.endDate)}</TableCell>
                   <TableCell>₹{order.amount}</TableCell>
                   <TableCell>{order.status}</TableCell>
-                  <TableCell>{order.userId}</TableCell>
+                  <TableCell>{order.userId.name}</TableCell>
                   <TableCell>{order.method}</TableCell>
                 </TableRow>
               )}

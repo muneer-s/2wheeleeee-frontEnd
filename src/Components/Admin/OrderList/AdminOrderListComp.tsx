@@ -6,13 +6,23 @@ import CustomTable from '../../../ReusableComponents/CustomTable';
 import { useNavigate } from 'react-router-dom';
 
 
+interface bike{
+  _id:string
+  modelName:string
+}
+
+
+interface user{
+  _id:string
+  name:string
+}
 interface IOrder {
   _id: string;
-  bikeId: string;
+  bikeId: bike;
   amount: number;
   startDate: string;
   endDate: string;
-  userId: string;
+  userId: user;
   status: string;
 }
 
@@ -42,7 +52,7 @@ const AdminOrderListComp = () => {
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
 
-  const headers = ['Order ID', 'Bike ID', 'Start Date', 'End Date', 'Amount', 'Status', 'User ID'];
+  const headers = ['Order ID', 'Bike', 'Start Date', 'End Date', 'Amount', 'Status', 'User'];
 
   return (
     <div>
@@ -56,17 +66,17 @@ const AdminOrderListComp = () => {
           renderRow={(order) => (
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
-              <TableCell>{order.bikeId}</TableCell>
+              <TableCell>{order.bikeId.modelName}</TableCell>
               <TableCell>{formatDate(order.startDate)}</TableCell>
               <TableCell>{formatDate(order.endDate)}</TableCell>
               <TableCell>₹{order.amount}</TableCell>
               <TableCell>{order.status}</TableCell>
-              <TableCell>{order.userId}</TableCell>
+              <TableCell>{order.userId.name}</TableCell>
               <TableCell>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => navigate(`/admin/orders/${order._id}`)} // Navigate to details page
+                  onClick={() => navigate(`/admin/orders/${order._id}`)}
                 >
                   View
                 </Button>

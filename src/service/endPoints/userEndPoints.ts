@@ -23,7 +23,8 @@ const userRoutes={
 
     getReviews:'/user/getReviews',
     submitReview:'/user/submitReview',
-    createFeedback:'/feedback/createFeedback'
+    createFeedback:'/feedback/createFeedback',
+    feedback:'/feedback/feedback'
 
 }
 
