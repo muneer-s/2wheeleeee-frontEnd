@@ -35,7 +35,7 @@ interface OrderFCProps {
 }
 
 interface IUser {
-    _id:string
+    _id: string
     name: string;
     phoneNumber: number;
     address: string;
@@ -49,7 +49,7 @@ interface IOrderResponse {
 }
 
 
-    const HostOrderDetailsView  = () => {
+const HostOrderDetailsView = () => {
 
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
@@ -60,8 +60,8 @@ interface IOrderResponse {
 
 
     const authState = useAppSelector((state) => state.auth);
-      const userDetails = authState.user
-      const ownerId = userDetails.userId
+    const userDetails = authState.user
+    const ownerId = userDetails.userId
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -209,29 +209,29 @@ interface IOrderResponse {
                         <p className="text-gray-700"><strong>Name:</strong> {user.name}</p>
                         <p className="text-gray-700"><strong>Phone:</strong> {user.phoneNumber}</p>
                         <p className="text-gray-700"><strong>Address:</strong> {user.address}</p>
-                        
-                                    <button
-                                        className="px-2 py-2 rounded bg-red-500 text-white flex items-center"
-                                        onClick={() =>
-                                            buttonTrigger(user._id)
-                                        }
-                                    >
-                                        Connect Host
-                                    </button>
-                               
+
+                        <button
+                            className="px-2 py-2 rounded bg-green-500 text-white flex items-center"
+                            onClick={() =>
+                                buttonTrigger(user._id)
+                            }
+                        >
+                            Connect User
+                        </button>
+
                     </div>
 
                     {isOpen ? (
-                    <ChatWidget
-                        isChatOpen={isOpen}
-                        onClose={handleClose}
-                        hostId={userId}
-                        chatId={chatId}
-                        socket={socket}
-                    />
-                ) : (
-                    ""
-                )}
+                        <ChatWidget
+                            isChatOpen={isOpen}
+                            onClose={handleClose}
+                            hostId={userId}
+                            chatId={chatId}
+                            socket={socket}
+                        />
+                    ) : (
+                        ""
+                    )}
 
 
                 </div>

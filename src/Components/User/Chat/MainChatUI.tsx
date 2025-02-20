@@ -6,7 +6,8 @@ import { useAppSelector } from "../../../Apps/store";
 import { Dialog, DialogContent } from "@mui/material";
 // import defaultDp from '../../../assets/defaultDP.png'
 import defaultDp from '../../../Assets/defaultDP.png'
-
+import Lottie from "react-lottie";
+import animationData from '../../../Animation/Typing.json'
 
 interface ChatWidgetProps {
   isChatOpen?: boolean;
@@ -60,6 +61,19 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [activeUsers, setActiveUsers] = useState<activeUserProps[]>([]);
   const [chats, setChats] = useState<ChatsProps[] | null>([]);
+  const [typing, setTyping] = useState<boolean>(false)
+  const [isTyping, setIsTyping] = useState<boolean>(false)
+  const [socketConnected, setSocketConnected] = useState<boolean>(false)
+
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    renderSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  }
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
@@ -67,28 +81,15 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      setMessage("");
-      Api.post("/chat/sendmessage", {
-        content: message,
-        senderId: userId,
-        chatId: userChatId,
-      })
-        .then((res: { data: MessageProps; }) => {
-          if (res.data) {
-            socket.emit("message", res.data);
-            setMessages([...messages, res.data]);
-          }
-        });
-    }
-  };
+
 
   // star from here , set up 
   useEffect(() => {
     if (userId && isOpen) {
       socket.emit("setup", userId);
-      socket.on("connection", () => { });
+      socket.on("connected", () => setSocketConnected(true));
+      socket.on("typing", () => setIsTyping(true))
+      socket.on("stop typing", () => setIsTyping(false))
       socket.on("get-users", (users: React.SetStateAction<activeUserProps[]>) => {
         setActiveUsers(users);
       });
@@ -96,6 +97,25 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
       socket.emit("offline");
     }
   }, [isOpen, userId]);
+
+
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      setMessage("");
+      socket.emit("stop typing", userChatId)
+      Api.post("/chat/sendmessage", {
+        content: message,
+        senderId: userId,
+        chatId: userChatId,
+      })
+        .then((res: { data: MessageProps; }) => {
+          if (res.data) {
+            socket.emit("message", res.data); // send message with data
+            setMessages([...messages, res.data]);
+          }
+        });
+    }
+  };
 
   useEffect(() => {
     if (isChatOpen) setIsOpen(isChatOpen);
@@ -144,11 +164,15 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
     // onClose();
   };
 
+
+
+  // select user 
   const handleUserSelection = (chat: UserChatProps) => {
-    setUserChatId(chat._id);
+    setUserChatId(chat._id); // to
     setSelectedUser(chat.users[0]);
   };
 
+  // fetch all messages of the selected user 
   const fetchMessages = async () => {
     if (!selectedUser) return;
 
@@ -176,11 +200,37 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
     }
   }, [messages]);
 
+
+  // message receiving from socket - (message)
   useEffect(() => {
     socket.on("message received", (message: MessageProps) => {
       setMessages([...messages, message]);
     });
   });
+
+
+  const typingHandler = (e: any) => {
+    setMessage(e.target.value)
+    if (!socketConnected) return
+
+    if (!typing) {
+      setTyping(true)
+      socket.emit("typing", userChatId)
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000
+    setTimeout(() => {
+      var timeNow = new Date().getTime()
+      var timeDiff = timeNow - lastTypingTime
+
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", userChatId)
+        setTyping(false)
+      }
+
+    }, timerLength);
+  }
+
 
   return (
     <>
@@ -217,8 +267,8 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                           (activeUser) =>
                             activeUser.userId === user.users[0]._id
                         )
-                            ? "bg-green-500"
-                            : "bg-gray-300"
+                          ? "bg-green-500"
+                          : "bg-gray-300"
                           }`}
                       />
                       <span className="truncate">{user?.users[0].name}</span>
@@ -237,16 +287,16 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                       onClick={() => setSelectedUser(null)}
                     />
                     <img
-                        src={selectedUser.profile_picture || defaultDp}
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full border"
-                      />
+                      src={selectedUser.profile_picture || defaultDp}
+                      alt="Profile"
+                      className="w-10 h-10 rounded-full border"
+                    />
                     <div
                       className={`w-2 h-2 rounded-full ${activeUsers.some(
                         (user) => user.userId === selectedUser._id
                       )
-                          ? "bg-green-500"
-                          : "bg-gray-300"
+                        ? "bg-green-500"
+                        : "bg-gray-300"
                         }`}
                     />
                     <span className="font-semibold">{selectedUser.name}</span>
@@ -260,14 +310,14 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                       <div
                         key={idx}
                         className={`flex ${msg.sender._id === userId
-                            ? "justify-end"
-                            : "justify-start"
+                          ? "justify-end"
+                          : "justify-start"
                           }`}
                       >
                         <div
                           className={`max-w-[70%] p-3 rounded-lg shadow-sm ${msg.sender._id === userId
-                              ? "bg-blue-500 text-white"
-                              : "bg-gray-200"
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-200"
                             }`}
                         >
                           {msg.content}
@@ -284,11 +334,23 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
 
                 {/* Chat Input */}
                 <div className="p-4 border-t bg-white">
+                  {isTyping ? <div>
+                    <Lottie
+                      options={defaultOptions}
+                      width={70}
+                      style={{ marginBottom: 10, marginLeft: 0 }}
+                    />
+                  </div> : (
+                    <></>
+                  )}
+
                   <div className="flex items-center space-x-2">
+
                     <input
                       type="text"
                       value={message}
-                      onChange={(e) => setMessage(e.target.value)}
+                      // onChange={(e) => setMessage(e.target.value), typingHandler}
+                      onChange={(e) => { setMessage(e.target.value); typingHandler(e); }}
                       placeholder="Type a message..."
                       className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -296,8 +358,8 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                       onClick={handleSendMessage}
                       disabled={!message.trim()}
                       className={`p-2 rounded-lg ${message.trim()
-                          ? "bg-blue-500 text-white hover:bg-blue-600"
-                          : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                        ? "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-gray-300 text-gray-600 cursor-not-allowed"
                         }`}
                     >
                       <Send className="w-4 h-4" />
