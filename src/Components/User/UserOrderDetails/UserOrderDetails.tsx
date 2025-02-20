@@ -6,19 +6,7 @@ import { earlyReturns, getReviews, returnOrder, submitReview, userGetOrderDetail
 import Swal from "sweetalert2";
 import { FaStar } from "react-icons/fa";
 import { useAppSelector } from "../../../Apps/store";
-import Api from "../../../service/axios";
 
-import { Socket } from "socket.io-client";
-// import ChatWidget from "../../../Components/User/Chat/ChatUi";
-import io from 'socket.io-client';
-import ChatWidget from "../Chat/MainChatUI";
-import ChatWidget1 from "../Chat/ChatUi";
-
-
-
-// const socket = io(import.meta.env.VITE_BACKEND_URL, {
-//     transports: ['polling', 'websocket'],
-// })
 
 interface IOrder {
     _id: string;
@@ -29,9 +17,7 @@ interface IOrder {
     status: string;
 }
 
-interface OrderFCProps {
-    socket: typeof Socket;
-}
+
 
 interface IBike {
     _id: string
@@ -59,7 +45,7 @@ export interface IReview {
     createdAt: string;
 }
 
-const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
+const UserOrderDetails = () => {
 
 
     const { orderId } = useParams();
@@ -67,12 +53,6 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
     const [rating, setRating] = useState<number>(0);
     const [hover, setHover] = useState<number>(0);
     const [feedback, setFeedback] = useState<string>("");
-    const [reviews, setReviews] = useState<IReview[]>([]);
-
-    const [isOpen, setIsOpen] = useState(false);
-    const [hostId, setHostId] = useState("");
-    const [chatId, setChatId] = useState("");
-
 
     const authState = useAppSelector((state) => state.auth);
     const userDetails = authState.user
@@ -101,23 +81,8 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
         fetchOrderDetails();
     }, [orderId]);
 
-    const buttonTrigger = (hostId: string) => {
-        setHostId(hostId);
-        Api
-            .post("/chat/accesschat", { receiverId: hostId, senderId: userId })
-            .then((res) => {
-                console.log(13, res.data.data);
 
-                if (res.data) {
-                    setChatId(res.data.data._id);
-                    setIsOpen(true);
-                }
-            });
-    };
-
-    const handleClose = () => {
-        setIsOpen(false);
-    };
+    
 
 
 
@@ -234,7 +199,6 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
 
             if (response?.success) {
                 toast.success("Review submitted successfully!");
-                // fetchReviews(orderDetails?.bike._id!);
                 setRating(0);
                 setFeedback("");
             } else {
@@ -365,20 +329,6 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                                 <td className="font-semibold py-1">Address:</td>
                                 <td>{owner.address}</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <button
-                                        className="px-2 py-2 rounded bg-red-500 text-white flex items-center"
-                                        onClick={() =>
-                                            buttonTrigger(owner._id)
-                                        }
-                                    >
-                                        Connect Host
-                                    </button>
-                                </td>
-
-                            </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -424,36 +374,6 @@ const UserOrderDetails: React.FC<OrderFCProps> = ({ socket }) => {
                         </button>
                     </div>
                 )}
-
-
-
-                {/* {isOpen ? (
-                    <ChatWidget
-                        isChatOpen={isOpen}
-                        onClose={handleClose}
-                        hostId={hostId}
-                        chatId={chatId}
-                        socket={socket}
-                    />
-                ) : (
-                    ""
-                )} */}
-
-
-
-
-                {isOpen ? (
-                    <ChatWidget1
-                        isChatOpen={isOpen}
-                        onClose={handleClose}
-                        hostId={hostId}
-                        chatId={chatId}
-                        socket={socket}
-                    />
-                ) : (
-                    ""
-                )}
-
 
 
             </div>

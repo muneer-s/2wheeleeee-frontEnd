@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { orderList } from '../../../Api/admin';
 import toast from 'react-hot-toast';
-import { TableRow, TableCell , Button } from '@mui/material';
+import { TableRow, TableCell, Button } from '@mui/material';
 import CustomTable from '../../../ReusableComponents/CustomTable';
 import { useNavigate } from 'react-router-dom';
 import { userOrderList } from '../../../Api/user';
 import { useAppSelector } from '../../../Apps/store';
+// import ChatWidget1 from '../Chat/ChatUi';
+import Api from '../../../service/axios';
+import ChatUI from '../Chat/MainChatUI'
 
 
 interface IOrder {
@@ -16,21 +19,26 @@ interface IOrder {
   endDate: string;
   userId: string;
   status: string;
+  ownerId: string
 }
 interface ProfilePageProps {
-  socket: any; // Change `any` to a more specific type if known
+  socket: any;
 }
 
 const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
 
   const [orders, setOrders] = useState<IOrder[]>([]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [hostId, setHostId] = useState("");
+  const [chatId, setChatId] = useState("");
   const navigate = useNavigate();
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
-  console.log(11111,userDetails)
-  console.log(22222,socket);
-  
+  console.log(11111, userDetails)
+  console.log(22222, socket);
+
   const userId = userDetails.userId
 
   useEffect(() => {
@@ -40,10 +48,10 @@ const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
         console.log('User Fetched Orders:', response);
 
         if (response?.success) {
-            console.log("Order Data Type:", typeof response.data.order);
-            console.log("Is Array:", Array.isArray(response.data.order));
-            setOrders(Array.isArray(response.data.order) ? response.data.order : []);
-          } 
+          console.log("Order Data Type:", typeof response.data.order);
+          console.log("Is Array:", Array.isArray(response.data.order));
+          setOrders(Array.isArray(response.data.order) ? response.data.order : []);
+        }
       } catch (error: any) {
         toast.error('Error fetching order list...');
         console.error('Error fetching orders:', error.message);
@@ -55,6 +63,25 @@ const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
     fetchOrders();
   }, []);
 
+
+  const buttonTrigger = (hostId: string) => {
+    setHostId(hostId);
+    Api
+      .post("/chat/accesschat", { receiverId: hostId, senderId: userId })
+      .then((res) => {
+        console.log(13, res.data.data);
+
+        if (res.data) {
+          setChatId(res.data.data._id);
+          setIsOpen(true);
+        }
+      });
+  };
+
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
 
   const headers = ['Order ID', 'Start Date', 'End Date', 'Amount', 'Status'];
@@ -84,11 +111,44 @@ const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
                   View
                 </Button>
               </TableCell>
+
+
+
+              <TableCell>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ fontSize: '0.6rem' }}
+                  onClick={() =>
+                    buttonTrigger(order.ownerId)
+                  }
+                >
+                  Connect Host
+                </Button>
+              </TableCell>
+
+
             </TableRow>
           )}
         />
       )}
+
+
+
+      {isOpen ? (
+        <ChatUI
+          isChatOpen={isOpen}
+          onClose={handleClose}
+          hostId={hostId}
+          chatId={chatId}
+          socket={socket}
+        />
+      ) : (
+        ""
+      )}
     </div>
+
+
   );
 };
 

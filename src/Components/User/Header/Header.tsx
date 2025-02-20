@@ -80,8 +80,6 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 z-50 p-4 bg-white px-4 py-2 flex items-center justify-between w-full mx-auto md:px-8 transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"}`}>
 
-
-
       {/* Logo */}
       <div className="text-2xl font-bold text-sky-500">2Wheleeee</div>
 
@@ -119,48 +117,6 @@ const Header = () => {
               Home
             </a>
           </li>
-
-          <li>
-            <a
-              href="#about-us"
-              className="block px-4 py-2 text-black hover:text-sky-500"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("about-us");
-              }}
-            >
-              About Us
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#Services"
-              className="block px-4 py-2 text-black hover:text-sky-500"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("Services");
-              }}
-            >
-              Services
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#feedback"
-              className="block px-4 py-2 text-black hover:text-sky-500"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("feedback");
-              }}
-            >
-              Feedbacks
-            </a>
-          </li>
-
-
-
         </ul>
       </nav>
 

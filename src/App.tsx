@@ -34,10 +34,11 @@ import AdminOrderDetails from './Components/Admin/AdminOrderDetail/AdminOrderDet
 import UserOrderDetails from './Components/User/UserOrderDetails/UserOrderDetails';
 import HostOrderDetailsView from './Components/Host/OrderSingleView/HostOrderDetailsView';
 import ApplyOffer from './Components/Host/ApplyOfferToBike/ApplyOffer';
-import ChatWidget from './Components/User/Chat/ChatUi';
+import ChatWidget from './Components/User/Chat/MainChatUI'
 
-import ChatWidget1 from './Components/User/Chat/ChatUi';
 import AdminFeedbackListPage from './Screen/Admin/FeedbackList/AdminFeedbackListPage';
+
+
 
 // import {io} from 'socket.io-client'
 import io from 'socket.io-client';
@@ -67,8 +68,9 @@ function App() {
 
             <Route path='/BikeListPage' element={<UserBikeListPage />} />
             <Route path='/BikeSinglePage/:id' element={<UserBikeSinglePage />} />
-            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails socket={socket} /></UserProtecteRoute>} />
-            <Route path='/profilePage' element={<UserProtecteRoute><ProfilePage socket={socket}/></UserProtecteRoute>} />
+            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails  /></UserProtecteRoute>} />
+            <Route path='/profilePage' element={<UserProtecteRoute><><ProfilePage socket={socket}/><ChatWidget  socket={socket} /></></UserProtecteRoute>} />
+
 
 
             {/* host side */}

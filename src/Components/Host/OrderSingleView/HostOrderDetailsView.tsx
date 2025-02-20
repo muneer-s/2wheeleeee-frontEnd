@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import Header from "../../User/Header/Header";
 import { userGetOrderDetails } from "../../../Api/user";
 import { hostCompleteOrder, hostGetOrderDetails } from "../../../Api/host";
-import ChatWidget1 from "../../User/Chat/ChatUi";
+import ChatWidget from "../../User/Chat/MainChatUI"
 import Api from "../../../service/axios";
 import { useAppSelector } from "../../../Apps/store";
 import { Socket } from "socket.io-client";
@@ -222,7 +222,7 @@ interface IOrderResponse {
                     </div>
 
                     {isOpen ? (
-                    <ChatWidget1
+                    <ChatWidget
                         isChatOpen={isOpen}
                         onClose={handleClose}
                         hostId={userId}
