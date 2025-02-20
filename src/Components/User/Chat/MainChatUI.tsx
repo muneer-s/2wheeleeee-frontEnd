@@ -4,7 +4,8 @@ import Api from "../../../service/axios";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../Apps/store";
 import { Dialog, DialogContent } from "@mui/material";
-
+// import defaultDp from '../../../assets/defaultDP.png'
+import defaultDp from '../../../Assets/defaultDP.png'
 
 
 interface ChatWidgetProps {
@@ -12,7 +13,7 @@ interface ChatWidgetProps {
   hostId?: string;
   onClose?: () => void;
   chatId?: string;
-  socket:typeof  Socket;
+  socket: typeof Socket;
 }
 
 interface UserChatProps {
@@ -20,6 +21,7 @@ interface UserChatProps {
   id?: string;
   email: string;
   name: string;
+  profile_picture: string
   users: UserChatProps[];
 }
 
@@ -36,6 +38,7 @@ interface ChatsProps {
   _id: string;
   email: string;
   name: string;
+  profile_picture: string
   users: UserChatProps[];
 }
 
@@ -58,9 +61,9 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   const [activeUsers, setActiveUsers] = useState<activeUserProps[]>([]);
   const [chats, setChats] = useState<ChatsProps[] | null>([]);
 
-const authState = useAppSelector((state) => state.auth);
-      const userDetails = authState.user
-      const userId = userDetails.userId
+  const authState = useAppSelector((state) => state.auth);
+  const userDetails = authState.user
+  const userId = userDetails.userId
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -68,10 +71,10 @@ const authState = useAppSelector((state) => state.auth);
     if (message.trim()) {
       setMessage("");
       Api.post("/chat/sendmessage", {
-          content: message,
-          senderId: userId,
-          chatId: userChatId,
-        })
+        content: message,
+        senderId: userId,
+        chatId: userChatId,
+      })
         .then((res: { data: MessageProps; }) => {
           if (res.data) {
             socket.emit("message", res.data);
@@ -80,13 +83,12 @@ const authState = useAppSelector((state) => state.auth);
         });
     }
   };
-  
 
+  // star from here , set up 
   useEffect(() => {
     if (userId && isOpen) {
       socket.emit("setup", userId);
-      socket.on("connection", () => {});
-
+      socket.on("connection", () => { });
       socket.on("get-users", (users: React.SetStateAction<activeUserProps[]>) => {
         setActiveUsers(users);
       });
@@ -111,8 +113,8 @@ const authState = useAppSelector((state) => state.auth);
           },
         })
         .then((res: { data: React.SetStateAction<ChatsProps[] | null>; }) => {
-            console.log('get chat',res.data);
-            
+          console.log('get chat', res.data);
+
           if (res.data) {
             setChats(res.data);
           }
@@ -121,7 +123,7 @@ const authState = useAppSelector((state) => state.auth);
   }, [isOpen, userId]);
 
 
- 
+
 
   useEffect(() => {
     if (hostId) {
@@ -194,7 +196,7 @@ const authState = useAppSelector((state) => state.auth);
         <DialogContent className="sm:max-w-xl p-0">
           <div className="flex h-[500px]">
             {!selectedUser ? (
-              <div className="w-full">
+              <div className="w-screen">
                 <div className="p-4 border-b bg-white">
                   <h2 className="font-semibold">Connections</h2>
                 </div>
@@ -205,24 +207,28 @@ const authState = useAppSelector((state) => state.auth);
                       onClick={() => handleUserSelection(user)}
                       className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-gray-100 transition-colors`}
                     >
+                      <img
+                        src={user?.users[0].profile_picture || defaultDp}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full border"
+                      />
                       <div
-                        className={`w-2 h-2 rounded-full ${
-                          activeUsers.some(
-                            (activeUser) =>
-                              activeUser.userId === user.users[0]._id
-                          )
+                        className={`w-2 h-2 rounded-full ${activeUsers.some(
+                          (activeUser) =>
+                            activeUser.userId === user.users[0]._id
+                        )
                             ? "bg-green-500"
                             : "bg-gray-300"
-                        }`}
+                          }`}
                       />
                       <span className="truncate">{user?.users[0].name}</span>
                     </div>
-                  ))):<div className="flex items-center justify-center h-full">No Chats Yet!</div>}
+                  ))) : <div className="flex items-center justify-center h-full">No Chats Yet!</div>}
                 </div>
               </div>
             ) : (
               // Chat Section
-              <div className="flex-1 flex flex-col">
+              <div className="flex-1 flex flex-col w-screen">
                 {/* Chat Header */}
                 <div className="p-4 border-b flex items-center justify-between bg-gray-400">
                   <div className="flex items-center space-x-2">
@@ -230,14 +236,18 @@ const authState = useAppSelector((state) => state.auth);
                       className="cursor-pointer"
                       onClick={() => setSelectedUser(null)}
                     />
+                    <img
+                        src={selectedUser.profile_picture || defaultDp}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full border"
+                      />
                     <div
-                      className={`w-2 h-2 rounded-full ${
-                        activeUsers.some(
-                          (user) => user.userId === selectedUser._id
-                        )
+                      className={`w-2 h-2 rounded-full ${activeUsers.some(
+                        (user) => user.userId === selectedUser._id
+                      )
                           ? "bg-green-500"
                           : "bg-gray-300"
-                      }`}
+                        }`}
                     />
                     <span className="font-semibold">{selectedUser.name}</span>
                   </div>
@@ -249,18 +259,16 @@ const authState = useAppSelector((state) => state.auth);
                     messages.map((msg, idx) => (
                       <div
                         key={idx}
-                        className={`flex ${
-                          msg.sender._id === userId
+                        className={`flex ${msg.sender._id === userId
                             ? "justify-end"
                             : "justify-start"
-                        }`}
+                          }`}
                       >
                         <div
-                          className={`max-w-[70%] p-3 rounded-lg shadow-sm ${
-                            msg.sender._id === userId
+                          className={`max-w-[70%] p-3 rounded-lg shadow-sm ${msg.sender._id === userId
                               ? "bg-blue-500 text-white"
                               : "bg-gray-200"
-                          }`}
+                            }`}
                         >
                           {msg.content}
                         </div>
@@ -287,11 +295,10 @@ const authState = useAppSelector((state) => state.auth);
                     <button
                       onClick={handleSendMessage}
                       disabled={!message.trim()}
-                      className={`p-2 rounded-lg ${
-                        message.trim()
+                      className={`p-2 rounded-lg ${message.trim()
                           ? "bg-blue-500 text-white hover:bg-blue-600"
                           : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                      }`}
+                        }`}
                     >
                       <Send className="w-4 h-4" />
                     </button>

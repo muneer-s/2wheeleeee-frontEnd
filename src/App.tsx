@@ -35,12 +35,7 @@ import UserOrderDetails from './Components/User/UserOrderDetails/UserOrderDetail
 import HostOrderDetailsView from './Components/Host/OrderSingleView/HostOrderDetailsView';
 import ApplyOffer from './Components/Host/ApplyOfferToBike/ApplyOffer';
 import ChatWidget from './Components/User/Chat/MainChatUI'
-
 import AdminFeedbackListPage from './Screen/Admin/FeedbackList/AdminFeedbackListPage';
-
-
-
-// import {io} from 'socket.io-client'
 import io from 'socket.io-client';
 import PageNotFound from './Components/404/PageNotFound';
 
