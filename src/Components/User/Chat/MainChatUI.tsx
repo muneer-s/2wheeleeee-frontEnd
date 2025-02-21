@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MessageCircle, Send, ArrowLeft } from "lucide-react";
+import { MessageCircle, Send, ArrowLeft, BellIcon } from "lucide-react";
 import Api from "../../../service/axios";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../Apps/store";
-import { Dialog, DialogContent } from "@mui/material";
-// import defaultDp from '../../../assets/defaultDP.png'
+import { Dialog, DialogContent, MenuList } from "@mui/material";
 import defaultDp from '../../../Assets/defaultDP.png'
 import Lottie from "react-lottie";
 import animationData from '../../../Animation/Typing.json'
+import { Menu, MenuItem, IconButton, Badge } from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+
+
 
 interface ChatWidgetProps {
   isChatOpen?: boolean;
@@ -33,6 +36,7 @@ interface Sender {
 interface MessageProps {
   content: string;
   sender: Sender;
+  chat: any
 }
 
 interface ChatsProps {
@@ -55,15 +59,19 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   socket,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<UserChatProps | null>(null);
-  const [message, setMessage] = useState("");
-  const [userChatId, setUserChatId] = useState("");
-  const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [selectedUser, setSelectedUser] = useState<UserChatProps | null>(null); //stores the selected user for conversation.
+  const [message, setMessage] = useState(""); // stores the message being typed.
+  const [userChatId, setUserChatId] = useState(""); // stores the chat ID of the selected conversation
+  const [messages, setMessages] = useState<MessageProps[]>([]); // holds the chat messages
   const [activeUsers, setActiveUsers] = useState<activeUserProps[]>([]);
-  const [chats, setChats] = useState<ChatsProps[] | null>([]);
+  const [chats, setChats] = useState<ChatsProps[] | null>([]); // stores a list of available chats
   const [typing, setTyping] = useState<boolean>(false)
   const [isTyping, setIsTyping] = useState<boolean>(false)
   const [socketConnected, setSocketConnected] = useState<boolean>(false)
+  const [notification, setNotification] = useState<any[]>([])
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+
 
 
   const defaultOptions = {
@@ -81,6 +89,16 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
 
   // star from here , set up 
@@ -204,9 +222,18 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   // message receiving from socket - (message)
   useEffect(() => {
     socket.on("message received", (message: MessageProps) => {
-      setMessages([...messages, message]);
+      console.log('///////////////-', message);
+
+      if (userChatId !== message.chat._id) {
+        if (!notification.includes(message)) {
+          setNotification([message, ...notification])
+        }
+      } else {
+        setMessages([...messages, message]);
+      }
     });
   });
+  console.log('-----------------', notification);
 
 
   const typingHandler = (e: any) => {
@@ -246,34 +273,81 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
         <DialogContent className="sm:max-w-xl p-0">
           <div className="flex h-[500px]">
             {!selectedUser ? (
-              <div className="w-screen">
-                <div className="p-4 border-b bg-white">
+              <div className="w-screen ">
+
+
+
+                <div className="p-4 border-b bg-white flex justify-between items-center">
                   <h2 className="font-semibold">Connections</h2>
-                </div>
-                <div className="overflow-y-auto h-[calc(100%-60px)]">
-                  {chats && chats.length ? (chats?.map((user) => (
-                    <div
-                      key={user.users[0]._id}
-                      onClick={() => handleUserSelection(user)}
-                      className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-gray-100 transition-colors`}
+
+                  {/* Notification Bell Button */}
+
+                  <IconButton onClick={handleClick}>
+                    <Badge
+                      badgeContent={notification.length}
+                      color="error"
+                      overlap="circular"
                     >
-                      <img
-                        src={user?.users[0].profile_picture || defaultDp}
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full border"
-                      />
+                      <NotificationsIcon className="text-gray-600" />
+                    </Badge>
+                  </IconButton>
+
+                  {/* Notification Menu */}
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                      sx: { mt: 1, borderRadius: 2, minWidth: 200 },
+                    }}
+                  >
+                    {notification.length === 0 ? (
+                      <MenuItem disabled>No New Messages</MenuItem>
+                    ) : (
+                      notification.map(notif => (
+                        <MenuItem key={notif._id}
+                          onClick={() => {
+                            setUserChatId(notif.chat._id)
+                            setSelectedUser(notif.chat.users[0]);
+                            setNotification(notification.filter((n) => n !== notif))
+                          }}
+                        >
+                          {notif.chat.message ? 'new mesg' : `New message from ${notif.sender.name}`}
+                        </MenuItem>
+                      ))
+                    )}
+                  </Menu>
+                </div>
+
+
+
+
+
+                <div className="overflow-y-auto h-[calc(100%-60px)]">
+                  {chats && chats.length ? (
+                    chats?.map((user) => (
                       <div
-                        className={`w-2 h-2 rounded-full ${activeUsers.some(
-                          (activeUser) =>
-                            activeUser.userId === user.users[0]._id
-                        )
-                          ? "bg-green-500"
-                          : "bg-gray-300"
-                          }`}
-                      />
-                      <span className="truncate">{user?.users[0].name}</span>
-                    </div>
-                  ))) : <div className="flex items-center justify-center h-full">No Chats Yet!</div>}
+                        key={user.users[0]._id}
+                        onClick={() => handleUserSelection(user)}
+                        className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-gray-100 transition-colors`}
+                      >
+                        <img
+                          src={user?.users[0].profile_picture || defaultDp}
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full border"
+                        />
+                        <div
+                          className={`w-2 h-2 rounded-full ${activeUsers.some(
+                            (activeUser) =>
+                              activeUser.userId === user.users[0]._id
+                          )
+                            ? "bg-green-500"
+                            : "bg-gray-300"
+                            }`}
+                        />
+                        <span className="truncate">{user?.users[0].name}</span>
+                      </div>
+                    ))) : <div className="flex items-center justify-center h-full">No Chats Yet!</div>}
                 </div>
               </div>
             ) : (
