@@ -275,12 +275,21 @@ const deleteFeedback = async (feedbackId: string) => {
 };
 
 
-const allFeedbacks = async()=>{
+const allFeedbacks = async () => {
     try {
         const response = await Api.get(userRoutes.allFeedbacks)
         return response.data
     } catch (error) {
         console.log("Error is fetching feedbacks list for user", error)
+        throw error
+    }
+}
+
+const isAlreadyBooked = async (bikeId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.isAlreadyBooked}/${bikeId}`)
+        return response.data
+    } catch (error) {
         throw error
     }
 }
@@ -311,5 +320,6 @@ export {
     getUserFeedback,
     updateFeedback,
     deleteFeedback,
-    allFeedbacks
+    allFeedbacks,
+    isAlreadyBooked
 }

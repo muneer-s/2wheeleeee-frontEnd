@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getReviews } from "../../../../Api/user";
 import { FaStar } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 
 export interface IReviewer {
@@ -17,19 +18,19 @@ export interface IReview {
 }
 
 
-const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {
+const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {    
     const [reviews, setReviews] = useState<IReview[]>([]);
 
     const fetchReviews = async (bikeId: string) => {
         try {
             const response = await getReviews(bikeId);
-            console.log(98,response.data.data);
             
             if (response?.success) {
                 setReviews(response.data.data);
             }
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error fetching reviews:", error);
+            toast.error(error.response.data.message || "Error Fetching Reviews")
         }
     };
 
@@ -41,7 +42,7 @@ const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {
 
     return (
         <div>
-            <h2 className="text-xl font-semibold text-gray-700">User Reviews</h2>
+            <h2 className="text-xl font-semibold text-gray-700">Reviews</h2>
 
             {reviews.length > 0 ? (
                 <div className="bg-gray-100 p-4 rounded-lg">

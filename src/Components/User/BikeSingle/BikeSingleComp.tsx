@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { createOrder, getBikeDetails, getProfile, getWalletBalance, orderPlacing } from "../../../Api/user";
+import { createOrder, getBikeDetails, getProfile, getWalletBalance, isAlreadyBooked, orderPlacing } from "../../../Api/user";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,6 +13,7 @@ import Api from "../../../service/axios";
 import userRoutes from "../../../service/endPoints/userEndPoints";
 import { isAdminVerifyUser } from "../../../Api/host";
 import Review from "./Components/Review";
+import Swal from "sweetalert2";
 
 
 
@@ -32,24 +33,24 @@ const BikeSingleComp = () => {
     const [totalRent, setTotalRent] = useState(0);
     const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
-
     const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const today = new Date().toISOString().split("T")[0];
 
     const authState = useAppSelector((state) => state.auth);
-    const userEmail = authState.user.email
-    const userIsPresent = authState.user
-    const userId = userIsPresent.userId
+    const userEmail = authState.user?.email || ''
+
+    const userIsPresent = authState.user ?? null
+    const userId = userIsPresent?.userId ?? ''
 
 
-    useEffect(() => {
-        if (!userId) {
-            toast.error("Please log in to access this page");
-            navigate("/login");
-        }
-    }, [userIsPresent, navigate]);
+    // useEffect(() => {
+    //     if (!userId) {
+    //         toast.error("Please log in to access this page");
+    //         navigate("/login");
+    //     }
+    // }, [userIsPresent, navigate]);
 
 
     useEffect(() => {
@@ -65,10 +66,9 @@ const BikeSingleComp = () => {
             }
         };
 
-        if (userIsPresent) {
-            fetchDetails();
-        }
-    }, [id, userIsPresent]);
+        fetchDetails();
+
+    }, [id]);
 
 
     useEffect(() => {
@@ -112,6 +112,8 @@ const BikeSingleComp = () => {
         insuranceExpDate,
         polutionExpDate,
         userDetails } = bikeDetails;
+
+
 
 
     // zooming
@@ -198,16 +200,37 @@ const BikeSingleComp = () => {
 
         try {
             if (!userIsPresent) {
-                toast.error("Please login first")
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Please login first!",
+                });
                 navigate('/login')
                 return
             }
+
+
 
             const response1 = await isAdminVerifyUser(userId)
             const data = handleApiResponse(response1)
 
             if (!data.user?.isUser) {
-                toast.error("Sorry !! Can't Make Booking , User is Not Verified !!")
+                Swal.fire({
+                    icon: "error",
+                    title: "Sorry!",
+                    text: "Can't make booking, user is not verified!",
+                });
+                return
+            }
+
+
+            const result = await isAlreadyBooked(bikeDetails?._id);
+            if (result.data.bikeOrdered) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "This bike is already booked! Please try later.",
+                });
                 return
             }
 
@@ -252,7 +275,11 @@ const BikeSingleComp = () => {
         setError("");
 
         if (!userIsPresent) {
-            toast.error("Please login first")
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please login first!",
+            });
             navigate('/login')
             return
         }
@@ -260,7 +287,22 @@ const BikeSingleComp = () => {
         const data = handleApiResponse(response1)
 
         if (!data.user?.isUser) {
-            toast.error("Sorry !! Can't Make Booking , User is Not Verified !!")
+            Swal.fire({
+                icon: "error",
+                title: "Sorry!",
+                text: "Can't make booking, user is not verified!",
+            });
+            return
+        }
+
+
+        const result = await isAlreadyBooked(bikeDetails?._id);
+        if (result.data.bikeOrdered) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "This bike is already booked! Please try later.",
+            });
             return
         }
 

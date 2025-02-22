@@ -514,10 +514,10 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
 
     return (
         <div className=" min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center" >
-            <div className="h-auto w-full max-w-4xl bg-white rounded-lg shadow-lg p-8 bg-gradient-to-b from-white to-sky-200 " style={{ marginTop: '80px', marginBottom: '80px' }}>
+            <div className="h-auto  bg-white rounded-lg p-8 bg-gradient-to-b from-white to-sky-200 " style={{ marginTop: '80px', marginBottom: '80px' }}>
                 {/* Sidebar */}
                 <div className="flex flex-col md:flex-row">
-                    <div className="w-full md:w-1/4 border-r border-gray-200 pr-4">
+                    <div className=" border-r border-gray-200 pr-4">
                         <ul className="space-y-4 text-gray-700">
                             <li className={`font-semibold cursor-pointer ${activeTab === "Personal Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Personal Details")}>Personal Details</li>
                             <li className={`cursor-pointer ${activeTab === "My Wallet" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("My Wallet")}>My Wallet</li>
@@ -528,7 +528,7 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
 
                     {/* Main Content */}
 
-                    <div className="w-full md:w-3/4 pl-4">{renderContent()}</div>
+                    <div className=" pl-4">{renderContent()}</div>
 
 
                 </div>

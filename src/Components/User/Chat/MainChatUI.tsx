@@ -59,19 +59,17 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   socket,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<UserChatProps | null>(null); //stores the selected user for conversation.
-  const [message, setMessage] = useState(""); // stores the message being typed.
-  const [userChatId, setUserChatId] = useState(""); // stores the chat ID of the selected conversation
-  const [messages, setMessages] = useState<MessageProps[]>([]); // holds the chat messages
+  const [selectedUser, setSelectedUser] = useState<UserChatProps | null>(null);         // selected user for conversation.
+  const [message, setMessage] = useState("");                                   //the message  typing
+  const [userChatId, setUserChatId] = useState("");                               // chat ID of the selected conversation
+  const [messages, setMessages] = useState<MessageProps[]>([]);                     // chat messages
   const [activeUsers, setActiveUsers] = useState<activeUserProps[]>([]);
-  const [chats, setChats] = useState<ChatsProps[] | null>([]); // stores a list of available chats
+  const [chats, setChats] = useState<ChatsProps[] | null>([]);                           //  list of  chats
   const [typing, setTyping] = useState<boolean>(false)
   const [isTyping, setIsTyping] = useState<boolean>(false)
   const [socketConnected, setSocketConnected] = useState<boolean>(false)
   const [notification, setNotification] = useState<any[]>([])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-
 
 
   const defaultOptions = {
@@ -88,7 +86,7 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   const userId = userDetails.userId
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const open = Boolean(anchorEl);
 
@@ -161,8 +159,6 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   }, [isOpen, userId]);
 
 
-
-
   useEffect(() => {
     if (hostId) {
       chats?.find((chat) => {
@@ -181,8 +177,6 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
     }
     // onClose();
   };
-
-
 
   // select user 
   const handleUserSelection = (chat: UserChatProps) => {
@@ -212,9 +206,18 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
     fetchMessages();
   }, [selectedUser]);
 
+
   useEffect(() => {
+    // Instantly move to bottom on mount
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, []); // Runs only on mount
+
+  useEffect(() => {
+    // Automatically scroll to the bottom when new messages arrive
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: "auto" }); // No smooth scrolling
     }
   }, [messages]);
 
@@ -312,16 +315,12 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                             setNotification(notification.filter((n) => n !== notif))
                           }}
                         >
-                          {notif.chat.message ? 'new mesg' : `New message from ${notif.sender.name}`}
+                          {notif.chat.message ? `new message in ${notif.Chat}` : `New message from ${notif.sender.name}`}
                         </MenuItem>
                       ))
                     )}
                   </Menu>
                 </div>
-
-
-
-
 
                 <div className="overflow-y-auto h-[calc(100%-60px)]">
                   {chats && chats.length ? (
@@ -378,7 +377,10 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                 </div>
 
                 {/* Chat Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                <div
+                  ref={chatContainerRef}
+                  className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50"
+                >
                   {messages?.length ? (
                     messages.map((msg, idx) => (
                       <div
@@ -423,7 +425,6 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                     <input
                       type="text"
                       value={message}
-                      // onChange={(e) => setMessage(e.target.value), typingHandler}
                       onChange={(e) => { setMessage(e.target.value); typingHandler(e); }}
                       placeholder="Type a message..."
                       className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -159,7 +159,7 @@ console.log(11,response);
                 <textarea
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    className="border p-2 w-full rounded"
+                    className="border p-2 w-96 h-40 rounded-lg"
                 />
 
                 {/* Error message for comment */}

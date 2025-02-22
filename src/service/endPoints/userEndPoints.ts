@@ -20,12 +20,12 @@ const userRoutes={
     OrderDetails:'/user/OrderDetails',
     earlyReturns:'/user/earlyReturns',
     returnOrder:'/user/returnOrder',
-
     getReviews:'/user/getReviews',
     submitReview:'/user/submitReview',
     createFeedback:'/feedback/createFeedback',
     feedback:'/feedback/feedback',
-    allFeedbacks:'/feedback/allFeedbacks'
+    allFeedbacks:'/feedback/allFeedbacks',
+    isAlreadyBooked:'/user/isAlreadyBooked'
 
 }
 
