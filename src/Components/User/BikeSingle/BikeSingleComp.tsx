@@ -44,15 +44,6 @@ const BikeSingleComp = () => {
     const userIsPresent = authState.user ?? null
     const userId = userIsPresent?.userId ?? ''
 
-
-    // useEffect(() => {
-    //     if (!userId) {
-    //         toast.error("Please log in to access this page");
-    //         navigate("/login");
-    //     }
-    // }, [userIsPresent, navigate]);
-
-
     useEffect(() => {
         const fetchDetails = async () => {
             try {
@@ -111,7 +102,9 @@ const BikeSingleComp = () => {
         registerNumber,
         insuranceExpDate,
         polutionExpDate,
-        userDetails } = bikeDetails;
+        userDetails
+
+    } = bikeDetails;
 
 
 
@@ -180,6 +173,13 @@ const BikeSingleComp = () => {
     };
 
     const handleSubmit = async () => {
+        if (userId == bikeDetails.userId) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "It's Your Bike ! Can't Book !!!",
+            });
+        }
 
         if (!endDate || !startDate) {
             setError("Please select the start date and end date");
@@ -256,6 +256,14 @@ const BikeSingleComp = () => {
     };
 
     const handleRazorpayPayment = async () => {
+
+        if (userId == bikeDetails.userId) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "It's Your Bike ! Can't Book !!!",
+            });
+        }
 
         if (!endDate || !startDate) {
             setError("Please select the start date and end date");

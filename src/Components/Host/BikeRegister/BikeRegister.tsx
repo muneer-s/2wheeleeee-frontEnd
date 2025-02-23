@@ -3,16 +3,22 @@ import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
 import { useNavigate } from "react-router-dom";
 import ImageCrop from "../../../Config/Crop/ImageCrop";
+import axios from "axios";
 
-
+const GEOAPIFY_API_KEY = "ebe1aea2f39645e1bfe16fb9da4b0452"
 
 const BikeRegister = () => {
+
+
+    const navigate = useNavigate();
+
 
     const [formData, setFormData] = useState({
         companyName: "",
         modelName: "",
         rentAmount: "",
         fuelType: "",
+        location: "",
         images: [] as File[],
         registerNumber: "",
         insuranceExpDate: "",
@@ -28,18 +34,54 @@ const BikeRegister = () => {
     const [PolutionImagePreview, setPolutionImagePreview] = useState<string | null>(null);
     const [insuranceImagePreview, setInsuranceImagePreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
 
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
 
-    const navigate = useNavigate()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+
+        if (name === "location") {
+            fetchLocationSuggestions(value);
+        }
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
+
+
+    // Fetch location suggestions from Geoapify
+    const fetchLocationSuggestions = async (query: string) => {
+        if (!query) {
+            setLocationSuggestions([]);
+            return;
+        }
+
+        try {
+            const response = await axios.get(
+                `https://api.geoapify.com/v1/geocode/autocomplete?text=${query}&apiKey=${GEOAPIFY_API_KEY}`
+            );
+
+            if (response.data && response.data.features) {
+                setLocationSuggestions(
+                    response.data.features.map((feature: any) => feature.properties.formatted)
+                );
+            }
+        } catch (error) {
+            console.error("Error fetching location suggestions:", error);
+        }
+    };
+
+
+    // Handle selecting a location from suggestions
+    const handleSelectLocation = (location: string) => {
+        setFormData({ ...formData, location });
+        setLocationSuggestions([]);
+    };
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target;
@@ -75,16 +117,6 @@ const BikeRegister = () => {
         }
     };
 
-
-    // const handleCropComplete = (cropped: Blob | null) => {
-    //     setCroppedImage(cropped);
-    //     setPreviewUrl(cropped ? URL.createObjectURL(cropped) : null);
-    //     setFormData((prevFormData) => ({
-    //         ...prevFormData,
-    //         rcImage: cropped,
-    //     }));
-    // };
-
     const handleCropComplete = (cropped: Blob | null) => {
         if (cropped) {
             // Convert the Blob to a File
@@ -107,9 +139,6 @@ const BikeRegister = () => {
             }));
         }
     };
-
-
-
 
     const handleRemoveImage = (index: number) => {
         const newImages = formData.images.filter((_, i) => i !== index);
@@ -203,15 +232,25 @@ const BikeRegister = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (!formData.location) {
+            toast.error("Please select a valid location.");
+            return;
+        }
+
         if (!validateForm()) {
             return;
         }
+console.log(99,formData.location);
+
+
 
         const submissionData = new FormData();
 
         submissionData.append("companyName", formData.companyName);
         submissionData.append("modelName", formData.modelName);
         submissionData.append("rentAmount", formData.rentAmount);
+        submissionData.append("location", formData.location); // Include location in submission
+
         submissionData.append("fuelType", formData.fuelType);
         submissionData.append("registerNumber", formData.registerNumber);
         submissionData.append("insuranceExpDate", formData.insuranceExpDate);
@@ -229,12 +268,13 @@ const BikeRegister = () => {
         setIsSubmitting(true);
 
         try {
+            
             const response = await saveBikeDetails(submissionData);
 
             if (response?.success) {
                 toast.success(response.message);
                 navigate('/hostSuccessPage')
-            } 
+            }
         } catch (error) {
             toast.error("An error occurred while submitting the data.");
             console.error("Error:", error);
@@ -310,6 +350,48 @@ const BikeRegister = () => {
                         {renderError("fuelType")}
 
                     </div>
+
+                    {/* Location Input */}
+
+                    <div className="relative">
+                        <label className="block text-gray-700">Location</label>
+                        <input
+                            type="text"
+                            name="location"
+                            value={formData.location}
+                            onChange={handleInputChange}
+                            placeholder="Search location"
+                            className="w-full mt-1 p-2 border rounded"
+                        />
+
+                        {/* Show location suggestions */}
+                        {locationSuggestions.length > 0 && (
+                            <ul className="absolute bg-white border w-full mt-1 max-h-40 overflow-y-auto shadow-lg rounded">
+                                {locationSuggestions.map((loc, index) => (
+                                    <li
+                                        key={index}
+                                        onClick={() => handleSelectLocation(loc)}
+                                        className="p-2 hover:bg-gray-200 cursor-pointer"
+                                    >
+                                        {loc}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     {/* Bike Images */}
                     <div className="col-span-2 mb-8">

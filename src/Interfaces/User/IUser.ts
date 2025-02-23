@@ -1,5 +1,6 @@
 export interface IBikeDetails {
     _id: string;
+    userId:string
     companyName: string;
     modelName: string;
     rentAmount: number ;
@@ -11,6 +12,7 @@ export interface IBikeDetails {
     offer:string | null;
     offerApplied:boolean | null;
     offerPrice:number | null;
+    location:string
 }
 
 
@@ -25,6 +27,7 @@ interface IUserDetailsBikeSingle {
 
 export interface IBikeDetailsWithUserDetails {
     _id: any;
+    userId:string;
     companyName: string;
     modelName: string;
     rentAmount: number;
@@ -37,4 +40,5 @@ export interface IBikeDetailsWithUserDetails {
     offer:string | null;
     offerApplied:boolean | null;
     offerPrice:number | null;
+    location:string
 }

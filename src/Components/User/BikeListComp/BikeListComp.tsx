@@ -58,7 +58,7 @@ const BikeListComp = () => {
 
                     <input
                         type="text"
-                        placeholder="Search by model/company"
+                        placeholder="Search by location/model/company"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full mb-4 p-2 border rounded"
@@ -118,6 +118,7 @@ const BikeListComp = () => {
                                 />
                                 <h2 className="text-lg font-semibold mt-2">{bike.modelName}</h2>
                                 <p>{bike.companyName}</p>
+                                <p>Location: {bike.location}</p>
                                 <p>Fuel: {bike.fuelType}</p>
 
 
