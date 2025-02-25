@@ -91,7 +91,9 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    if(event.currentTarget){
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = () => {
@@ -228,9 +230,12 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
       console.log('///////////////-', message);
 
       if (userChatId !== message.chat._id) {
+        if (message.sender._id !== userId) {
+
         if (!notification.includes(message)) {
           setNotification([message, ...notification])
         }
+      }
       } else {
         setMessages([...messages, message]);
       }
@@ -298,7 +303,7 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                   {/* Notification Menu */}
                   <Menu
                     anchorEl={anchorEl}
-                    open={open}
+                    open={Boolean(anchorEl)}
                     onClose={handleClose}
                     PaperProps={{
                       sx: { mt: 1, borderRadius: 2, minWidth: 200 },
@@ -311,11 +316,13 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                         <MenuItem key={notif._id}
                           onClick={() => {
                             setUserChatId(notif.chat._id)
-                            setSelectedUser(notif.chat.users[0]);
+                            // setSelectedUser(notif.chat.users[0]);
+                            setSelectedUser(notif.chat.users.find((user:any) => user._id !== userId)); // Select the other user
                             setNotification(notification.filter((n) => n !== notif))
                           }}
                         >
-                          {notif.chat.message ? `new message in ${notif.Chat}` : `New message from ${notif.sender.name}`}
+                          {/* {notif.chat.message ? `new message in ${notif.Chat}` : `New message from ${notif.sender.name}`} */}
+                        {`New message from ${notif.sender.name}`}
                         </MenuItem>
                       ))
                     )}

@@ -150,19 +150,6 @@ const BikeRegister = () => {
         setPreview(null);
     };
 
-
-    const handlePreRemoveImage = () => {
-        // Clear all related states
-        setSelectedImage(null);
-        setCroppedImage(null);
-        setPreviewUrl(null);
-        setRcImagePreview(null); // Optional, if rcImagePreview is used elsewhere
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            rcImage: null,
-        }));
-    };
-
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
         const todayDate = new Date();

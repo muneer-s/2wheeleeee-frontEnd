@@ -15,12 +15,12 @@ const Header = () => {
 
   const [visible, setVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [dropDownOpen, setDropdownOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
 
-  const [dropDownOpen, setDropdownOpen] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,9 +73,6 @@ const Header = () => {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-
-
 
   return (
     <header className={`fixed top-0 left-0 z-50 p-4 bg-white px-4 py-2 flex items-center justify-between w-full mx-auto md:px-8 transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"}`}>

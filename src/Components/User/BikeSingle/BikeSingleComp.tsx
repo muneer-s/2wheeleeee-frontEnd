@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { createOrder, getBikeDetails, getProfile, getWalletBalance, isAlreadyBooked, orderPlacing } from "../../../Api/user";
@@ -102,7 +102,8 @@ const BikeSingleComp = () => {
         registerNumber,
         insuranceExpDate,
         polutionExpDate,
-        userDetails
+        userDetails,
+        location
 
     } = bikeDetails;
 
@@ -260,7 +261,7 @@ const BikeSingleComp = () => {
         if (userId == bikeDetails.userId) {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
+                title: "Wait...",
                 text: "It's Your Bike ! Can't Book !!!",
             });
         }
@@ -459,6 +460,7 @@ const BikeSingleComp = () => {
                                 <span className="text-green-500">(Valid)</span>
                             )}
                         </p>
+                        <p className="mb-3"><strong>Location:</strong> {location}</p>
                     </div>
                 </div>
                 {/* Place the Order Section */}

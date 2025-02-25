@@ -1,8 +1,7 @@
 import userRoutes from "../service/endPoints/userEndPoints.ts";
 import Api from "../service/axios.ts";
-
 import { UserData } from "../Interfaces/Interfaces.ts";
-import { IUserFeedback, IUserFeedbacks } from "../Components/User/Feedback/FeedbackForm.tsx";
+import { IUserFeedbacks } from "../Components/User/Feedback/FeedbackForm.tsx";
 
 const verifyOtp = async (data: { otp: string, userId: string | null }) => {
     try {
@@ -10,7 +9,7 @@ const verifyOtp = async (data: { otp: string, userId: string | null }) => {
         const result = await Api.post(userRoutes.verifyOtp, { otp, userId: data.userId });
         return result.data;
     } catch (error) {
-        console.log(error as Error);
+        console.log(error);
         throw error;
     }
 }
@@ -20,21 +19,19 @@ const resendOtp = async ({ email }: { email: string }) => {
         const response = await Api.post(userRoutes.resendOtp, { email });
         return response.data;
     } catch (error) {
-        console.log(error as Error);
+        console.log(error);
         throw error;
     }
 }
+
 const signup = async (userData: { name: string, email: string, password: string }) => {
     try {
         const result = await Api.post(userRoutes.signup, userData)
         return result.data;
-
     } catch (error) {
         throw error
     }
 }
-
-
 
 const login = async (credentials: { email: string; password: string }) => {
     try {
@@ -62,10 +59,8 @@ const logout = async (Credential: { email: string }) => {
 
 const forgotPassword = async (email: string) => {
     try {
-
         const result = await Api.post(userRoutes.forgotPassword, { email })
         return result
-
     } catch (error) {
         console.log(error);
         throw error;
@@ -76,7 +71,6 @@ const getProfile = async (email: string) => {
     try {
         const result = await Api.get(`${userRoutes.getProfile}?email=${email}`);
         return result.data
-
     } catch (error) {
         console.log("error in get profile user.ts", error);
         throw error
@@ -105,7 +99,6 @@ const edituserDocuments = async (formData: FormData) => {
             }
         })
         return result.data
-
     } catch (error) {
         console.log(error);
         throw error;
@@ -122,6 +115,7 @@ const getAllBikeList = async (params: any) => {
         throw error;
     }
 }
+
 const checkBlockedStatus = async (email: string) => {
     try {
         const response = await Api.post(userRoutes.checkBlockedStatus, { email });
@@ -146,7 +140,6 @@ const orderPlacing = async (orderData: { bikeId: string; startDate: string; endD
     try {
         const response = await Api.post(userRoutes.placeOrder, orderData);
         return response.data;
-
     } catch (error) {
         console.log('Error in order placing : ', error)
         throw error
@@ -166,7 +159,6 @@ const createOrder = async (datas: any) => {
 const getWalletBalance = async (walletId: string) => {
     try {
         const response = await Api.get(`${userRoutes.getWallet}/${walletId}`);
-
         return response.data;
     } catch (error) {
         console.error("Error fetching wallet balance:", error);
@@ -193,7 +185,6 @@ const userGetOrderDetails = async (orderId: string) => {
         throw error
     }
 }
-
 
 const earlyReturns = async (orderId: string) => {
     try {
@@ -253,7 +244,6 @@ const getUserFeedback = async (userId: string) => {
     }
 }
 
-
 const updateFeedback = async (feedbackId: string, feedbackData: { rating: number; comment: string }) => {
     try {
         const response = await Api.put(`${userRoutes.feedback}/${feedbackId}`, feedbackData);
@@ -273,7 +263,6 @@ const deleteFeedback = async (feedbackId: string) => {
         throw error
     }
 };
-
 
 const allFeedbacks = async () => {
     try {

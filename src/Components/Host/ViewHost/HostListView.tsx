@@ -59,192 +59,184 @@ const HostListView = () => {
                         )
                     );
                 }
-
-
-            }else{
-                toast.error("Offer removing canceled");
-
             }
-            } catch (error) {
-                console.error("Error removing offer:", error);
-                toast.error("An error occurred while removing the offer.");
-            }
-        };
+        } catch (error:any) {
+            console.error("Error removing offer:", error);
+            toast.error(error.response.data.message);
+        }
+    };
 
 
+    const deleteBike = async (id: string) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you really want to delete this bike?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel',
+                reverseButtons: true,
+            });
 
+            if (result.isConfirmed) {
+                const deleteResponse = await deleteSelectedBike(id);
 
-
-        const deleteBike = async (id: string) => {
-            try {
-                const result = await Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Do you really want to delete this bike?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel',
-                    reverseButtons: true,
-                });
-
-                if (result.isConfirmed) {
-                    const deleteResponse = await deleteSelectedBike(id);
-
-                    if (deleteResponse.success) {
-                        toast.success(deleteResponse.message);
-                        setBikes((prevBikes) => prevBikes.filter((bike) => bike._id !== id));
-                    } else {
-                        toast.error("Error while deleting bike");
-                    }
+                if (deleteResponse.success) {
+                    toast.success(deleteResponse.message);
+                    setBikes((prevBikes) => prevBikes.filter((bike) => bike._id !== id));
                 } else {
-                    toast.error("Bike deletion canceled");
+                    toast.error("Error while deleting bike");
                 }
-            } catch (error) {
-                console.error("Error deleting bike:", error);
-                toast.error("An error occurred while deleting the bike.");
+            } else {
+                toast.error("Bike deletion canceled");
             }
-        };
+        } catch (error) {
+            console.error("Error deleting bike:", error);
+            toast.error("An error occurred while deleting the bike.");
+        }
+    };
 
 
-        const renderContent = () => {
-            switch (activeTab) {
-                case "Bike Details":
-                    return (
-                        <div className="mb-8">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Details</h2>
-                            {/*   sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-96 */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {bikes.length > 0 ? (
-                                    bikes.map((bike) => (
-                                        <div
-                                            key={bike._id}
-                                            className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-lg p-4 space-y-4"
-                                        >
-                                            <img
-                                                src={bike.images[0] || "https://via.placeholder.com/150"}
-                                                alt={bike.modelName}
-                                                className="w-full h-40 object-cover rounded-lg"
-                                            />
-                                            <div className="space-y-2">
-                                                <h3 className="text-xl font-bold text-gray-800">{bike.modelName}</h3>
-                                                <p className="text-sm text-gray-600">{bike.registerNumber}</p>
-                                                <p className="text-sm text-gray-600">
-                                                    <strong>Insurance Exp Date:</strong>{" "}
-                                                    {new Date(bike.insuranceExpDate).toLocaleDateString()}
-                                                </p>
-                                                <p className="text-sm text-gray-600">
-                                                    <strong>Pollution Exp Date:</strong>{" "}
-                                                    {new Date(bike.polutionExpDate).toLocaleDateString()}
-                                                </p>
-                                            </div>
-                                            <div className="flex flex-col space-y-2">
-                                                <button
-                                                    className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                                                    onClick={() => navigate(`/HostBikeViewPage/${bike._id}`)}
-                                                >
-                                                    View
-                                                </button>
-
-                                                {bike.isEdit && (
-                                                    <button
-                                                        className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                                                        onClick={() => navigate(`/EditBike/${bike._id}`)}
-                                                    >
-                                                        Edit Doc
-                                                    </button>
-                                                )}
-
-                                                {bike.offerApplied ? (
-                                                    <button
-                                                        className="w-full px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-400"
-                                                        onClick={() => removeOffer(bike._id)}
-                                                    >
-                                                        Remove Offer
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
-                                                        onClick={() => navigate(`/applyOffer/${bike._id}`)}
-                                                    >
-                                                        Apply Offer
-                                                    </button>
-                                                )}
-                                                <button
-                                                    className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                                                    onClick={() => deleteBike(bike._id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
+    const renderContent = () => {
+        switch (activeTab) {
+            case "Bike Details":
+                return (
+                    <div className="mb-8">
+                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Details</h2>
+                        {/*   sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-96 */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {bikes.length > 0 ? (
+                                bikes.map((bike) => (
+                                    <div
+                                        key={bike._id}
+                                        className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-lg p-4 space-y-4"
+                                    >
+                                        <img
+                                            src={bike.images[0] || "https://via.placeholder.com/150"}
+                                            alt={bike.modelName}
+                                            className="w-full h-40 object-cover rounded-lg"
+                                        />
+                                        <div className="space-y-2">
+                                            <h3 className="text-xl font-bold text-gray-800">{bike.modelName}</h3>
+                                            <p className="text-sm text-gray-600">{bike.registerNumber}</p>
+                                            <p className="text-sm text-gray-600">
+                                                <strong>Insurance Exp Date:</strong>{" "}
+                                                {new Date(bike.insuranceExpDate).toLocaleDateString()}
+                                            </p>
+                                            <p className="text-sm text-gray-600">
+                                                <strong>Pollution Exp Date:</strong>{" "}
+                                                {new Date(bike.polutionExpDate).toLocaleDateString()}
+                                            </p>
                                         </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-600">No bikes found for this user.</p>
-                                )}
-                            </div>
+                                        <div className="flex flex-col space-y-2">
+                                            <button
+                                                className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                                onClick={() => navigate(`/HostBikeViewPage/${bike._id}`)}
+                                            >
+                                                View
+                                            </button>
+
+                                            {bike.isEdit && (
+                                                <button
+                                                    className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                                    onClick={() => navigate(`/EditBike/${bike._id}`)}
+                                                >
+                                                    Edit Doc
+                                                </button>
+                                            )}
+
+                                            {bike.offerApplied ? (
+                                                <button
+                                                    className="w-full px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-400"
+                                                    onClick={() => removeOffer(bike._id)}
+                                                >
+                                                    Remove Offer
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
+                                                    onClick={() => navigate(`/applyOffer/${bike._id}`)}
+                                                >
+                                                    Apply Offer
+                                                </button>
+                                            )}
+                                            <button
+                                                className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                                onClick={() => deleteBike(bike._id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-600">No bikes found for this user.</p>
+                            )}
                         </div>
-                    );
-
-                case "Add":
-                    navigate("/hostBikeRegister")
-                    return null
-                case "Orders":
-                    return <UserOrderList />
-                case "Add Offers":
-                    return <CreateOffer />
-                case "View Offers":
-                    return <ViewOffers />
-                
-
-                default:
-                    return null;
-            }
-        };
-
-        return (
-            <div className="min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center">
-                <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg p-8">
-                    <div className="flex flex-col md:flex-row">
-                        {/* Sidebar */}
-                        <button
-                            className="md:hidden mb-4 bg-sky-500 text-white px-4 py-2 rounded-lg"
-                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                        >
-                            {isSidebarOpen ? "Close Menu" : "Open Menu"}
-                        </button>
-                        <div
-                            className={`${isSidebarOpen ? "block" : "hidden"
-                                } md:block w-full md:w-1/4 border-r border-gray-200 pr-4`}
-                        >
-                            <ul className="space-y-4 text-gray-700">
-                                <li className={`font-semibold cursor-pointer ${activeTab === "Bike Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Bike Details")}>
-                                    Bike Details
-                                </li>
-
-                                <li className={`font-semibold cursor-pointer ${activeTab === "Add" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Add")} >
-                                    Add
-                                </li>
-                                <li className={`font-semibold cursor-pointer ${activeTab === "Orders" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Orders")}>
-                                    Orders
-                                </li>
-                                <li className={`font-semibold cursor-pointer ${activeTab === "Add Offers" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Add Offers")}>
-                                    Add Offers
-                                </li>
-                                <li className={`font-semibold cursor-pointer ${activeTab === "View Offers" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("View Offers")}>
-                                    View Offers
-                                </li>
-                                
-
-                            </ul>
-                        </div>
-
-                        {/* Main Content */}
-                        <div className="w-full md:w-3/4 pl-4">{renderContent()}</div>
                     </div>
+                );
+
+            case "Add":
+                navigate("/hostBikeRegister")
+                return null
+            case "Orders":
+                return <UserOrderList />
+            case "Add Offers":
+                return <CreateOffer />
+            case "View Offers":
+                return <ViewOffers />
+
+
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-white to-sky-300 flex justify-center items-center">
+            <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg p-8">
+                <div className="flex flex-col md:flex-row">
+                    {/* Sidebar */}
+                    <button
+                        className="md:hidden mb-4 bg-sky-500 text-white px-4 py-2 rounded-lg"
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
+                        {isSidebarOpen ? "Close Menu" : "Open Menu"}
+                    </button>
+                    <div
+                        className={`${isSidebarOpen ? "block" : "hidden"
+                            } md:block w-full md:w-1/4 border-r border-gray-200 pr-4`}
+                    >
+                        <ul className="space-y-4 text-gray-700">
+                            <li className={`font-semibold cursor-pointer ${activeTab === "Bike Details" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Bike Details")}>
+                                Bike Details
+                            </li>
+
+                            <li className={`font-semibold cursor-pointer ${activeTab === "Add" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Add")} >
+                                Add
+                            </li>
+                            <li className={`font-semibold cursor-pointer ${activeTab === "Orders" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Orders")}>
+                                Orders
+                            </li>
+                            <li className={`font-semibold cursor-pointer ${activeTab === "Add Offers" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("Add Offers")}>
+                                Add Offers
+                            </li>
+                            <li className={`font-semibold cursor-pointer ${activeTab === "View Offers" ? "text-sky-500" : ""}`} onClick={() => setActiveTab("View Offers")}>
+                                View Offers
+                            </li>
+
+
+                        </ul>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="w-full md:w-3/4 pl-4">{renderContent()}</div>
                 </div>
             </div>
-        );
+        </div>
+    );
 
-    }
+}
 
-    export default HostListView
+export default HostListView

@@ -63,14 +63,14 @@ function App() {
 
             <Route path='/BikeListPage' element={<UserBikeListPage />} />
             <Route path='/BikeSinglePage/:id' element={<UserBikeSinglePage />} />
-            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails  /></UserProtecteRoute>} />
-            <Route path='/profilePage' element={<UserProtecteRoute><><ProfilePage socket={socket}/><ChatWidget  socket={socket} /></></UserProtecteRoute>} />
+            <Route path="/user/orders/:orderId" element={<UserProtecteRoute><UserOrderDetails /></UserProtecteRoute>} />
+            <Route path='/profilePage' element={<UserProtecteRoute><><ProfilePage socket={socket} /><ChatWidget socket={socket} /></></UserProtecteRoute>} />
+            <Route path='/OrderSuccess' element={<UserProtecteRoute><OrderSuccess /></UserProtecteRoute>} />
 
 
 
             {/* host side */}
             <Route path='/hostHome' element={<UserProtecteRoute><HostHome /></UserProtecteRoute>} />
-            <Route path='/OrderSuccess' element={<UserProtecteRoute><OrderSuccess /></UserProtecteRoute>} />
             <Route path='/hostList' element={<UserProtecteRoute><HostRegisterPage /></UserProtecteRoute>} />
             <Route path='/hostBikeRegister' element={<UserProtecteRoute><HostBikeRegisterpage /></UserProtecteRoute>} />
             <Route path='/hostSuccessPage' element={<UserProtecteRoute><Success /></UserProtecteRoute>} />
@@ -89,11 +89,10 @@ function App() {
             <Route path="/adminUserList" element={<AdminProtectedRoute><AdminUserList /></AdminProtectedRoute>} />
             <Route path="/adminHostList" element={<AdminProtectedRoute><AdminHostList /></AdminProtectedRoute>} />
             <Route path="/usersinglepage/:id" element={<AdminProtectedRoute><AdminSingleUserPage /></AdminProtectedRoute>} />
-
             <Route path="/singleBikeViewPage" element={<AdminProtectedRoute><HostSingleView /></AdminProtectedRoute>} />
             <Route path="/adminOrderList" element={<AdminProtectedRoute><AdminOrdersList /></AdminProtectedRoute>} />
             <Route path="/admin/orders/:orderId" element={<AdminProtectedRoute><AdminOrderDetails /></AdminProtectedRoute>} />
-            <Route path='/adminFeedbackList' element={<AdminProtectedRoute><AdminFeedbackListPage/></AdminProtectedRoute>} />
+            <Route path='/adminFeedbackList' element={<AdminProtectedRoute><AdminFeedbackListPage /></AdminProtectedRoute>} />
 
             {/* Catch-all for 404 */}
             <Route path="*" element={<PageNotFound />} />

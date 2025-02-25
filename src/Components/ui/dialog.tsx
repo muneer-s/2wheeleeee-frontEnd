@@ -1,7 +1,5 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { DialogTitle } from "@radix-ui/react-dialog";
-
 
 interface DialogProps {
   open: boolean;

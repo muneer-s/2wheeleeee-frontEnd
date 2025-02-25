@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-
 const initialState = {
     adminData: localStorage.getItem('adminInfo') ? JSON.parse(localStorage.getItem('adminInfo') as string) : null,
     userData: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo') as string) : null,
@@ -33,7 +32,7 @@ export const authSlice = createSlice({
             state.adminData = null;
             localStorage.removeItem('adminInfo');
         },
-        
+
     },
 })
 

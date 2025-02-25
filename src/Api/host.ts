@@ -1,6 +1,5 @@
 import hostRoutes from "../service/endPoints/hostEndPoints.ts";
 import Api from "../service/axios.ts";
-//import { BikeData } from "../Interfaces/BikeInterface.ts";
 
 const saveBikeDetails = async (data: FormData) => {
     try {
@@ -11,18 +10,18 @@ const saveBikeDetails = async (data: FormData) => {
         });
         return response.data;
     } catch (error) {
-        console.log(error as Error);
+        console.log('Error in host saveBikeDetails : ', error);
+        throw error
     }
 }
 
 const isAdminVerifyUser = async (userId: string) => {
     try {
-
         const response = await Api.get(hostRoutes.isAdminVerifyUser, { params: { userId } })
         return response.data
-
     } catch (error) {
-        console.log(error);
+        console.log('Error in host isAdminVerifyUser : ', error);
+        throw error
     }
 }
 
@@ -32,9 +31,8 @@ const fetchBikeData = async (userId: string) => {
             params: { userId }
         })
         return response.data
-
     } catch (error) {
-        console.error("Error fetching bike data:", error);
+        console.error("Error in host fetching bike data:", error);
         throw error;
     }
 }
@@ -45,7 +43,6 @@ const singleBikeView = async (bikeId: string) => {
             params: { bikeId }
         })
         return response.data
-
     } catch (error) {
         console.error("Error fetching bike :", error);
         throw error;
@@ -54,13 +51,10 @@ const singleBikeView = async (bikeId: string) => {
 
 const deleteSelectedBike = async (bikeId: string) => {
     try {
-
         const response = await Api.delete(hostRoutes.deleteBike, {
             params: { bikeId }
         })
-
         return response.data
-
     } catch (error) {
         console.error("Error deleting bike :", error);
         throw error;
@@ -87,18 +81,17 @@ const hostOrderList = async (id: string) => {
         const response = await Api.get(`${hostRoutes.OrderList}?Id=${id}`);
         return response.data
     } catch (error) {
-        console.log("Error is fetching order list for admin", error)
+        console.log("Error in host hostOrderList : ", error)
         throw error
     }
 }
-
 
 const hostGetOrderDetails = async (orderId: string) => {
     try {
         const response = await Api.get(`${hostRoutes.OrderDetails}/${orderId}`)
         return response.data
     } catch (error) {
-        console.log("Error is fetching order details for admin", error)
+        console.log("Error in host hostGetOrderDetails : ", error)
         throw error
     }
 }
@@ -108,7 +101,7 @@ const createOffer = async (formData: { offerName: string; discount: string; star
         const response = await Api.post(hostRoutes.CreateOffer, formData);
         return response.data;
     } catch (error) {
-        console.log("Error when creating offer");
+        console.log("Error in host createOffer", error);
         throw error;
     }
 };
@@ -118,16 +111,17 @@ const viewOffers = async (userId: string) => {
         const response = await Api.get(`${hostRoutes.ViewOffers}?userId=${userId}`)
         return response.data
     } catch (error) {
+        console.log("Error in host viewOffers : ", error);
         throw error
     }
 }
-
 
 const deleteOffer = async (id: string) => {
     try {
         const response = await Api.delete(`${hostRoutes.deleteOffer}/${id}`)
         return response.data
     } catch (error) {
+        console.log('Error in host deleteOffer : ', error);
         throw error
     }
 }
@@ -137,22 +131,20 @@ const updateOffer = async (id: string, updatedData: any) => {
         const response = await Api.put(`${hostRoutes.updateOffer}/${id}`, updatedData)
         return response.data
     } catch (error) {
+        console.log('Error in host updateOffer : ', error);
         throw error
     }
 }
-
 
 const applyOfferToBike = async (bikeId: string, offerId: string) => {
     try {
         const response = await Api.put(hostRoutes.applyOffer, { bikeId, offerId })
         return response.data
-
-
     } catch (error) {
+        console.log('Error in host applyOfferToBike : ', error);
         throw error
     }
 }
-
 
 const removeOfferFromBike = async (bikeId: string) => {
     try {
@@ -160,23 +152,19 @@ const removeOfferFromBike = async (bikeId: string) => {
         return response.data
     } catch (error) {
         console.error("Error removing offer:", error);
-        return { success: false, message: "Failed to remove offer" };
+        throw error
     }
 };
 
-
-const hostCompleteOrder = async (orderId: string)=>{
+const hostCompleteOrder = async (orderId: string) => {
     try {
         const response = await Api.put(`${hostRoutes.completeOrder}/${orderId}`)
         return response.data
-
     } catch (error) {
+        console.log('Error in host hostCompleteOrder : ', error);
         throw error
     }
 }
-
-
-
 
 
 
