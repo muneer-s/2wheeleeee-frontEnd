@@ -42,8 +42,7 @@ const Body = () => {
     <div className="bg-white text-center py-12 w-full">
 
       <div className="flex justify-between items-center w-full px-0  mx-auto">
-        {/* <img src="/src/assets/left.png" alt="Yellow Scooter" className="w-1/3" /> */}
-        <img src="/public/assets/left.png" alt="Yellow Scooter" className="w-1/3" />
+        <img src="/src/assets/left.png" alt="Yellow Scooter" className="w-1/3" />
 
         <div className="max-w-md mx-6 text-center">
           <h1 className="text-4xl font-bold mb-4 text-black">
@@ -60,7 +59,7 @@ const Body = () => {
           </button>
         </div>
 
-        <img src="/src/Assets/right.png" alt="Motorbike" className="w-1/3" />
+        <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" />
       </div>
 
 
