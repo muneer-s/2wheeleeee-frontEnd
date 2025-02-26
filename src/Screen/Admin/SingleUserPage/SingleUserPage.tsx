@@ -5,12 +5,8 @@ import AdminSingleUserPage from '../../../Components/Admin/SinglePageComp/AdminS
 const SingleUserPage = () => {
     return (
         <div>
-
             <AdminHeader />
             <AdminSingleUserPage />
-
-
-
         </div>
     )
 }

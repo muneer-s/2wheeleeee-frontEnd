@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { deleteSelectedBike, singleBikeView } from "../../../Api/host";
@@ -6,8 +5,6 @@ import toast from "react-hot-toast";
 import Swal from 'sweetalert2';
 import { IBike } from "../../../Interfaces/Host/IHost";
 import { handleApiResponse } from "../../../Utils/apiUtils";
-
-
 
 
 const BikeSingleView = () => {
@@ -19,14 +16,14 @@ const BikeSingleView = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-
         const fetchBikeDetails = async () => {
             try {
                 const response = await singleBikeView(id as string);
                 const data = handleApiResponse(response)
                 setBike(data.bike);
-            } catch (err) {
+            } catch (error:any) {
                 setError("Failed to fetch bike details.");
+                toast.error(error.response.data.message)
             } finally {
                 setLoading(false);
             }
@@ -39,7 +36,6 @@ const BikeSingleView = () => {
 
     const deleteBike = async () => {
         try {
-
             const result = await Swal.fire({
                 title: 'Are you sure?',
                 text: 'Do you really want to delete this bike?',
@@ -49,7 +45,6 @@ const BikeSingleView = () => {
                 cancelButtonText: 'No, cancel',
                 reverseButtons: true,
             });
-
 
             if (result.isConfirmed) {
                 const deleteResponse = await deleteSelectedBike(id as string);
@@ -63,9 +58,9 @@ const BikeSingleView = () => {
             } else {
                 toast.error("Bike deletion canceled");
             }
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error deleting bike:", error);
-            toast.error("An error occurred while deleting the bike.");
+            toast.error(error.response.data.message);
         }
     };
 
@@ -151,15 +146,8 @@ const BikeSingleView = () => {
                                 <p className="text-red-600 text-sm sm:text-lg">Bike is not verified</p>
                             )}
 
-
-
-
-
-
-
                         </div>
                     </div>
-
 
                     {/* Document Images */}
 
@@ -188,8 +176,6 @@ const BikeSingleView = () => {
                                 className="w-full h-auto sm:h-64 object-cover rounded-lg mt-2 border shadow-md"
                             />
                         </div>
-
-
                     </div>
                 </div>
 
@@ -209,12 +195,12 @@ const BikeSingleView = () => {
                         Delete
                     </button>
                     {bike?.isEdit && (
-                    <button
-                        className=" px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                        onClick={() => navigate(`/EditBike/${bike?._id}`)}
-                    >
-                        Edit Doc
-                    </button>
+                        <button
+                            className=" px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                            onClick={() => navigate(`/EditBike/${bike?._id}`)}
+                        >
+                            Edit Doc
+                        </button>
                     )}
 
                 </div>

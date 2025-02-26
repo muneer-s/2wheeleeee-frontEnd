@@ -49,7 +49,6 @@ const HostListView = () => {
 
             if (result.isConfirmed) {
                 const response = await removeOfferFromBike(bikeId);
-                console.log(response)
 
                 if (response.success) {
                     toast.success(response.message);
@@ -60,7 +59,7 @@ const HostListView = () => {
                     );
                 }
             }
-        } catch (error:any) {
+        } catch (error: any) {
             console.error("Error removing offer:", error);
             toast.error(error.response.data.message);
         }
@@ -186,8 +185,6 @@ const HostListView = () => {
                 return <CreateOffer />
             case "View Offers":
                 return <ViewOffers />
-
-
             default:
                 return null;
         }

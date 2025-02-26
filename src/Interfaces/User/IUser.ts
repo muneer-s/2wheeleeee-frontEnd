@@ -1,18 +1,18 @@
 export interface IBikeDetails {
     _id: string;
-    userId:string
+    userId: string
     companyName: string;
     modelName: string;
-    rentAmount: number ;
+    rentAmount: number;
     fuelType: string;
     images: string[];
     registerNumber: string;
-    insuranceExpDate: Date ;
-    polutionExpDate: Date ;
-    offer:string | null;
-    offerApplied:boolean | null;
-    offerPrice:number | null;
-    location:string
+    insuranceExpDate: Date;
+    polutionExpDate: Date;
+    offer: string | null;
+    offerApplied: boolean | null;
+    offerPrice: number | null;
+    location: string
 }
 
 
@@ -27,18 +27,18 @@ interface IUserDetailsBikeSingle {
 
 export interface IBikeDetailsWithUserDetails {
     _id: any;
-    userId:string;
+    userId: string;
     companyName: string;
     modelName: string;
     rentAmount: number;
     fuelType: string;
     images: string[];
     registerNumber: string;
-    insuranceExpDate: Date ;
-    polutionExpDate: Date ;
+    insuranceExpDate: Date;
+    polutionExpDate: Date;
     userDetails: IUserDetailsBikeSingle;
-    offer:string | null;
-    offerApplied:boolean | null;
-    offerPrice:number | null;
-    location:string
+    offer: string | null;
+    offerApplied: boolean | null;
+    offerPrice: number | null;
+    location: string
 }

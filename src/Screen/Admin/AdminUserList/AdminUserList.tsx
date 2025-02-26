@@ -4,8 +4,8 @@ import AdminAllusers from "../../../Components/Admin/AdminUserList/AdminAllusers
 const AdminUserList = () => {
   return (
     <>
-        <AdminHeader />
-        <AdminAllusers />
+      <AdminHeader />
+      <AdminAllusers />
     </>
   )
 }

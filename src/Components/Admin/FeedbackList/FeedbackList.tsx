@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteFeedback, getAllFeedbacks } from "../../../Api/admin"; // Adjust the path as needed
 import { FaStar } from "react-icons/fa";
 import toast from "react-hot-toast";

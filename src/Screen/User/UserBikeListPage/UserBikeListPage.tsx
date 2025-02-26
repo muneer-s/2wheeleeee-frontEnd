@@ -7,8 +7,8 @@ const UserBikeListPage = () => {
     return (
         <div>
             <Header />
-            <BikeListComp/>
-            <Footer/>
+            <BikeListComp />
+            <Footer />
         </div>
     )
 }

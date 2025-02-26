@@ -4,11 +4,8 @@ import HostEditBike from "../../../Components/Host/EditBike/EditBike"
 const EditBike = () => {
   return (
     <div>
-
-        <Header/>
-        <HostEditBike/>
-
-
+      <Header />
+      <HostEditBike />
     </div>
   )
 }

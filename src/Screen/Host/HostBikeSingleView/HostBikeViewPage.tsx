@@ -4,10 +4,8 @@ import BikeSingleView from "../../../Components/Host/BikeSingleView/BikeSingleVi
 const HostBikeViewPage = () => {
     return (
         <>
-
             <Header />
             <BikeSingleView />
-
         </>
     )
 }

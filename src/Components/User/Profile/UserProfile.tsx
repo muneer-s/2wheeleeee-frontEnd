@@ -36,7 +36,6 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
             try {
                 const response = await getProfile(userEmail);
                 const userDetails = handleApiResponse(response)
-                console.log("profile data : ", response);
 
                 if (response.success) {
                     setUserProfile(userDetails);
@@ -51,13 +50,6 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
                 } else {
                     toast.error(error.response.data.message)
                 }
-
-
-                // else{
-                //     await logout({ email: userEmail });
-                //     dispatch(userLogout())
-                //     toast.error(error.message)
-                // }
 
             }
         }
@@ -129,10 +121,7 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
             toast.success("Profile updated successfully!");
         } catch (error: any) {
             console.error("An error occurred while updating the profile:", error);
-            alert(
-                error?.response?.data?.message ||
-                "An error occurred while updating the profile. Please try again later."
-            );
+            toast.error(error?.response?.data?.message || "An error occurred while updating the profile. Please try again later.");
         } finally {
             setIsSubmitting(false);
         }
@@ -500,7 +489,7 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
             case "My Wallet": return <MyWallet />
 
             case "Booking History":
-                return <UserOrderList  socket={socket} />
+                return <UserOrderList socket={socket} />
 
             case "Feedback":
                 return <FeedbackForm />

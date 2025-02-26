@@ -2,20 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import Header from "../../User/Header/Header";
-import { userGetOrderDetails } from "../../../Api/user";
 import { hostCompleteOrder, hostGetOrderDetails } from "../../../Api/host";
 import ChatWidget from "../../User/Chat/MainChatUI"
 import Api from "../../../service/axios";
 import { useAppSelector } from "../../../Apps/store";
-import { Socket } from "socket.io-client";
 import io from 'socket.io-client';
-
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
     transports: ['polling', 'websocket'],
 })
-
-
 
 interface IOrder {
     startDate: string;
@@ -28,10 +23,6 @@ interface IOrder {
 interface IBike {
     images: string[];
     modelName: string;
-}
-
-interface OrderFCProps {
-    socket: typeof Socket;
 }
 
 interface IUser {
@@ -50,7 +41,6 @@ interface IOrderResponse {
 
 
 const HostOrderDetailsView = () => {
-
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
     const [loading, setLoading] = useState(false);
@@ -91,8 +81,6 @@ const HostOrderDetailsView = () => {
         Api
             .post("/chat/accesschat", { receiverId: userId, senderId: ownerId })
             .then((res) => {
-                console.log(13, res.data.data);
-
                 if (res.data) {
                     setChatId(res.data.data._id);
                     setIsOpen(true);
@@ -229,10 +217,7 @@ const HostOrderDetailsView = () => {
                             chatId={chatId}
                             socket={socket}
                         />
-                    ) : (
-                        ""
-                    )}
-
+                    ) : ("")}
 
                 </div>
 

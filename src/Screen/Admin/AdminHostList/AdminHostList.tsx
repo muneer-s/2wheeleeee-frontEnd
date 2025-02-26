@@ -5,7 +5,7 @@ const AdminHostList = () => {
     return (
         <>
             <AdminHeader />
-             <AdminHostComp/>
+            <AdminHostComp />
         </>
     )
 }

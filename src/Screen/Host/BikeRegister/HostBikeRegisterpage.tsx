@@ -5,8 +5,8 @@ import BikeRegister from "../../../Components/Host/BikeRegister/BikeRegister"
 const HostBikeRegisterpage = () => {
   return (
     <div>
-        <Header/>
-        <BikeRegister/>
+      <Header />
+      <BikeRegister />
     </div>
   )
 }

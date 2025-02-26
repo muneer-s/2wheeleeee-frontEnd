@@ -1,19 +1,17 @@
-
-
 interface IAdminUserDetails {
-    name: string;
+  name: string;
 }
 
 export interface IAdminBikeData {
-    _id: string;
-    companyName: string;
-    modelName: string;
-    rentAmount: number | string;
-    images: string[];
-    insuranceExpDate: Date | string;
-    polutionExpDate: Date | string;
-    userDetails: IAdminUserDetails;
-    isHost: boolean;
+  _id: string;
+  companyName: string;
+  modelName: string;
+  rentAmount: number | string;
+  images: string[];
+  insuranceExpDate: Date | string;
+  polutionExpDate: Date | string;
+  userDetails: IAdminUserDetails;
+  isHost: boolean;
 }
 
 

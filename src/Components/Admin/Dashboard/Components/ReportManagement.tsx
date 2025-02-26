@@ -53,7 +53,7 @@ const ReportManagement: React.FC<ReportManagementProps> = ({ orders }) => {
     return sortedMonths.length ? sortedMonths[0][0] : "No data available";
   }, [orders]);
 
-  // Revenue Trend Over Time
+
   const revenueByMonth = useMemo(() => {
     const revenueMap: Record<string, number> = {};
 

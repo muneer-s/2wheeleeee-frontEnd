@@ -12,6 +12,7 @@ const HostSingleViewComp = () => {
   const [isHostVerified, setIsHostVerified] = useState(bike?.isHost || false);
   const [loadingState, setLoadingState] = useState({ verifyHost: false, editExpiry: false });
   const [revokeReason, setRevokeReason] = useState("")
+
   if (!bike) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -34,7 +35,7 @@ const HostSingleViewComp = () => {
       }
 
       const result = await verifyHost(bike._id, payload);
-      console.log(111,result)
+      console.log(111, result)
 
       if (result.success) {
         setIsHostVerified((prev: BikeData) => !prev);
@@ -60,8 +61,8 @@ const HostSingleViewComp = () => {
     setLoadingState((prev) => ({ ...prev, editExpiry: true }));
     try {
       const result = await isEditOn(bike._id);
-      console.log(2222,result)
-      
+      console.log(2222, result)
+
       if (result.success) {
         toast.success("Admin sent a request to edit bike details.");
       }

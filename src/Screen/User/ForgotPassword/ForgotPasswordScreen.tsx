@@ -3,7 +3,7 @@ import ForgotPasswordComp from "../../../Components/User/Forgotpassword/ForgotPa
 const ForgotPasswordScreen = () => {
   return (
     <>
-    <ForgotPasswordComp/>
+      <ForgotPasswordComp />
     </>
   )
 }

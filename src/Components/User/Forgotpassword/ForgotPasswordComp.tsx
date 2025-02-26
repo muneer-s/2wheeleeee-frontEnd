@@ -65,7 +65,7 @@ const ForgotPasswordComp: React.FC = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
                                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent ${emailError ? 'border-red-500' : ''
-                                    }`} 
+                                    }`}
                             />
                             {emailError && (
                                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -74,11 +74,10 @@ const ForgotPasswordComp: React.FC = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full py-2 text-white font-bold rounded-lg transition duration-300 ${
-                                loading
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-purple-500 hover:bg-purple-600'
-                            }`}
+                            className={`w-full py-2 text-white font-bold rounded-lg transition duration-300 ${loading
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-purple-500 hover:bg-purple-600'
+                                }`}
                         >
                             {loading ? 'Sending...' : 'Submit'}
                         </button>

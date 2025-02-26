@@ -5,8 +5,7 @@ const HostHome = () => {
   return (
     <>
       <Header />
-      <Body/>
-      
+      <Body />
     </>
   )
 }

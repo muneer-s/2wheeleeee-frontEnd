@@ -4,7 +4,7 @@ const Success = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate("/hostBikeListPage"); // Adjust this path as per your home route
+    navigate("/hostBikeListPage");
   };
 
   return (
@@ -37,7 +37,7 @@ const Success = () => {
           onClick={handleGoHome}
           className="px-6 py-2 bg-sky-400 text-white font-semibold rounded-lg shadow-md hover:bg-sky-500 focus:outline-none"
         >
-          Go Back 
+          Go Back
         </button>
       </div>
     </div>

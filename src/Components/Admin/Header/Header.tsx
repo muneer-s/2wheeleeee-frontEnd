@@ -78,7 +78,7 @@ const AdminHeader: React.FC = () => {
                         isActive
                             ? 'underline text-white block lg:inline-block mt-2 lg:mt-0'
                             : 'hover:underline block lg:inline-block mt-2 lg:mt-0'
-                        }
+                    }
                 >
                     Dashboard
                 </NavLink>

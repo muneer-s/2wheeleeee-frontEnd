@@ -5,8 +5,6 @@ import toast from "react-hot-toast";
 import { createFeedback, deleteFeedback, getUserFeedback, updateFeedback } from "../../../Api/user";
 import Swal from "sweetalert2";
 
-
-
 export interface IUserFeedbacks {
     userId: string;
     rating: number;
@@ -34,7 +32,7 @@ const FeedbackForm = () => {
         const fetchFeedback = async () => {
             try {
                 const response = await getUserFeedback(userId);
-            
+
                 if (response.success && response.data) {
                     setFeedback(response.data);
                     setRating(response.data.rating);
@@ -68,7 +66,7 @@ const FeedbackForm = () => {
 
             const response = await createFeedback(userFeedback);
             toast.success(response.message);
-            setFeedback(response.data); 
+            setFeedback(response.data);
         } catch (error: any) {
             console.error("Error submitting feedback", error);
             toast.error(error.response?.data?.message || "Failed to submit feedback");
@@ -91,8 +89,6 @@ const FeedbackForm = () => {
         try {
             const updatedFeedback = { rating, comment };
             const response = await updateFeedback(feedback._id, updatedFeedback);
-console.log(11,response);
-
             toast.success(response.message);
             setFeedback({ ...feedback, rating, comment });
         } catch (error: any) {
@@ -140,9 +136,8 @@ console.log(11,response);
                         <FaStar
                             key={star}
                             size={24}
-                            className={`cursor-pointer transition-colors ${
-                                (hover !== null ? hover >= star : rating >= star) ? "text-yellow-500" : "text-gray-300"
-                            }`}
+                            className={`cursor-pointer transition-colors ${(hover !== null ? hover >= star : rating >= star) ? "text-yellow-500" : "text-gray-300"
+                                }`}
                             onClick={() => setRating(star)}
                             onMouseEnter={() => setHover(star)}
                             onMouseLeave={() => setHover(null)}

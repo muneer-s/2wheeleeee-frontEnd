@@ -1,23 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSingleUser, toggleIsUser, userBlockUnBlock } from '../../../Api/admin';
-
-import {
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  Grid,
-  Box,
-  Divider,
-  Button,
-} from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { IUser } from '../../../Interfaces/Admin/IAdmin';
 import { handleApiResponse } from '../../../Utils/apiUtils';
 import toast from 'react-hot-toast';
-
+import { Card, CardContent, Typography, Avatar, Grid, Box, Divider, Button, } from '@mui/material';
 
 
 const AdminSingleUserPage = () => {
@@ -52,22 +41,14 @@ const AdminSingleUserPage = () => {
   }, [id]);
 
 
-
-
-
   const handleToggleIsUser = async () => {
     if (!user) return;
-
     const originalIsUser = user.isUser;
-
     setUser((prevUser) =>
       prevUser ? { ...prevUser, isUser: !prevUser.isUser } : null
     );
-
     try {
       const response = await toggleIsUser(user._id);
-
-
       const data = handleApiResponse(response)
 
       if (data.isUser) {
@@ -87,29 +68,20 @@ const AdminSingleUserPage = () => {
 
   const handleToggleIsBlocked = async () => {
     if (!user) return;
-
     const originalIsBlocked = user.isBlocked;
-
     setUser((prevUser) =>
       prevUser ? { ...prevUser, isBlocked: !prevUser.isBlocked } : null
     );
-
     try {
 
       const response = await userBlockUnBlock(user?._id)
-
       const data = handleApiResponse(response)
 
-      
-
-      if (!response || !response.data) {
+      if (!response || !data) {
         throw new Error('Unexpected response structure');
       }
-
-
     } catch (error) {
       console.error('Error toggling block/unblock:', error);
-
       // Revert the state in case of an error
       setUser((prevUser) =>
         prevUser ? { ...prevUser, isBlocked: originalIsBlocked } : null
@@ -164,18 +136,6 @@ const AdminSingleUserPage = () => {
               </Typography>
             </Grid>
 
-            {/* </Grid>
-
-            <Grid item xs={6}> */}
-
-            {/* <Typography variant="body1" display="flex" alignItems="center">
-                <strong>Verified:</strong>{' '}
-                {user.isVerified ? (
-                  <CheckCircleOutlineIcon color="success" sx={{ marginLeft: 1 }} />
-                ) : (
-                  <CancelOutlinedIcon color="error" sx={{ marginLeft: 1 }} />
-                )}
-              </Typography> */}
             <Grid item xs={12} sm={6}>
               <Typography variant="body1" display="flex" alignItems="center">
                 <strong>Blocked:</strong>{' '}

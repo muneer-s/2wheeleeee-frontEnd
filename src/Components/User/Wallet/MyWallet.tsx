@@ -28,7 +28,6 @@ const MyWallet = () => {
 
                     if (userDetails.wallet) {
                         const walletResponse = await getWalletBalance(userDetails.wallet);
-                        console.log(12345,walletResponse)
 
                         if (walletResponse.success) {
                             setWalletBalance(walletResponse.data.balance);
@@ -37,8 +36,8 @@ const MyWallet = () => {
                             toast.error(walletResponse.message);
                         }
                     }
-                } 
-            } catch (error:any) {
+                }
+            } catch (error: any) {
                 console.error('catch Error get profile:', error);
                 toast.error(error.response.data.message);
             }

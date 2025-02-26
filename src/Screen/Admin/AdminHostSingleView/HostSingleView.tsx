@@ -6,8 +6,8 @@ const HostSingleView = () => {
   return (
     <div>
 
-        <AdminHeader/>
-        <HostSingleViewComp/>
+      <AdminHeader />
+      <HostSingleViewComp />
 
 
     </div>

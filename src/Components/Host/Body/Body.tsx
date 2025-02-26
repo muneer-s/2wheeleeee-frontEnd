@@ -15,9 +15,7 @@ function Body() {
 
   const gotoRegisterPage = async () => {
     const response = await isAdminVerifyUser(userId)
-
     const data = handleApiResponse(response)
-
     if (data.user?.isUser) {
       navigate('/hostBikeListPage')
     } else {
@@ -34,7 +32,7 @@ function Body() {
         }}
       >
         <div className="flex flex-col-reverse md:flex-row justify-between items-center my-10 px-4 md:px-20">
-          
+
           <div className='text-center md:text-left lg:w-2/3'>
             <h1 className="text-2xl md:text-4xl font-bold mb-4">Feel Free To Host With Us!</h1>
             <p className="text-gray-600 mb-6 ">

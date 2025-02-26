@@ -21,8 +21,8 @@ const CreateOffer: React.FC = () => {
 
 
     const authState = useAppSelector((state) => state.auth);
-  const userDetails = authState.user
-  const userId = userDetails.userId
+    const userDetails = authState.user
+    const userId = userDetails.userId
 
     const validateForm = () => {
         let valid = true;

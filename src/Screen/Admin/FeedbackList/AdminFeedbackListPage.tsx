@@ -1,4 +1,3 @@
-import React from 'react'
 import AdminHeader from '../../../Components/Admin/Header/Header'
 import FeedbackList from '../../../Components/Admin/FeedbackList/FeedbackList'
 

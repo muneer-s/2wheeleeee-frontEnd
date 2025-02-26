@@ -14,7 +14,7 @@ const AdminLogin: React.FC = () => {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [errors, setErrors] = useState<{ email?: string; password?: string;general?:string }>({});
+    const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
     const [loading, setLoading] = useState<boolean>(false);
 
     const { adminData } = useAppSelector((state) => state.auth);
@@ -57,34 +57,26 @@ const AdminLogin: React.FC = () => {
         setErrors({});
         try {
             const response = await login({ email, password });
-
             const data = handleApiResponse(response)
-console.log(1,response);
-console.log(2,data);
-
-
 
             if (response?.success && data.token) {
                 dispatch(setAdminCredential(data.token))
                 toast.success(response.message);
                 navigate('/adminDashboard');
             }
-             else {
+            else {
                 toast.error(response.message || 'Something went wrong...');
             }
-
-
-
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.response) {
                 const { status, data } = error.response;
                 console.error(`Error ${status}:`, data);
-    
+
                 if (status === 401) {
                     toast.error('Unauthorized! Please check your email or password.');
                 } else if (status === 400) {
                     toast.error(data.message || 'Invalid request.');
-                    setErrors(data.errors || {}); 
+                    setErrors(data.errors || {});
                 } else {
                     toast.error(data.message || 'Something went wrong.');
                 }
@@ -108,7 +100,6 @@ console.log(2,data);
                     Admin Login
                 </h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    {/* {errors.email && <p className="text-red-500 text-center">{errors.email}</p>} */}
                     {errors.general && <p className="text-red-500 text-center">{errors.general}</p>}
 
                     <div>

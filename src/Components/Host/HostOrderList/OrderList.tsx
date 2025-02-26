@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { TableRow, TableCell , Button } from '@mui/material';
+import { TableRow, TableCell, Button } from '@mui/material';
 import CustomTable from '../../../ReusableComponents/CustomTable';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../Apps/store';
@@ -31,13 +31,12 @@ const UserOrderList = () => {
         const response = await hostOrderList(userId);
 
         if (response?.success) {
-            setOrders(Array.isArray(response.data.order) ? response.data.order : []);
-          } 
+          setOrders(Array.isArray(response.data.order) ? response.data.order : []);
+        }
       } catch (error: any) {
-        toast.error('Error fetching order list...');
-        console.error('Error fetching orders:', error.message);
+        toast.error(error.response.message.error);
+        console.error('Error fetching orders:', error);
         setOrders([]);
-
       }
     };
 

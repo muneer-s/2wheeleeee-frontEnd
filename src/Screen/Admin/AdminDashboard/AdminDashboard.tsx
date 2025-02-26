@@ -3,8 +3,8 @@ import AdminHeader from "../../../Components/Admin/Header/Header"
 const AdminDashboard = () => {
   return (
     <>
-    <AdminHeader/>
-    <Dashboard/>
+      <AdminHeader />
+      <Dashboard />
     </>
   )
 }

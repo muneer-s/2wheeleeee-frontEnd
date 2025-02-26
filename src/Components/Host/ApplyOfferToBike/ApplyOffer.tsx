@@ -12,7 +12,6 @@ const ApplyOffer = () => {
     const { id } = useParams();
     const navigate = useNavigate()
 
-    console.log(11,id)
     useEffect(() => {
         if (userId) {
             fetchOffers();
@@ -28,7 +27,7 @@ const ApplyOffer = () => {
         }
     };
 
-    const handleApplyOffer = async(offerId: string) => {
+    const handleApplyOffer = async (offerId: string) => {
 
         if (!id) {
             console.error("Bike ID is missing.");
@@ -36,14 +35,12 @@ const ApplyOffer = () => {
             return;
         }
         try {
-            const response = await applyOfferToBike(id, offerId);
-            console.log("Offer applied successfully:", response);
+            await applyOfferToBike(id, offerId);
             toast.success("Offer applied successfully!");
             navigate('/hostBikeListPage')
-            
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error applying offer:", error);
-            toast.error("Failed to apply offer.");
+            toast.error(error.response.data.message);
         }
 
     };
@@ -87,8 +84,8 @@ const ApplyOffer = () => {
                                             Apply Offer
                                         </button>
                                         <button
-                                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 ml-4"
-                                        onClick={()=>navigate(-1)}>
+                                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 ml-4"
+                                            onClick={() => navigate(-1)}>
                                             Back
                                         </button>
                                     </td>

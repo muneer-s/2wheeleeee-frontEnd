@@ -4,15 +4,15 @@ import UserProfile from "../../../Components/User/Profile/UserProfile"
 
 
 interface ProfilePageProps {
-  socket: any; 
+  socket: any;
 }
 
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ socket }) => {
   return (
     <>
-    <Header/>
-    <UserProfile socket={socket} />
+      <Header />
+      <UserProfile socket={socket} />
     </>
   )
 }

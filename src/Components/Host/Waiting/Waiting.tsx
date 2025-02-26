@@ -4,7 +4,7 @@ const Waiting = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate("/"); // Adjust this path as per your home route
+    navigate("/");
   };
 
   return (
@@ -46,17 +46,6 @@ const Waiting = () => {
         >
           Go Back to Home
         </button>
-
-        {/* Footer */}
-        {/* <div className="mt-8 text-sm text-gray-500">
-          Need help?{" "}
-          <a
-            href="/"
-            className="text-sky-400 hover:underline"
-          >
-            Contact Support
-          </a>
-        </div> */}
       </div>
     </div>
   );

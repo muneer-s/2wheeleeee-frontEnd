@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { orderList } from '../../../Api/admin';
 import toast from 'react-hot-toast';
 import { TableRow, TableCell, Button } from '@mui/material';
 import CustomTable from '../../../ReusableComponents/CustomTable';
 import { useNavigate } from 'react-router-dom';
 import { userOrderList } from '../../../Api/user';
 import { useAppSelector } from '../../../Apps/store';
-// import ChatWidget1 from '../Chat/ChatUi';
 import Api from '../../../service/axios';
 import ChatUI from '../Chat/MainChatUI'
 
@@ -28,7 +26,6 @@ interface ProfilePageProps {
 const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
 
   const [orders, setOrders] = useState<IOrder[]>([]);
-
   const [isOpen, setIsOpen] = useState(false);
   const [hostId, setHostId] = useState("");
   const [chatId, setChatId] = useState("");
@@ -36,8 +33,6 @@ const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
 
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user
-  console.log(11111, userDetails)
-  console.log(22222, socket);
 
   const userId = userDetails.userId
 
@@ -45,16 +40,13 @@ const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
     const fetchOrders = async () => {
       try {
         const response = await userOrderList(userId);
-        console.log('User Fetched Orders:', response);
 
         if (response?.success) {
-          console.log("Order Data Type:", typeof response.data.order);
-          console.log("Is Array:", Array.isArray(response.data.order));
           setOrders(Array.isArray(response.data.order) ? response.data.order : []);
         }
       } catch (error: any) {
         toast.error('Error fetching order list...');
-        console.error('Error fetching orders:', error.message);
+        console.error('Error fetching orders:', error.response.data.message);
         setOrders([]);
 
       }

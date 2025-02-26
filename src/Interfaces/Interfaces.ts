@@ -10,10 +10,10 @@ export interface UserData {
     dateOfBirth: Date;
     address: string | null;
     isUser: boolean;
-    license_number: string | null ;
+    license_number: string | null;
     license_Exp_Date: Date;
     license_picture_front: File | string | null;
     license_picture_back: File | string | null;
-    wallet:string;
+    wallet: string;
 }
 

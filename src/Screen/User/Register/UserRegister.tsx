@@ -46,18 +46,13 @@ const UserRegister: React.FC = () => {
                     password: values.password,
                 });
 
-                console.log(111,response);
-            
-
                 if (response.success) {
                     toast.success(response.message);
                     navigate(`/otp?email=${response.data.email}`);
-                } else {
-                    toast.error(response.message);
                 }
-            } catch (err) {
-                toast.error('An error occurred during registration.');
-                console.error(err);
+            } catch (error: any) {
+                toast.error(error.response.data.message || 'An error occurred during registration.');
+                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -90,8 +85,8 @@ const UserRegister: React.FC = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             className={`w-full px-3 py-2 border ${formik.touched.userName && formik.errors.userName
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
+                                ? 'border-red-500'
+                                : 'border-gray-300'
                                 } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.userName && formik.errors.userName && (
@@ -111,8 +106,8 @@ const UserRegister: React.FC = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             className={`w-full px-3 py-2 border ${formik.touched.email && formik.errors.email
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
+                                ? 'border-red-500'
+                                : 'border-gray-300'
                                 } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.email && formik.errors.email && (
@@ -132,8 +127,8 @@ const UserRegister: React.FC = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             className={`w-full px-3 py-2 border ${formik.touched.password && formik.errors.password
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
+                                ? 'border-red-500'
+                                : 'border-gray-300'
                                 } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.password && formik.errors.password && (
@@ -153,19 +148,14 @@ const UserRegister: React.FC = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             className={`w-full px-3 py-2 border ${formik.touched.confirmPassword && formik.errors.confirmPassword
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
+                                ? 'border-red-500'
+                                : 'border-gray-300'
                                 } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         {formik.touched.confirmPassword && formik.errors.confirmPassword && (
                             <p className="text-red-500 text-sm">{formik.errors.confirmPassword}</p>
                         )}
                     </div>
-
-
-
-
-
                     <button
                         type="submit"
                         className={`w-full text-white py-2 rounded hover:bg-blue-700 transition ${loading ? 'opacity-50 cursor-not-allowed' : ''

@@ -18,17 +18,17 @@ export interface IReview {
 }
 
 
-const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {    
+const Review: React.FC<{ bikeId?: string }> = ({ bikeId }) => {
     const [reviews, setReviews] = useState<IReview[]>([]);
 
     const fetchReviews = async (bikeId: string) => {
         try {
             const response = await getReviews(bikeId);
-            
+
             if (response?.success) {
                 setReviews(response.data.data);
             }
-        } catch (error:any) {
+        } catch (error: any) {
             console.error("Error fetching reviews:", error);
             toast.error(error.response.data.message || "Error Fetching Reviews")
         }

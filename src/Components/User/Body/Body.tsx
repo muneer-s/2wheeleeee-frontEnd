@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { allFeedbacks } from "../../../Api/user";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 export interface IFeedback {
   _id: string;
@@ -32,7 +31,6 @@ const Body = () => {
         setFeedbacks(response.data);
       } catch (error: any) {
         console.error("Error fetching feedbacks", error);
-        //toast.error(error.response.data.message);
       }
     };
 
@@ -68,14 +66,14 @@ const Body = () => {
       <div id='Services' className="py-12 ">
         <h2 className="text-3xl font-bold mb-6 text-sky-500">How It Works</h2>
         <h2 className="text-3xl font-bold mb-6">Our working steps</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 justify-items-center">
-          {/* <div className="p-4 w-80">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 justify-items-center">
+          <div className="p-4 w-80">
             <img src="/src/assets/loc.png" className="mx-auto mb-4 w-20 h-20" ></img>
-            <h3 className="text-xl font-semibold mb-2">Choose Your Location</h3>
+            <h3 className="text-xl font-semibold mb-2">Choose Location</h3>
             <p className="text-gray-700 text-sm">
-              When you choose your location, we’ll provide you the nearest available bikes. So you can get it simply.
+              When you choose a location, we’ll provide you the available bikes. So you can get it simply.
             </p>
-          </div> */}
+          </div>
           <div className="p-4">
             <img src="/src/assets/calnder.png" className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Pick-Up Date</h3>

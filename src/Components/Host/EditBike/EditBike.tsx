@@ -8,7 +8,7 @@ import { handleApiResponse } from "../../../Utils/apiUtils";
 const EditBike = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-console.log(111,id)
+
     const [bikeData, setBikeData] = useState<BikeData | null>(null);
     const [newInsuranceImage, setNewInsuranceImage] = useState<File | null>(null);
     const [newPolutionImage, setNewPolutionImage] = useState<File | null>(null);
@@ -21,12 +21,8 @@ console.log(111,id)
         const fetchBikeDetails = async () => {
             try {
                 const response = await singleBikeView(id as string);
-                console.log(response)
-
                 const data = handleApiResponse(response)
-                console.log(22,data)
                 if (response.success) {
-                    console.log(data.bike)
                     setBikeData(data.bike);
                     setInsurancePreview(data.bike.insuranceImage);
                     setPolutionPreview(data.bike.PolutionImage);

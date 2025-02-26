@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { deleteOffer, updateOffer, viewOffers } from "../../../Api/host";
 import { useAppSelector } from "../../../Apps/store";
 import Swal from "sweetalert2";
-
+import toast from "react-hot-toast";
 
 
 const ViewOffers = () => {
   const [offers, setOffers] = useState<any[]>([]);
   const [editingOffer, setEditingOffer] = useState<any | null>(null);
   const [editedData, setEditedData] = useState<any>({});
+
   const authState = useAppSelector((state) => state.auth);
   const userDetails = authState.user;
   const userId = userDetails?.userId;
@@ -21,8 +22,9 @@ const ViewOffers = () => {
     try {
       const response = await viewOffers(userId);
       setOffers(response.data.offer);
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error fetching offers:", error);
+      toast.error(error.response.data.message)
     }
   };
 
@@ -51,13 +53,11 @@ const ViewOffers = () => {
   };
 
 
-
-
   const handleEdit = (offer: any) => {
     setEditingOffer(offer);
     setEditedData({
       ...offer,
-      startDate: new Date(offer.startDate).toISOString().split("T")[0], 
+      startDate: new Date(offer.startDate).toISOString().split("T")[0],
       endDate: new Date(offer.endDate).toISOString().split("T")[0],
     });
   };
@@ -161,10 +161,6 @@ const ViewOffers = () => {
                     onChange={handleChange}
                     className="border p-2 w-full"
                   />
-
-
-
-
                   <button onClick={handleUpdate} className="bg-green-500 text-white px-4 py-2 mt-2 rounded">
                     Save
                   </button>

@@ -32,13 +32,9 @@ const OTPComponent: React.FC = () => {
         }
     }, [seconds]);
 
-    const remainingSeconds = seconds % 60;
-
     const handleOTPChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setOTP(e.target.value);
     };
-
-
 
     const handleVerify = async () => {
         if (!otp) {
@@ -54,7 +50,6 @@ const OTPComponent: React.FC = () => {
         setLoading(true);
         try {
             const response = await verifyOtp({ otp, userId });
-            console.log('verufy otp : ' ,response)
             const data = handleApiResponse(response)
 
             if (response?.success) {
@@ -62,11 +57,11 @@ const OTPComponent: React.FC = () => {
                 dispatch(setUserCredential(data.userAccessToken))
                 toast.success(response.message);
                 navigate('/');
-            } 
-        } catch (err:any) {
+            }
+        } catch (err: any) {
             console.error('Error during OTP verification:', err.response.data.message);
             toast.error(err.response.data.message)
-        }finally {
+        } finally {
             setLoading(false);
         }
     };
@@ -82,17 +77,16 @@ const OTPComponent: React.FC = () => {
         try {
 
             const result = await resendOtp({ email });
-            console.log(1212,result)
 
             if (result?.success) {
                 toast.success(result.message)
                 setSeconds(60);
-            } 
+            }
         }
         catch (error) {
             console.error("Error resending OTP:", error);
             toast.error("An error occurred while resending the OTP.");
-        }finally{
+        } finally {
             setLoading(false)
         }
 
@@ -113,12 +107,7 @@ const OTPComponent: React.FC = () => {
                     />
                 </div>
                 <div className="flex items-center flex-col justify-between mb-6">
-                    {/* <p className="text-gray-600 text-sm">
-                        Didn't receive code?{' '}
-                        <span onClick={resendOTP} className="text-blue-500 cursor-pointer">
-                            Resend Otp
-                        </span>
-                    </p> */}
+
                     <div className="ps-1">
                         {seconds <= 0 ? (
                             <div>
@@ -136,10 +125,9 @@ const OTPComponent: React.FC = () => {
                 </div>
                 <button
                     onClick={handleVerify}
-                    className={`w-full px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 ${
-                        loading ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    disabled={loading} 
+                    className={`w-full px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                    disabled={loading}
                 >
                     {loading ? 'Processing...' : 'Verify'}
                 </button>

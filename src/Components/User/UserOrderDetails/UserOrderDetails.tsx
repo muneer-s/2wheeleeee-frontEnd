@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import Header from "../Header/Header";
-import { earlyReturns, getReviews, returnOrder, submitReview, userGetOrderDetails } from "../../../Api/user";
+import { earlyReturns, returnOrder, submitReview, userGetOrderDetails } from "../../../Api/user";
 import Swal from "sweetalert2";
 import { FaStar } from "react-icons/fa";
 import { useAppSelector } from "../../../Apps/store";
@@ -16,8 +16,6 @@ interface IOrder {
     method: string;
     status: string;
 }
-
-
 
 interface IBike {
     _id: string
@@ -46,8 +44,6 @@ export interface IReview {
 }
 
 const UserOrderDetails = () => {
-
-
     const { orderId } = useParams();
     const [orderDetails, setOrderDetails] = useState<IOrderResponse | null>(null);
     const [rating, setRating] = useState<number>(0);
@@ -69,22 +65,15 @@ const UserOrderDetails = () => {
                 const response = await userGetOrderDetails(orderId);
                 if (response?.success) {
                     setOrderDetails(response.data);
-                } else {
-                    toast.error("Failed to load order details");
                 }
             } catch (error: any) {
-                toast.error("Error fetching order details...");
+                toast.error(error.response.data.message || "Error fetching order details...")
                 console.error("Error:", error.message);
             }
         };
 
         fetchOrderDetails();
     }, [orderId]);
-
-
-    
-
-
 
     if (!orderDetails) {
         return <p className="text-center text-gray-600 mt-10">Loading order details...</p>;
@@ -204,7 +193,7 @@ const UserOrderDetails = () => {
             } else {
                 toast.error("Failed to submit review.");
             }
-        } catch (error:any) {
+        } catch (error: any) {
             console.error("Error submitting review:", error);
             toast.error(error.response.data.message);
         }

@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { saveBikeDetails } from "../../../Api/host";
 import { useNavigate } from "react-router-dom";
-import ImageCrop from "../../../Config/Crop/ImageCrop";
 import axios from "axios";
 
-const GEOAPIFY_API_KEY = "ebe1aea2f39645e1bfe16fb9da4b0452"
+const GEOAPIFY_API_KEY = import.meta.env.VITE_GEOAPIFY_API_KEY
+
 
 const BikeRegister = () => {
-
-
     const navigate = useNavigate();
-
 
     const [formData, setFormData] = useState({
         companyName: "",
@@ -27,9 +24,6 @@ const BikeRegister = () => {
         PolutionImage: null as File | null,
         insuranceImage: null as File | null,
     });
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [rcImagePreview, setRcImagePreview] = useState<string | null>(null);
     const [PolutionImagePreview, setPolutionImagePreview] = useState<string | null>(null);
     const [insuranceImagePreview, setInsuranceImagePreview] = useState<string | null>(null);
@@ -38,8 +32,6 @@ const BikeRegister = () => {
 
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -106,38 +98,6 @@ const BikeRegister = () => {
         }
         setErrors((prev) => ({ ...prev, [name]: "" }));
 
-    };
-
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setSelectedImage(file);
-            setPreviewUrl(URL.createObjectURL(file));
-        }
-    };
-
-    const handleCropComplete = (cropped: Blob | null) => {
-        if (cropped) {
-            // Convert the Blob to a File
-            const file = new File([cropped], "cropped-image.jpg", { type: cropped.type });
-
-            // Update state with the File object
-            setCroppedImage(file);
-            setPreviewUrl(URL.createObjectURL(file));
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                rcImage: file,
-            }));
-        } else {
-            // Handle null case
-            setCroppedImage(null);
-            setPreviewUrl(null);
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                rcImage: null,
-            }));
-        }
     };
 
     const handleRemoveImage = (index: number) => {
@@ -227,17 +187,13 @@ const BikeRegister = () => {
         if (!validateForm()) {
             return;
         }
-console.log(99,formData.location);
-
-
 
         const submissionData = new FormData();
 
         submissionData.append("companyName", formData.companyName);
         submissionData.append("modelName", formData.modelName);
         submissionData.append("rentAmount", formData.rentAmount);
-        submissionData.append("location", formData.location); // Include location in submission
-
+        submissionData.append("location", formData.location);
         submissionData.append("fuelType", formData.fuelType);
         submissionData.append("registerNumber", formData.registerNumber);
         submissionData.append("insuranceExpDate", formData.insuranceExpDate);
@@ -366,20 +322,6 @@ console.log(99,formData.location);
                             </ul>
                         )}
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     {/* Bike Images */}
                     <div className="col-span-2 mb-8">
                         <label className="block text-gray-700">Images (Max 4)</label>
@@ -463,55 +405,22 @@ console.log(99,formData.location);
                     </div>
 
                     {/* Upload RC Image */}
-                    {/* Upload RC Image */}
                     <div>
                         <label className="block text-gray-700">Upload RC Image</label>
                         <input
                             type="file"
                             name="rcImage"
-                            onChange={handleImageUpload}
+                            onChange={handleFileChange}
                             className="w-full mt-1"
                         />
-                        {previewUrl && !croppedImage && (
-                            <ImageCrop imageSrc={previewUrl} onCropComplete={handleCropComplete} />
-                        )}
-                        {croppedImage && (
-                            <div className="mt-4 relative">
-                                {/* Cropped Image Preview */}
-                                <img src={URL.createObjectURL(croppedImage)} alt="Cropped" className="w-24 h-24 object-cover rounded" />
-
-                                {/* Cancel Button */}
-                                <button
-                                    onClick={() => setCroppedImage(null)} // Reset the croppedImage state
-                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
-                                    title="Cancel"
-                                >
-                                    &times;
-                                </button>
-                            </div>
-                        )}
                         {renderError("rcImage")}
-                    </div>
-
-                    {/* <div>
-                        <label className="block text-gray-700">Upload RC Image</label>
-                        <input
-                            type="file"
-                            name="rcImage"
-                            onChange={handleImageUpload}
-                            className="w-full mt-1"
-                        />
-                        {previewUrl && !croppedImage && (
-                            <ImageCrop imageSrc={previewUrl} onCropComplete={handleCropComplete} />
-                        )}
-                        {croppedImage && <img src={URL.createObjectURL(croppedImage)} alt="Cropped" />}
 
                         {rcImagePreview && (
                             <div className="mt-4 relative w-24 h-24">
-                                <img src={rcImagePreview} alt="RC Preview" className="w-full h-full object-cover rounded" />
+                                <img src={rcImagePreview} alt="rc Preview" className="w-full h-full object-cover rounded" />
                                 <button
-                                    // onClick={() => handleRemoveSingleImage("rcImage", setRcImagePreview)}
-                                    onClick={handlePreRemoveImage} 
+                                    onClick={() => handleRemoveSingleImage("rcImage", setRcImagePreview)}
+
                                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
                                     title="Remove"
                                 >
@@ -519,9 +428,7 @@ console.log(99,formData.location);
                                 </button>
                             </div>
                         )}
-
-                        {renderError("rcImage")}
-                    </div> */}
+                    </div>
 
                     {/* Upload Polution Image */}
                     <div>
@@ -564,7 +471,6 @@ console.log(99,formData.location);
                             <div className="mt-4 relative w-24 h-24">
                                 <img src={insuranceImagePreview} alt="Insurance Preview" className="w-full h-full object-cover rounded" />
                                 <button
-                                    // onClick={handleRemoveInsuranceImage}
                                     onClick={() => handleRemoveSingleImage("insuranceImage", setInsuranceImagePreview)}
 
                                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"

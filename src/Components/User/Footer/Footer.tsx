@@ -7,6 +7,8 @@ const Footer = () => {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+
   return (
     <footer className="bg-black text-white py-10">
       <div className="container mx-auto text-center">
@@ -60,7 +62,7 @@ const Footer = () => {
                     scrollToSection("Services");
                   }}
                 >
-                  Services
+                  How It Works
                 </a>
               </li>
 
@@ -88,7 +90,7 @@ const Footer = () => {
 
           <div>
             <h4 className="text-lg font-semibold mb-3">Call Now</h4>
-            <p><a href="tel:44002586324" className="hover:text-gray-400">4400-258-6324</a></p>
+            <p><a className="hover:text-gray-400">4400-258-6324</a></p>
           </div>
         </div>
       </div>

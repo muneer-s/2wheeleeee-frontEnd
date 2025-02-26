@@ -1,16 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MessageCircle, Send, ArrowLeft, BellIcon } from "lucide-react";
+import { MessageCircle, Send, ArrowLeft } from "lucide-react";
 import Api from "../../../service/axios";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../Apps/store";
-import { Dialog, DialogContent, MenuList } from "@mui/material";
 import defaultDp from '../../../Assets/defaultDP.png'
 import Lottie from "react-lottie";
 import animationData from '../../../Animation/Typing.json'
-import { Menu, MenuItem, IconButton, Badge } from "@mui/material";
+import { Dialog, DialogContent, Menu, MenuItem, IconButton, Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-
-
 
 interface ChatWidgetProps {
   isChatOpen?: boolean;
@@ -88,10 +85,9 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    if(event.currentTarget){
+    if (event.currentTarget) {
       setAnchorEl(event.currentTarget);
     }
   };
@@ -177,7 +173,6 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
     if (!open && onClose) {
       onClose();
     }
-    // onClose();
   };
 
   // select user 
@@ -232,10 +227,10 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
       if (userChatId !== message.chat._id) {
         if (message.sender._id !== userId) {
 
-        if (!notification.includes(message)) {
-          setNotification([message, ...notification])
+          if (!notification.includes(message)) {
+            setNotification([message, ...notification])
+          }
         }
-      }
       } else {
         setMessages([...messages, message]);
       }
@@ -266,7 +261,6 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
     }, timerLength);
   }
 
-
   return (
     <>
       <button
@@ -282,8 +276,6 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
           <div className="flex h-[500px]">
             {!selectedUser ? (
               <div className="w-screen ">
-
-
 
                 <div className="p-4 border-b bg-white flex justify-between items-center">
                   <h2 className="font-semibold">Connections</h2>
@@ -317,12 +309,12 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                           onClick={() => {
                             setUserChatId(notif.chat._id)
                             // setSelectedUser(notif.chat.users[0]);
-                            setSelectedUser(notif.chat.users.find((user:any) => user._id !== userId)); // Select the other user
+                            setSelectedUser(notif.chat.users.find((user: any) => user._id !== userId)); // Select the other user
                             setNotification(notification.filter((n) => n !== notif))
                           }}
                         >
                           {/* {notif.chat.message ? `new message in ${notif.Chat}` : `New message from ${notif.sender.name}`} */}
-                        {`New message from ${notif.sender.name}`}
+                          {`New message from ${notif.sender.name}`}
                         </MenuItem>
                       ))
                     )}

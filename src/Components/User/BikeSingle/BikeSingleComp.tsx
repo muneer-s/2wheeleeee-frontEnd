@@ -15,9 +15,6 @@ import { isAdminVerifyUser } from "../../../Api/host";
 import Review from "./Components/Review";
 import Swal from "sweetalert2";
 
-
-
-
 const BikeSingleComp = () => {
     const { id } = useParams<{ id: string }>();
     const { Razorpay } = useRazorpay();
@@ -128,6 +125,7 @@ const BikeSingleComp = () => {
     const handleMouseLeave = () => {
         setZoomed(null);
     };
+
     const settings = {
         dots: true,
         infinite: true,
@@ -209,8 +207,6 @@ const BikeSingleComp = () => {
                 navigate('/login')
                 return
             }
-
-
 
             const response1 = await isAdminVerifyUser(userId)
             const data = handleApiResponse(response1)
@@ -416,9 +412,6 @@ const BikeSingleComp = () => {
                 </div>
             </div>
 
-
-
-
             {/* Bike Details */}
 
             <div className="bg-gradient-to-b from-white to-sky-300 rounded-lg  p-6 mb-6 mt-6 text-center flex">
@@ -583,9 +576,6 @@ const BikeSingleComp = () => {
             }
 
             <Review bikeId={bikeDetails._id} />
-
-
-
 
         </div >
 

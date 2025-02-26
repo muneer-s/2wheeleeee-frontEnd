@@ -12,5 +12,5 @@ export interface IBike {
     insuranceImage: string;
     PolutionImage: string;
     isHost: boolean;
-    isEdit:boolean
+    isEdit: boolean
 }

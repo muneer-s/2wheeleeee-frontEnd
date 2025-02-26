@@ -46,7 +46,6 @@ const UserLogin: React.FC = () => {
                 'Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
         }
 
-
         setValidationErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -151,17 +150,6 @@ const UserLogin: React.FC = () => {
                 </form>
                 {/* <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot Password?</p> */}
 
-                {/*
-                <div className="text-center my-4">OR</div>
-
-                <button className="w-full flex items-center justify-center gap-2 bg-white py-2 border border-gray-300 rounded shadow hover:shadow-md transition">
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
-                        alt="Google Logo"
-                        className="w-5"
-                    />
-                    Continue With Google
-                </button> */}
 
                 <div className="text-center mt-4">
                     <p className="text-sm text-gray-700">

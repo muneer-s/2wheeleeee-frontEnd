@@ -4,13 +4,13 @@ export interface BikeData {
   modelName: string;
   rentAmount: number | string;
   fuelType: string;
-  images: File[] ;
+  images: File[];
   registerNumber: string;
   insuranceExpDate: Date | string;
   polutionExpDate: Date | string;
   rcImage: File | null;
-  insuranceImage: File  | null;
-  PolutionImage: File  | null;
+  insuranceImage: File | null;
+  PolutionImage: File | null;
   isHost: boolean;
   userId: string;
 }
