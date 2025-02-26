@@ -18,10 +18,7 @@ interface IUser {
 
 
 const Body = () => {
-
   const navigate = useNavigate()
-
-
   const [feedbacks, setFeedbacks] = useState<IFeedback[]>([]);
 
   useEffect(() => {
