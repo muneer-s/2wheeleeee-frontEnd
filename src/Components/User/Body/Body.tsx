@@ -42,7 +42,7 @@ const Body = () => {
 
       <div className="flex justify-between items-center w-full px-0  mx-auto">
         {/* <img src="/src/assets/left.png" alt="Yellow Scooter" className="w-1/3" /> */}
-        <img src="../../../../public/assets" alt="Yellow Scooter" className="w-1/3" />
+        <img src="../../../../public/assets/left.png" alt="Yellow Scooter" className="w-1/3" />
         {/* <img src={leftImage} alt="Yellow Scooter" className="w-1/3" /> */}
 
         <div className="max-w-md mx-6 text-center">
@@ -60,7 +60,8 @@ const Body = () => {
           </button>
         </div>
 
-        <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" />
+        <img src="../../../../public/assets/right.png" alt="Motorbike" className="w-1/3" />
+        {/* <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" /> */}
       </div>
 
 
