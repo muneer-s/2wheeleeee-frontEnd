@@ -60,7 +60,7 @@ const Body = () => {
           </button>
         </div>
 
-        <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" />
+        <img src="/src/Assets/right.png" alt="Motorbike" className="w-1/3" />
       </div>
 
 
