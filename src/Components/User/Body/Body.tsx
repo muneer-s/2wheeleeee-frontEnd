@@ -3,8 +3,10 @@ import { allFeedbacks } from "../../../Api/user";
 import { useEffect, useState } from "react";
 // import leftImage from '../../../assets/left.png'
 import leftImg from '../../../../public/assets/left.png'
-// import rightImg from '../../../../public/assets/right.png'
-
+import rightImg from '../../../../public/assets/right.png'
+import loc from '../../../../public/assets/loc.png'
+import calnder from '../../../../public/assets/calnder.png'
+import veh from '../../../../public/assets/veh.png'
 
 
 export interface IFeedback {
@@ -44,8 +46,7 @@ const Body = () => {
     <div className="bg-white text-center py-12 w-full">
 
       <div className="flex justify-between items-center w-full px-0  mx-auto">
-        {/* <img src="/src/assets/left.png" alt="Yellow Scooter" className="w-1/3" /> */}
-        {/* <img src="../../../../public/assets/left.png" alt="Yellow Scooter" className="w-1/3" /> */}
+ 
         <img src={leftImg} alt="Yellow Scooter" className="w-1/3" />
 
         <div className="max-w-md mx-6 text-center">
@@ -63,8 +64,7 @@ const Body = () => {
           </button>
         </div>
 
-        <img src={leftImg} alt="Motorbike" className="w-1/3" />
-        {/* <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" /> */}
+        <img src={rightImg} alt="Motorbike" className="w-1/3" />
       </div>
 
 
@@ -74,7 +74,7 @@ const Body = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 justify-items-center">
           <div className="p-4 w-80">
             {/* <img src="/src/assets/loc.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
-            <img src={leftImg} className="mx-auto mb-4 w-20 h-20" ></img>
+            <img src={loc} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Choose Location</h3>
             <p className="text-gray-700 text-sm">
               When you choose a location, we’ll provide you the available bikes. So you can get it simply.
@@ -82,7 +82,7 @@ const Body = () => {
           </div>
           <div className="p-4">
             {/* <img src="/src/assets/calnder.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
-            <img src={leftImg} className="mx-auto mb-4 w-20 h-20" ></img>
+            <img src={calnder} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Pick-Up Date</h3>
             <p className="text-gray-700 text-sm">
               Choose the Pick-Up date so that you can schedule the trip easily.
@@ -90,7 +90,7 @@ const Body = () => {
           </div>
           <div className="p-4">
             {/* <img src="/src/assets/veh.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
-            <img src={leftImg} className="mx-auto mb-4 w-20 h-20" ></img>
+            <img src={veh} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Book Your Bike</h3>
             <p className="text-gray-700 text-sm">
               Book your favorite vehicle and enjoy your trip.
@@ -98,7 +98,6 @@ const Body = () => {
           </div>
         </div>
       </div>
-
 
       {/* about us section */}
       <div id="about-us" className="flex bg-white py-12">
