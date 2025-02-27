@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { allFeedbacks } from "../../../Api/user";
 import { useEffect, useState } from "react";
-import leftImage from '../../../assets/left.png'
-
-
+// import leftImage from '../../../assets/left.png'
+import leftImg from '../../../../public/assets/left.png'
 export interface IFeedback {
   _id: string;
   userId: IUser;
@@ -42,8 +41,8 @@ const Body = () => {
 
       <div className="flex justify-between items-center w-full px-0  mx-auto">
         {/* <img src="/src/assets/left.png" alt="Yellow Scooter" className="w-1/3" /> */}
-        <img src="../../../../public/assets/left.png" alt="Yellow Scooter" className="w-1/3" />
-        {/* <img src={leftImage} alt="Yellow Scooter" className="w-1/3" /> */}
+        {/* <img src="../../../../public/assets/left.png" alt="Yellow Scooter" className="w-1/3" /> */}
+        <img src={leftImg} alt="Yellow Scooter" className="w-1/3" />
 
         <div className="max-w-md mx-6 text-center">
           <h1 className="text-4xl font-bold mb-4 text-black">
