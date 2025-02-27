@@ -3,7 +3,7 @@ import { allFeedbacks } from "../../../Api/user";
 import { useEffect, useState } from "react";
 // import leftImage from '../../../assets/left.png'
 import leftImg from '../../../../public/assets/left.png'
-import rightImg from '../../../../public/assets/right.png'
+// import rightImg from '../../../../public/assets/right.png'
 
 
 
