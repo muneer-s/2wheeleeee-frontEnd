@@ -3,6 +3,10 @@ import { allFeedbacks } from "../../../Api/user";
 import { useEffect, useState } from "react";
 // import leftImage from '../../../assets/left.png'
 import leftImg from '../../../../public/assets/left.png'
+import rightImg from '../../../../public/assets/right.png'
+
+
+
 export interface IFeedback {
   _id: string;
   userId: IUser;
@@ -59,7 +63,7 @@ const Body = () => {
           </button>
         </div>
 
-        <img src="../../../../public/assets/right.png" alt="Motorbike" className="w-1/3" />
+        <img src={rightImg} alt="Motorbike" className="w-1/3" />
         {/* <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" /> */}
       </div>
 
