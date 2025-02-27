@@ -74,7 +74,7 @@ const Body = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 justify-items-center">
           <div className="p-4 w-80">
             {/* <img src="/src/assets/loc.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
-            <img src="/public/assets/loc.png" className="mx-auto mb-4 w-20 h-20" ></img>
+            <img src={leftImg} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Choose Location</h3>
             <p className="text-gray-700 text-sm">
               When you choose a location, we’ll provide you the available bikes. So you can get it simply.
@@ -82,7 +82,7 @@ const Body = () => {
           </div>
           <div className="p-4">
             {/* <img src="/src/assets/calnder.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
-            <img src="/public/assets/calnder.png" className="mx-auto mb-4 w-20 h-20" ></img>
+            <img src={leftImg} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Pick-Up Date</h3>
             <p className="text-gray-700 text-sm">
               Choose the Pick-Up date so that you can schedule the trip easily.
@@ -90,7 +90,7 @@ const Body = () => {
           </div>
           <div className="p-4">
             {/* <img src="/src/assets/veh.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
-            <img src="/public/assets/veh.png" className="mx-auto mb-4 w-20 h-20" ></img>
+            <img src={leftImg} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Book Your Bike</h3>
             <p className="text-gray-700 text-sm">
               Book your favorite vehicle and enjoy your trip.
