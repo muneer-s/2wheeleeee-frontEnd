@@ -63,7 +63,7 @@ const Body = () => {
           </button>
         </div>
 
-        <img src={rightImg} alt="Motorbike" className="w-1/3" />
+        <img src={leftImg} alt="Motorbike" className="w-1/3" />
         {/* <img src="/src/assets/right.png" alt="Motorbike" className="w-1/3" /> */}
       </div>
 
