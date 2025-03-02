@@ -7,7 +7,7 @@ import rightImg from '../../../../public/assets/right.png'
 import loc from '../../../../public/assets/loc.png'
 import calnder from '../../../../public/assets/calnder.png'
 import veh from '../../../../public/assets/veh.png'
-
+import middleLeft from '../../../../public/assets/middle-left.png'
 
 export interface IFeedback {
   _id: string;
@@ -73,7 +73,6 @@ const Body = () => {
         <h2 className="text-3xl font-bold mb-6">Our working steps</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 justify-items-center">
           <div className="p-4 w-80">
-            {/* <img src="/src/assets/loc.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
             <img src={loc} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Choose Location</h3>
             <p className="text-gray-700 text-sm">
@@ -81,7 +80,6 @@ const Body = () => {
             </p>
           </div>
           <div className="p-4">
-            {/* <img src="/src/assets/calnder.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
             <img src={calnder} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Pick-Up Date</h3>
             <p className="text-gray-700 text-sm">
@@ -89,7 +87,6 @@ const Body = () => {
             </p>
           </div>
           <div className="p-4">
-            {/* <img src="/src/assets/veh.png" className="mx-auto mb-4 w-20 h-20" ></img> */}
             <img src={veh} className="mx-auto mb-4 w-20 h-20" ></img>
             <h3 className="text-xl font-semibold mb-2">Book Your Bike</h3>
             <p className="text-gray-700 text-sm">
@@ -103,7 +100,7 @@ const Body = () => {
       <div id="about-us" className="flex bg-white py-12">
 
         <div className="w-1/2 flex justify-start items-center">
-          <img src="/src/assets/middle-left.png" alt="About Us" className="w-full max-w-lg" />
+          <img src={middleLeft} alt="About Us" className="w-full max-w-lg" />
         </div>
 
         <div className="w-1/2 py-12 px-6 bg-white">

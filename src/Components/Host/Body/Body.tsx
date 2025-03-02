@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import hostHome1 from '../../../assets/hostHome1.png';
-import hostHome2 from '../../../assets/hostHome2.png';
-import hostHome3 from '../../../assets/hostHome3.png';
+import hostHome1 from '../../../../public/assets/hostHome1.png';
+import hostHome2 from '../../../../public/assets/hostHome2.png';
+import hostHome3 from '../../../../public/assets/hostHome3.png';
 import { useAppSelector } from '../../../Apps/store';
 import { isAdminVerifyUser } from '../../../Api/host';
 import { handleApiResponse } from '../../../Utils/apiUtils';

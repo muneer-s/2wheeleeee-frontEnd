@@ -3,7 +3,7 @@ import { MessageCircle, Send, ArrowLeft } from "lucide-react";
 import Api from "../../../service/axios";
 import { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../Apps/store";
-// import defaultDp from '../../../Assets/defaultDP.png'
+import defaultDp from '../../../../public/assets/defaultDP.png'
 import Lottie from "react-lottie";
 import animationData from '../../../Animation/Typing.json'
 import { Dialog, DialogContent, Menu, MenuItem, IconButton, Badge } from "@mui/material";
@@ -330,7 +330,7 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                         className={`p-4 flex items-center space-x-3 cursor-pointer hover:bg-gray-100 transition-colors`}
                       >
                         <img
-                          src={user?.users[0].profile_picture || ''}
+                          src={user?.users[0].profile_picture || defaultDp}
                           alt="Profile"
                           className="w-10 h-10 rounded-full border"
                         />
@@ -359,7 +359,7 @@ const MainChatUI: React.FC<ChatWidgetProps> = ({
                       onClick={() => setSelectedUser(null)}
                     />
                     <img
-                      src={selectedUser.profile_picture || ''}
+                      src={selectedUser.profile_picture || defaultDp}
                       alt="Profile"
                       className="w-10 h-10 rounded-full border"
                     />
