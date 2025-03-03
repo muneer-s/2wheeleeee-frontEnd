@@ -43,7 +43,6 @@ const socket = io(import.meta.env.VITE_BACKEND_URL, {
   transports: ['polling', 'websocket'],
 })
 
-
 function App() {
 
   return (
