@@ -39,7 +39,6 @@ import AdminFeedbackListPage from './Screen/Admin/FeedbackList/AdminFeedbackList
 import io from 'socket.io-client';
 import PageNotFound from './Components/404/PageNotFound';
 
-
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
   transports: ['polling', 'websocket'],
 })
