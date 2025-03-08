@@ -11,7 +11,6 @@
             <Route path='/register' element={<UserRegister />} />
             <Route path='/otp' element={<Otp />} /> */}
 
-
             {/* admin side */}
             // <Route path='/adminLogin' element={<AdminLogin />} />
 
