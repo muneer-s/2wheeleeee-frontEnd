@@ -24,7 +24,7 @@ const HostListView = () => {
     
     const authState = useAppSelector((state) => state.auth);
     const userId = authState?.user?.userId;
-    const userEmail = authState?.user?.
+    const userEmail = authState?.user?.email
 
     useEffect(() => {
         const fetchBikeDatas = async () => {
