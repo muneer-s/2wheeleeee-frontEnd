@@ -22,7 +22,7 @@ const ViewOffers = () => {
     try {
       const response = await viewOffers(userId);
       setOffers(response.data.offer);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Error fetching offers:", error);
       toast.error(error.response.data.message)
     }
@@ -170,11 +170,19 @@ const ViewOffers = () => {
                 </div>
               ) : (
                 <div>
-                  <h3 className="text-lg font-semibold">{offer.offerName}</h3>
+                  <h3 className="text-lg font-semibold">Offer Name : {offer.offerName}</h3>
                   <p>Discount: {offer.discount}%</p>
-                  <p>Start Date: {new Date(offer.startDate).toLocaleDateString()}</p>
+                  {/* <p>Start Date: {new Date(offer.startDate).toLocaleDateString()}</p> */}
+                  <p>
+                    Start Date: {new Date(offer.startDate).toLocaleDateString()}{" "}
+                    {new Date(offer.startDate) < new Date() && (
+                      <span className="text-red-500 font-semibold">(Expired)</span>
+                    )}
+                  </p>
+
+
                   <p>End Date: {new Date(offer.endDate).toLocaleDateString()}</p>
-                  <p>{offer.description}</p>
+                  <p>Description : {offer.description}</p>
                   <button onClick={() => handleEdit(offer)} className="bg-blue-500 text-white px-4 py-2 mt-2 rounded">
                     Edit
                   </button>
