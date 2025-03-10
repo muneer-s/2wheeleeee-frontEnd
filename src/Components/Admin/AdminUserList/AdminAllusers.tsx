@@ -90,7 +90,7 @@ const AdminAllusers = () => {
           fullWidth
           style={{ marginRight: 20 }}
         />
-        <Typography>Check Block :</Typography>
+        <Typography>Block / Unblock :</Typography>
         <Select
           value={filter.isBlocked === undefined ? '' : filter.isBlocked.toString()}
           onChange={(e) => handleFilterChange('isBlocked', e.target.value)}
@@ -101,7 +101,7 @@ const AdminAllusers = () => {
           <MenuItem value="true">Blocked</MenuItem>
           <MenuItem value="false">Not Blocked</MenuItem>
         </Select>
-        <Typography>Verification: </Typography>
+        <Typography>Verified / Not: </Typography>
         <Select
           value={filter.isUser === undefined ? '' : filter.isUser.toString()}
           onChange={(e) => handleFilterChange('isUser', e.target.value)}
