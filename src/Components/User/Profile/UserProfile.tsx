@@ -166,7 +166,7 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
             }
         }
 
-        if (!userProfile.license_picture_front || !userProfile.license_picture_back) {
+        if (!userProfile.license_picture_front || !userProfile.license_picture_back || !frontImage || !backImage) {
             newErrors.license_picture = "License Images are required"
         }
 
