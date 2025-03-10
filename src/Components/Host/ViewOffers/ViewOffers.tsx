@@ -176,12 +176,21 @@ const ViewOffers = () => {
                   <p>
                     Start Date: {new Date(offer.startDate).toLocaleDateString()}{" "}
                     {new Date(offer.startDate) < new Date() && (
+                      <span className="text-red-500 font-semibold">(Started)</span>
+                    )}
+                  </p>
+
+
+                  {/* <p>End Date: {new Date(offer.endDate).toLocaleDateString()}</p> */}
+
+                  <p>
+                    End Date: {new Date(offer.endDate).toLocaleDateString()}{" "}
+                    {new Date(offer.endDate) < new Date() && (
                       <span className="text-red-500 font-semibold">(Expired)</span>
                     )}
                   </p>
 
 
-                  <p>End Date: {new Date(offer.endDate).toLocaleDateString()}</p>
                   <p>Description : {offer.description}</p>
                   <button onClick={() => handleEdit(offer)} className="bg-blue-500 text-white px-4 py-2 mt-2 rounded">
                     Edit

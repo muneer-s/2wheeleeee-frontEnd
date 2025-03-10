@@ -38,7 +38,7 @@ const ApplyOffer = () => {
             await applyOfferToBike(id, offerId);
             toast.success("Offer applied successfully!");
             navigate('/hostBikeListPage')
-        } catch (error:any) {
+        } catch (error: any) {
             console.error("Error applying offer:", error);
             toast.error(error.response.data.message);
         }
@@ -64,33 +64,44 @@ const ApplyOffer = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {offers.map((offer) => (
-                                <tr key={offer._id} className="text-center border-b">
-                                    <td className="py-2 px-4 border">{offer.offerName}</td>
-                                    <td className="py-2 px-4 border">{offer.discount}%</td>
-                                    <td className="py-2 px-4 border">
-                                        {new Date(offer.startDate).toLocaleDateString()}
-                                    </td>
-                                    <td className="py-2 px-4 border">
-                                        {new Date(offer.endDate).toLocaleDateString()}
-                                    </td>
-                                    <td className="py-2 px-4 border">{offer.description}</td>
+                            {offers.map((offer) => {
+                                const isExpired = new Date(offer.endDate) < new Date();
 
-                                    <td className="py-2 px-4 border">
-                                        <button
-                                            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-                                            onClick={() => handleApplyOffer(offer._id)}
-                                        >
-                                            Apply Offer
-                                        </button>
-                                        <button
-                                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 ml-4"
-                                            onClick={() => navigate(-1)}>
-                                            Back
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                                return (
+                                    <tr key={offer._id} className="text-center border-b">
+                                        <td className="py-2 px-4 border">{offer.offerName}</td>
+                                        <td className="py-2 px-4 border">{offer.discount}%</td>
+                                        <td className="py-2 px-4 border">
+                                            {new Date(offer.startDate).toLocaleDateString()}
+                                        </td>
+                                        <td className="py-2 px-4 border">
+                                            {new Date(offer.endDate).toLocaleDateString()}{" "}
+                                            {isExpired && (
+                                                <span className="text-red-500 font-semibold">(Expired)</span>
+                                            )}
+                                        </td>
+                                        <td className="py-2 px-4 border">{offer.description}</td>
+
+                                        <td className="py-2 px-4 border">
+                                            <button
+                                                className={`px-4 py-1 rounded ${isExpired
+                                                    ? "bg-gray-400 cursor-not-allowed"
+                                                    : "bg-blue-500 hover:bg-blue-600 text-white"
+                                                    }`}
+                                                onClick={() => !isExpired && handleApplyOffer(offer._id)}
+                                                disabled={isExpired}
+                                            >
+                                                {isExpired ? "Expired" : "Apply Offer"}
+                                            </button>
+                                            <button
+                                                className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 ml-4"
+                                                onClick={() => navigate(-1)}>
+                                                Back
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 </div>
