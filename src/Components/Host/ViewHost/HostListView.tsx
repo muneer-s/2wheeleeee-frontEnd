@@ -8,6 +8,9 @@ import { handleApiResponse } from "../../../Utils/apiUtils";
 import UserOrderList from "../HostOrderList/OrderList";
 import CreateOffer from "../OfferCreate.tsx/CreateOffer";
 import ViewOffers from "../ViewOffers/ViewOffers";
+import { logout } from "../../../Api/user";
+import { userLogout } from "../../../Apps/slice/AuthSlice";
+import { useDispatch } from "react-redux";
 
 
 const HostListView = () => {
@@ -17,8 +20,11 @@ const HostListView = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
     const navigate = useNavigate()
+        let dispatch = useDispatch()
+    
     const authState = useAppSelector((state) => state.auth);
     const userId = authState?.user?.userId;
+    const userEmail = authState?.user?.
 
     useEffect(() => {
         const fetchBikeDatas = async () => {
@@ -26,8 +32,15 @@ const HostListView = () => {
                 const response = await fetchBikeData(userId)
                 const data = handleApiResponse(response)
                 setBikes(data.userAndbikes)
-            } catch (error) {
+            } catch (error:any) {
                 console.error("Error fetching bike data:", error);
+                if (error.response.status == 401 || error.response.status == 403) {
+                    toast.error(error.response.data.message)
+                    await logout({ email: userEmail });
+                    dispatch(userLogout())
+                } else {
+                    toast.error(error.response.data.message)
+                }
             }
         };
         if (userId) {
