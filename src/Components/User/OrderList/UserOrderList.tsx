@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 import { TableRow, TableCell, Button } from '@mui/material';
 import CustomTable from '../../../ReusableComponents/CustomTable';
 import { useNavigate } from 'react-router-dom';
@@ -45,8 +45,8 @@ const UserOrderList: React.FC<ProfilePageProps> = ({ socket }) => {
           setOrders(Array.isArray(response.data.order) ? response.data.order : []);
         }
       } catch (error: any) {
-        toast.error('Error fetching order list...');
-        console.error('Error fetching orders:', error.response.data.message);
+        // toast.error('Error fetching order list...');
+        console.error('Error fetching orders:', error);
         setOrders([]);
 
       }
