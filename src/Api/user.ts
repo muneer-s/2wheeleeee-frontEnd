@@ -171,7 +171,7 @@ const userOrderList = async (userId: string) => {
         const response = await Api.get(`${userRoutes.OrderList}?userId=${userId}`);
         return response.data
     } catch (error) {
-        console.log("Error is fetching order list for admin", error)
+        console.log("Error is fetching order list for user", error)
         throw error
     }
 }
