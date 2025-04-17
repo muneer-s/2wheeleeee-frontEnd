@@ -218,7 +218,7 @@ const BikeRegister = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 py-12 px-4 mt-20">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 py-12 px-4">
             <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
                 <div className="bg-blue-600 py-4 px-6">
                     <h1 className="text-2xl font-bold text-white text-center">Register Your Bike</h1>
