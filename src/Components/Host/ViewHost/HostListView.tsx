@@ -274,7 +274,7 @@ const HostListView = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 py-8 px-4">
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 py-8 px-4 mt-20">
             <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div className="md:flex relative">
                     {/* Mobile Nav Toggle */}
