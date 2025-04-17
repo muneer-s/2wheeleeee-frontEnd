@@ -242,233 +242,234 @@ const UserOrderDetails = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Header />
+        // <div className="min-h-screen bg-gray-50">
+        <><Header />
             
-            <div className="max-w-5xl mx-auto p-4 sm:p-6 pt-12">
-                <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                    {/* Order header */}
-                    <div className="bg-gray-800 text-white p-6">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-                            <div>
-                                <h1 className="text-2xl font-bold">Order #{order._id.substring(order._id.length - 6)}</h1>
-                                <p className="text-gray-300 mt-1">Booked on {formatDate(order.startDate)}</p>
-                            </div>
-                            <span className={`mt-3 md:mt-0 px-4 py-1 rounded-full text-sm font-medium ${statusColors[order.status] || "bg-gray-500"}`}>
-                                {order.status}
-                            </span>
+        <div className="max-w-5xl mx-auto p-4 sm:p-6 pt-12">
+            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                {/* Order header */}
+                <div className="bg-gray-800 text-white p-6">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div>
+                            <h1 className="text-2xl font-bold">Order #{order._id.substring(order._id.length - 6)}</h1>
+                            <p className="text-gray-300 mt-1">Booked on {formatDate(order.startDate)}</p>
                         </div>
+                        <span className={`mt-3 md:mt-0 px-4 py-1 rounded-full text-sm font-medium ${statusColors[order.status] || "bg-gray-500"}`}>
+                            {order.status}
+                        </span>
                     </div>
-                    
-                    {/* Tabs */}
-                    <div className="border-b">
-                        <nav className="flex">
+                </div>
+                
+                {/* Tabs */}
+                <div className="border-b">
+                    <nav className="flex">
+                        <button 
+                            onClick={() => setActiveTab("order")}
+                            className={`px-4 py-3 text-sm font-medium ${activeTab === "order" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
+                        >
+                            Order Details
+                        </button>
+                        <button 
+                            onClick={() => setActiveTab("bike")}
+                            className={`px-4 py-3 text-sm font-medium ${activeTab === "bike" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
+                        >
+                            Bike Information
+                        </button>
+                        <button 
+                            onClick={() => setActiveTab("owner")}
+                            className={`px-4 py-3 text-sm font-medium ${activeTab === "owner" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
+                        >
+                            Owner Details
+                        </button>
+                        {orderDetails?.order.status === "Completed" && (
                             <button 
-                                onClick={() => setActiveTab("order")}
-                                className={`px-4 py-3 text-sm font-medium ${activeTab === "order" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
+                                onClick={() => setActiveTab("review")}
+                                className={`px-4 py-3 text-sm font-medium ${activeTab === "review" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
                             >
-                                Order Details
+                                Leave Review
                             </button>
-                            <button 
-                                onClick={() => setActiveTab("bike")}
-                                className={`px-4 py-3 text-sm font-medium ${activeTab === "bike" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
-                            >
-                                Bike Information
-                            </button>
-                            <button 
-                                onClick={() => setActiveTab("owner")}
-                                className={`px-4 py-3 text-sm font-medium ${activeTab === "owner" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
-                            >
-                                Owner Details
-                            </button>
-                            {orderDetails?.order.status === "Completed" && (
-                                <button 
-                                    onClick={() => setActiveTab("review")}
-                                    className={`px-4 py-3 text-sm font-medium ${activeTab === "review" ? "border-b-2 border-blue-500 text-blue-600 font-semibold" : "text-gray-500 hover:text-gray-700"}`}
-                                >
-                                    Leave Review
-                                </button>
-                            )}
-                        </nav>
-                    </div>
-                    
-                    {/* Content based on active tab */}
-                    <div className="p-6">
-                        {activeTab === "order" && (
-                            <div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Rental Information</h2>
-                                        <div className="space-y-3">
-                                            <div className="flex justify-between items-center border-b pb-2">
-                                                <span className="text-gray-600">Start Date</span>
-                                                <span className="font-medium">{formatDate(order.startDate)}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center border-b pb-2">
-                                                <span className="text-gray-600">End Date</span>
-                                                <span className="font-medium">{formatDate(order.endDate)}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center border-b pb-2">
-                                                <span className="text-gray-600">Total Days</span>
-                                                <span className="font-medium">
-                                                    {Math.ceil((new Date(order.endDate).getTime() - new Date(order.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
-                                                </span>
-                                            </div>
+                        )}
+                    </nav>
+                </div>
+                
+                {/* Content based on active tab */}
+                <div className="p-6">
+                    {activeTab === "order" && (
+                        <div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Rental Information</h2>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center border-b pb-2">
+                                            <span className="text-gray-600">Start Date</span>
+                                            <span className="font-medium">{formatDate(order.startDate)}</span>
                                         </div>
-                                    </div>
-                                    
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Payment Details</h2>
-                                        <div className="space-y-3">
-                                            <div className="flex justify-between items-center border-b pb-2">
-                                                <span className="text-gray-600">Amount</span>
-                                                <span className="font-medium text-lg">₹{order.amount.toLocaleString()}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center border-b pb-2">
-                                                <span className="text-gray-600">Payment Method</span>
-                                                <span className="font-medium">{order.method}</span>
-                                            </div>
+                                        <div className="flex justify-between items-center border-b pb-2">
+                                            <span className="text-gray-600">End Date</span>
+                                            <span className="font-medium">{formatDate(order.endDate)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center border-b pb-2">
+                                            <span className="text-gray-600">Total Days</span>
+                                            <span className="font-medium">
+                                                {Math.ceil((new Date(order.endDate).getTime() - new Date(order.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                {order.status === "Booked" && (
-                                    <div className="mt-8 flex justify-center">
-                                        {renderActionButton()}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        
-                        {activeTab === "bike" && (
-                            <div>
-                                <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Information</h2>
-                                <div className="flex flex-col md:flex-row gap-6">
-                                    <div className="md:w-1/2">
-                                        <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                                            {bike.images.length > 0 ? (
-                                                <img 
-                                                    src={bike.images[0]} 
-                                                    alt={bike.modelName} 
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                                    No image available
-                                                </div>
-                                            )}
+                                <div>
+                                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Payment Details</h2>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center border-b pb-2">
+                                            <span className="text-gray-600">Amount</span>
+                                            <span className="font-medium text-lg">₹{order.amount.toLocaleString()}</span>
                                         </div>
-                                        
-                                        {bike.images.length > 1 && (
-                                            <div className="mt-3 grid grid-cols-4 gap-2">
-                                                {bike.images.slice(1, 5).map((img, index) => (
-                                                    <img 
-                                                        key={index} 
-                                                        src={img} 
-                                                        alt={`Bike ${index + 1}`} 
-                                                        className="w-full aspect-square object-cover rounded-md"
-                                                    />
-                                                ))}
+                                        <div className="flex justify-between items-center border-b pb-2">
+                                            <span className="text-gray-600">Payment Method</span>
+                                            <span className="font-medium">{order.method}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {order.status === "Booked" && (
+                                <div className="mt-8 flex justify-center">
+                                    {renderActionButton()}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
+                    {activeTab === "bike" && (
+                        <div>
+                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Information</h2>
+                            <div className="flex flex-col md:flex-row gap-6">
+                                <div className="md:w-1/2">
+                                    <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                                        {bike.images.length > 0 ? (
+                                            <img 
+                                                src={bike.images[0]} 
+                                                alt={bike.modelName} 
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                                No image available
                                             </div>
                                         )}
                                     </div>
                                     
-                                    <div className="md:w-1/2 mt-4 md:mt-0">
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <h3 className="text-xl font-bold text-gray-800">{bike.modelName}</h3>
-                                            <div className="mt-4 space-y-2">
-                                                <p className="text-gray-600">
-                                                    <span className="font-medium">Bike ID:</span> {bike._id}
-                                                </p>
-                                                <p className="text-gray-600">
-                                                    <span className="font-medium">Rental Period:</span> {formatDate(order.startDate)} - {formatDate(order.endDate)}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        
-                        {activeTab === "owner" && (
-                            <div>
-                                <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Owner Information</h2>
-                                <div className="bg-gray-50 p-5 rounded-lg">
-                                    <div className="flex items-center mb-4">
-                                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg">
-                                            {owner.name.charAt(0).toUpperCase()}
-                                        </div>
-                                        <div className="ml-4">
-                                            <h3 className="text-lg font-semibold">{owner.name}</h3>
-                                            <p className="text-gray-500 text-sm">Bike Owner</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="space-y-3 mt-4">
-                                        <div className="flex items-start">
-                                            <div className="min-w-24 text-gray-600">Phone:</div>
-                                            <div className="font-medium">{owner.phoneNumber}</div>
-                                        </div>
-                                        <div className="flex items-start">
-                                            <div className="min-w-24 text-gray-600">Address:</div>
-                                            <div className="font-medium">{owner.address}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        
-                        {activeTab === "review" && (
-                            <div>
-                                <h2 className="text-lg font-semibold text-gray-800 mb-4">Leave Your Review</h2>
-                                <div className="bg-gray-50 p-5 rounded-lg">
-                                    <p className="text-gray-600 mb-4">How was your experience with this bike?</p>
-                                    
-                                    <div className="flex mb-6">
-                                        {[...Array(5)].map((_, index) => {
-                                            const starValue = index + 1;
-                                            return (
-                                                <FaStar
-                                                    key={index}
-                                                    className={`cursor-pointer transition duration-200 ${starValue <= (hover || rating) ? "text-yellow-400" : "text-gray-300"}`}
-                                                    size={32}
-                                                    onMouseEnter={() => setHover(starValue)}
-                                                    onMouseLeave={() => setHover(0)}
-                                                    onClick={() => setRating(starValue)}
+                                    {bike.images.length > 1 && (
+                                        <div className="mt-3 grid grid-cols-4 gap-2">
+                                            {bike.images.slice(1, 5).map((img, index) => (
+                                                <img 
+                                                    key={index} 
+                                                    src={img} 
+                                                    alt={`Bike ${index + 1}`} 
+                                                    className="w-full aspect-square object-cover rounded-md"
                                                 />
-                                            );
-                                        })}
-                                        <span className="ml-3 text-gray-600">
-                                            {rating > 0 ? `${rating} star${rating > 1 ? 's' : ''}` : 'Select rating'}
-                                        </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                
+                                <div className="md:w-1/2 mt-4 md:mt-0">
+                                    <div className="bg-gray-50 p-4 rounded-lg">
+                                        <h3 className="text-xl font-bold text-gray-800">{bike.modelName}</h3>
+                                        <div className="mt-4 space-y-2">
+                                            <p className="text-gray-600">
+                                                <span className="font-medium">Bike ID:</span> {bike._id}
+                                            </p>
+                                            <p className="text-gray-600">
+                                                <span className="font-medium">Rental Period:</span> {formatDate(order.startDate)} - {formatDate(order.endDate)}
+                                            </p>
+                                        </div>
                                     </div>
-                                    
-                                    <div className="mb-4">
-                                        <label htmlFor="feedback" className="block text-sm font-medium text-gray-700 mb-1">
-                                            Your feedback
-                                        </label>
-                                        <textarea
-                                            id="feedback"
-                                            value={feedback}
-                                            onChange={(e) => setFeedback(e.target.value)}
-                                            className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Share your experience with this bike and the rental service..."
-                                        ></textarea>
-                                    </div>
-                                    
-                                    <button
-                                        onClick={handleReviewSubmit}
-                                        className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 font-medium"
-                                    >
-                                        Submit Review
-                                    </button>
                                 </div>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
+                    
+                    {activeTab === "owner" && (
+                        <div>
+                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Bike Owner Information</h2>
+                            <div className="bg-gray-50 p-5 rounded-lg">
+                                <div className="flex items-center mb-4">
+                                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg">
+                                        {owner.name.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div className="ml-4">
+                                        <h3 className="text-lg font-semibold">{owner.name}</h3>
+                                        <p className="text-gray-500 text-sm">Bike Owner</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="space-y-3 mt-4">
+                                    <div className="flex items-start">
+                                        <div className="min-w-24 text-gray-600">Phone:</div>
+                                        <div className="font-medium">{owner.phoneNumber}</div>
+                                    </div>
+                                    <div className="flex items-start">
+                                        <div className="min-w-24 text-gray-600">Address:</div>
+                                        <div className="font-medium">{owner.address}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {activeTab === "review" && (
+                        <div>
+                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Leave Your Review</h2>
+                            <div className="bg-gray-50 p-5 rounded-lg">
+                                <p className="text-gray-600 mb-4">How was your experience with this bike?</p>
+                                
+                                <div className="flex mb-6">
+                                    {[...Array(5)].map((_, index) => {
+                                        const starValue = index + 1;
+                                        return (
+                                            <FaStar
+                                                key={index}
+                                                className={`cursor-pointer transition duration-200 ${starValue <= (hover || rating) ? "text-yellow-400" : "text-gray-300"}`}
+                                                size={32}
+                                                onMouseEnter={() => setHover(starValue)}
+                                                onMouseLeave={() => setHover(0)}
+                                                onClick={() => setRating(starValue)}
+                                            />
+                                        );
+                                    })}
+                                    <span className="ml-3 text-gray-600">
+                                        {rating > 0 ? `${rating} star${rating > 1 ? 's' : ''}` : 'Select rating'}
+                                    </span>
+                                </div>
+                                
+                                <div className="mb-4">
+                                    <label htmlFor="feedback" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Your feedback
+                                    </label>
+                                    <textarea
+                                        id="feedback"
+                                        value={feedback}
+                                        onChange={(e) => setFeedback(e.target.value)}
+                                        className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Share your experience with this bike and the rental service..."
+                                    ></textarea>
+                                </div>
+                                
+                                <button
+                                    onClick={handleReviewSubmit}
+                                    className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 font-medium"
+                                >
+                                    Submit Review
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
+        </>
+            
     );
 };
 
