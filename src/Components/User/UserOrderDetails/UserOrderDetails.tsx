@@ -245,7 +245,7 @@ const UserOrderDetails = () => {
         // <div className="min-h-screen bg-gray-50">
         <><Header />
             
-        <div className="max-w-5xl mx-auto p-4 sm:p-6 pt-12">
+        <div className="max-w-5xl mx-auto p-4 sm:p-6 pt-12 mt-20">
             <div className="bg-white rounded-xl shadow-md overflow-hidden">
                 {/* Order header */}
                 <div className="bg-gray-800 text-white p-6">
