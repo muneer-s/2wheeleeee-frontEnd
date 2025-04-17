@@ -236,10 +236,10 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
                                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                     </svg>
                                 </label>
-                                <input 
-                                    id="profilePic" 
-                                    type="file" 
-                                    className="hidden" 
+                                <input
+                                    id="profilePic"
+                                    type="file"
+                                    className="hidden"
                                     onChange={(e) => {
                                         if (e.target.files && e.target.files[0]) {
                                             setNewProfile(e.target.files[0]);
@@ -524,8 +524,8 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
                                                         {userProfile.isUser ? "Verification Approved" : "Verification Pending"}
                                                     </h3>
                                                     <p className="text-sm text-gray-500 mt-1">
-                                                        {userProfile.isUser 
-                                                            ? "Your account has been successfully verified. You now have full access to all features." 
+                                                        {userProfile.isUser
+                                                            ? "Your account has been successfully verified. You now have full access to all features."
                                                             : "Your verification is being reviewed by our admin team. This typically takes 1-2 business days."}
                                                     </p>
                                                 </div>
@@ -546,126 +546,124 @@ const UserProfile: React.FC<ProfilePageProps> = ({ socket }) => {
             case "Feedback":
                 return <FeedbackForm />;
 
-                default:
-                    return null;
-            }
-        };
-    
-        // Navigation menu items with icons
-        const menuItems = [
-            {
-                id: "Personal Details",
-                label: "Personal Details",
-                icon: (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
-                )
-            },
-            {
-                id: "My Wallet",
-                label: "My Wallet",
-                icon: (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                    </svg>
-                )
-            },
-            {
-                id: "Booking History",
-                label: "Booking History",
-                icon: (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                    </svg>
-                )
-            },
-            {
-                id: "Feedback",
-                label: "Feedback",
-                icon: (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
-                    </svg>
-                )
-            }
-        ];
-    
-        return (
-            <div className="min-h-screen bg-gradient-to-b from-white to-sky-100 py-10">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-                        <div className="flex flex-col md:flex-row">
-                            {/* Sidebar - Responsive */}
-                            <div className="md:w-64 bg-sky-50 p-6">
-                                <div className="flex justify-center md:justify-start mb-8">
-                                    <h1 className="text-2xl font-bold text-sky-800">My Profile</h1>
-                                </div>
-                                
-                                {/* Mobile tabs */}
-                                <div className="flex md:hidden overflow-x-auto pb-3 mb-4 space-x-2">
-                                    {menuItems.map((item) => (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => setActiveTab(item.id)}
-                                            className={`px-4 py-2 rounded-full whitespace-nowrap ${
-                                                activeTab === item.id 
-                                                    ? "bg-sky-600 text-white" 
-                                                    : "bg-white text-gray-600 border border-gray-200"
+            default:
+                return null;
+        }
+    };
+
+    // Navigation menu items with icons
+    const menuItems = [
+        {
+            id: "Personal Details",
+            label: "Personal Details",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                </svg>
+            )
+        },
+        {
+            id: "My Wallet",
+            label: "My Wallet",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+            )
+        },
+        {
+            id: "Booking History",
+            label: "Booking History",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+            )
+        },
+        {
+            id: "Feedback",
+            label: "Feedback",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                </svg>
+            )
+        }
+    ];
+
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-white to-sky-100 py-10 mt-20">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div className="flex flex-col md:flex-row">
+                        {/* Sidebar - Responsive */}
+                        <div className="md:w-64 bg-sky-50 p-6">
+                            <div className="flex justify-center md:justify-start mb-8">
+                                <h1 className="text-2xl font-bold text-sky-800">My Profile</h1>
+                            </div>
+
+                            {/* Mobile tabs */}
+                            <div className="flex md:hidden overflow-x-auto pb-3 mb-4 space-x-2">
+                                {menuItems.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setActiveTab(item.id)}
+                                        className={`px-4 py-2 rounded-full whitespace-nowrap ${activeTab === item.id
+                                                ? "bg-sky-600 text-white"
+                                                : "bg-white text-gray-600 border border-gray-200"
                                             }`}
-                                        >
-                                            {item.label}
-                                        </button>
-                                    ))}
-                                </div>
-                                
-                                {/* Desktop menu */}
-                                <nav className="hidden md:block">
-                                    <ul className="space-y-1">
-                                        {menuItems.map((item) => (
-                                            <li key={item.id}>
-                                                <button
-                                                    onClick={() => setActiveTab(item.id)}
-                                                    className={`flex items-center w-full px-4 py-3 rounded-lg transition-all ${
-                                                        activeTab === item.id
-                                                            ? "bg-sky-600 text-white shadow-md" 
-                                                            : "text-gray-600 hover:bg-sky-100"
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Desktop menu */}
+                            <nav className="hidden md:block">
+                                <ul className="space-y-1">
+                                    {menuItems.map((item) => (
+                                        <li key={item.id}>
+                                            <button
+                                                onClick={() => setActiveTab(item.id)}
+                                                className={`flex items-center w-full px-4 py-3 rounded-lg transition-all ${activeTab === item.id
+                                                        ? "bg-sky-600 text-white shadow-md"
+                                                        : "text-gray-600 hover:bg-sky-100"
                                                     }`}
-                                                >
-                                                    <span className="mr-3">{item.icon}</span>
-                                                    <span className="font-medium">{item.label}</span>
-                                                    {activeTab === item.id && (
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-auto" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                                        </svg>
-                                                    )}
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </nav>
-    
-                                {/* User Status Card (only for desktop) */}
-                                <div className="hidden md:block mt-8 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-                                    <div className="flex flex-col items-center">
-                                        <div className={`h-3 w-3 rounded-full mb-3 ${userProfile?.isUser ? 'bg-green-500' : 'bg-amber-500'}`}></div>
-                                        <p className="text-sm font-medium text-gray-800">Account Status</p>
-                                        <p className={`text-sm ${userProfile?.isUser ? 'text-green-600' : 'text-amber-600'}`}>
-                                            {userProfile?.isUser ? 'Verified Account' : 'Awaiting Verification'}
-                                        </p>
-                                    </div>
+                                            >
+                                                <span className="mr-3">{item.icon}</span>
+                                                <span className="font-medium">{item.label}</span>
+                                                {activeTab === item.id && (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-auto" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                                    </svg>
+                                                )}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
+
+                            {/* User Status Card (only for desktop) */}
+                            <div className="hidden md:block mt-8 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                                <div className="flex flex-col items-center">
+                                    <div className={`h-3 w-3 rounded-full mb-3 ${userProfile?.isUser ? 'bg-green-500' : 'bg-amber-500'}`}></div>
+                                    <p className="text-sm font-medium text-gray-800">Account Status</p>
+                                    <p className={`text-sm ${userProfile?.isUser ? 'text-green-600' : 'text-amber-600'}`}>
+                                        {userProfile?.isUser ? 'Verified Account' : 'Awaiting Verification'}
+                                    </p>
                                 </div>
                             </div>
-    
-                            {/* Main Content */}
-                            <div className="flex-1 p-6 md:p-8">
-                                {renderContent()}
-                            </div>
+                        </div>
+
+                        {/* Main Content */}
+                        <div className="flex-1 p-6 md:p-8">
+                            {renderContent()}
                         </div>
                     </div>
                 </div>
             </div>
-        );
-    };
-    
-    export default UserProfile;
+        </div>
+    );
+};
+
+export default UserProfile;
