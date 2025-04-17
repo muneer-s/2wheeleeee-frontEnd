@@ -11,14 +11,10 @@ const OTPComponent: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false);
-
     const [searchParams] = useSearchParams();
-
     const userId = searchParams.get('email');
-
     const [otp, setOTP] = useState<string>('');
     const [seconds, setSeconds] = useState(60);
-
     const { userData } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
@@ -75,7 +71,6 @@ const OTPComponent: React.FC = () => {
         }
         setLoading(true);
         try {
-
             const result = await resendOtp({ email });
 
             if (result?.success) {
@@ -89,47 +84,59 @@ const OTPComponent: React.FC = () => {
         } finally {
             setLoading(false)
         }
-
     };
 
     return (
-        <div className="bg-gray-100 flex flex-col items-center justify-center h-screen w-full dark:bg-gray-900">
-            <div className="w-full max-w-md px-8 py-10 bg-white rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-200">
-                <h1 className="text-2xl font-semibold text-center mb-6">Enter OTP</h1>
-                <p className="text-gray-600 text-center mb-4">Code sent to your Email</p>
-                <div className="flex justify-center my-2">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transform transition-all duration-300 hover:shadow-2xl">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-4">Verify OTP</h1>
+                <p className="text-gray-600 dark:text-gray-300 text-center mb-6">Enter the code sent to your email</p>
+                
+                <div className="mb-6">
                     <input
                         type="text"
                         value={otp}
                         onChange={handleOTPChange}
                         maxLength={6}
-                        className="rounded-lg bg-gray-100 cursor-text dark:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-400 text-center outline-none"
+                        placeholder="Enter 6-digit OTP"
+                        className="w-full px-4 py-3 text-center text-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
                     />
                 </div>
-                <div className="flex items-center flex-col justify-between mb-6">
 
-                    <div className="ps-1">
-                        {seconds <= 0 ? (
-                            <div>
-                                OTP Expired{' '}
-                                <span className="text-blue-500 cursor-pointer" onClick={resendOTP}>
-                                    Resend OTP?
-                                </span>
-                            </div>
-                        ) : (
-                            <div>
-                                OTP expires in {seconds} sec
-                            </div>
-                        )}
-                    </div>
+                <div className="text-center mb-6">
+                    {seconds <= 0 ? (
+                        <p className="text-gray-600 dark:text-gray-300">
+                            OTP Expired{' '}
+                            <span 
+                                className="text-blue-500 hover:text-blue-600 cursor-pointer font-medium transition-colors duration-200" 
+                                onClick={resendOTP}
+                            >
+                                Resend OTP
+                            </span>
+                        </p>
+                    ) : (
+                        <p className="text-gray-600 dark:text-gray-300">
+                            OTP expires in <span className="font-medium">{seconds}</span> seconds
+                        </p>
+                    )}
                 </div>
+
                 <button
                     onClick={handleVerify}
-                    className={`w-full px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 ${loading ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
+                    className={`w-full py-3 px-4 text-lg font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                     disabled={loading}
                 >
-                    {loading ? 'Processing...' : 'Verify'}
+                    {loading ? (
+                        <span className="flex items-center justify-center">
+                            <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                            </svg>
+                            Processing...
+                        </span>
+                    ) : (
+                        'Verify OTP'
+                    )}
                 </button>
             </div>
         </div>
