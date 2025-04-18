@@ -185,7 +185,7 @@ const HostListView = () => {
                                         </div>
                                         
                                         <div className="bg-gray-50 p-4 border-t border-gray-100">
-                                            <div className="grid grid-cols-2 gap-2">
+                                            <div className="grid grid-cols-1 gap-2">
                                                 <button
                                                     className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium flex items-center justify-center"
                                                     onClick={() => navigate(`/HostBikeViewPage/${bike._id}`)}
@@ -274,7 +274,7 @@ const HostListView = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 py-8 px-4 mt-20">
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 py-8 px-4 mt-10">
             <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div className="md:flex relative">
                     {/* Mobile Nav Toggle */}
