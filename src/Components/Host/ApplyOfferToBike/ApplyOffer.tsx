@@ -3,6 +3,8 @@ import { applyOfferToBike, viewOffers } from '../../../Api/host';
 import { useAppSelector } from '../../../Apps/store';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import Header from '../../User/Header/Header';
+import Footer from '../../User/Footer/Footer';
 
 const ApplyOffer = () => {
     const [offers, setOffers] = useState<any[]>([]);
@@ -61,6 +63,8 @@ const ApplyOffer = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
@@ -163,6 +167,9 @@ const ApplyOffer = () => {
                 )}
             </div>
         </div>
+        <Footer/>
+        </>
+        
     );
 };
 
