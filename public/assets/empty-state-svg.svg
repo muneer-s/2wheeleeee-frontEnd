@@ -1,0 +1,28 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background elements -->
+  <circle cx="200" cy="150" r="130" fill="#f5f7fa" />
+  <ellipse cx="200" cy="260" rx="180" ry="20" fill="#e6eaf0" />
+  
+  <!-- Shopping bag -->
+  <path d="M150,110 L145,150 L145,220 L255,220 L255,150 L250,110 Z" fill="#ffffff" stroke="#6366f1" stroke-width="3" />
+  <path d="M145,150 L255,150" stroke="#6366f1" stroke-width="2" />
+  
+  <!-- Bag handles -->
+  <path d="M170,110 C170,90 185,80 200,80 C215,80 230,90 230,110" stroke="#6366f1" stroke-width="4" fill="none" />
+  
+  <!-- Crossed lines in bag -->
+  <path d="M165,170 L235,200" stroke="#d1d5db" stroke-width="2" stroke-dasharray="4,2" />
+  <path d="M165,200 L235,170" stroke="#d1d5db" stroke-width="2" stroke-dasharray="4,2" />
+  
+  <!-- Dotted lines around -->
+  <circle cx="120" cy="120" r="8" fill="#e0e7ff" />
+  <circle cx="280" cy="140" r="10" fill="#e0e7ff" />
+  <circle cx="100" cy="200" r="6" fill="#e0e7ff" />
+  <circle cx="300" cy="190" r="7" fill="#e0e7ff" />
+  <circle cx="150" cy="75" r="5" fill="#e0e7ff" />
+  <circle cx="250" cy="90" r="6" fill="#e0e7ff" />
+  
+  <!-- Small decoration elements -->
+  <rect x="180" y="175" width="40" height="5" rx="2" fill="#d1d5db" />
+  <rect x="190" y="185" width="20" height="5" rx="2" fill="#d1d5db" />
+</svg>

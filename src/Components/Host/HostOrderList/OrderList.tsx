@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import EmptyStateImage from '../../../../public/assets/images.jpg'; 
+import EmptyStateImage from '../../../../public/assets/empty-state-svg.svg'; 
 
 interface IOrder {
   _id: string;
