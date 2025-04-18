@@ -65,7 +65,7 @@ const ApplyOffer = () => {
     return (
         <>
         <Header/>
-        <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 mt-20">
             <div className="max-w-5xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">Available Offers</h2>
