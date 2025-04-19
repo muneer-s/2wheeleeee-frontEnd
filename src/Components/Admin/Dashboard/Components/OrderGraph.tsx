@@ -141,7 +141,7 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
                                 dataKey="value"
                                 nameKey="name"
                             >
-                                {pieChartData.map((entry, index) => (
+                                {pieChartData.map((_entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
