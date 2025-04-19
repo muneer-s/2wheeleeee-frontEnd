@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 interface IOrder {
@@ -17,16 +17,15 @@ interface OrderGraphProps {
     orders: IOrder[];
 }
 
+interface IUser {
+    _id: string;
+    name: string;
+}
 
-interface IUser{
-    _id:string
-    name:string
-  }
-
-interface IBike{
-    _id:string,
-    modelName:string
-  }
+interface IBike {
+    _id: string;
+    modelName: string;
+}
 
 const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
     const [filter, setFilter] = useState("all");
@@ -55,44 +54,116 @@ const OrderGraph: React.FC<OrderGraphProps> = ({ orders }) => {
         value: count,
     }));
 
-    const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+    const COLORS = ["#4C51BF", "#38B2AC", "#F6AD55", "#F56565"];
+    const RADIAN = Math.PI / 180;
+    
+    // Custom label for pie chart
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+        return (
+            <text 
+                x={x} 
+                y={y} 
+                fill="white" 
+                textAnchor={x > cx ? 'start' : 'end'} 
+                dominantBaseline="central"
+                fontSize={12}
+                fontWeight="bold"
+            >
+                {`${(percent * 100).toFixed(0)}%`}
+            </text>
+        );
+    };
 
     return (
-        <div >
-            <FormControl style={{ width: "220px", marginBottom: "20px", marginTop: "30px" }}>
-                <InputLabel style={{ marginBottom: "2px" ,color:"black",fontWeight: "bold", fontSize: "26px" }}>Status Filter</InputLabel>
-                <Select style={{marginTop:'14px'}} value={filter} onChange={(e) => setFilter(e.target.value)}>
-                    <MenuItem value="all">All</MenuItem>
-                    <MenuItem value="Completed">Completed</MenuItem>
-                    <MenuItem value="Booked">Booked</MenuItem>
-                    <MenuItem value="Return">Return</MenuItem>
-                </Select>
-            </FormControl>
+        <div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Order Analytics</h2>
+                <FormControl size="small" sx={{ minWidth: 200 }}>
+                    <InputLabel id="status-filter-label">Filter by Status</InputLabel>
+                    <Select
+                        labelId="status-filter-label"
+                        value={filter}
+                        label="Filter by Status"
+                        onChange={(e) => setFilter(e.target.value)}
+                    >
+                        <MenuItem value="all">All Orders</MenuItem>
+                        <MenuItem value="Completed">Completed</MenuItem>
+                        <MenuItem value="Booked">Booked</MenuItem>
+                        <MenuItem value="Return">Return</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
 
-            {/*  Bar Chart: Orders by Date */}
-            <h3 style={{background:'#ffebee',marginTop:"20px", fontWeight: "bold", fontSize: "26px"}}>Orders Over Time</h3>
-            <ResponsiveContainer width="100%" height={300} style={{background:'#ffebee',marginBottom:"20px"}}>
-                <BarChart data={barChartData}>
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#8884d8" />
-                </BarChart>
-            </ResponsiveContainer>
-            <div className="bg-black h-10"></div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Bar Chart: Orders by Date */}
+                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    <h3 className="text-lg font-semibold mb-4 text-gray-700">Orders Over Time</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={barChartData}>
+                            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                            <YAxis tick={{ fontSize: 12 }} />
+                            <Tooltip 
+                                contentStyle={{ 
+                                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                    borderRadius: '6px',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                                    border: 'none'
+                                }}
+                                cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+                            />
+                            <Bar 
+                                dataKey="count" 
+                                fill="#4F46E5"
+                                radius={[4, 4, 0, 0]}
+                                barSize={30}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
 
-            {/*  Pie Chart: Order Status */}
-            <h3 style={{background:'#ffebee',marginTop:"20px", fontWeight:"bold", fontSize:"26px"}} >Order Status Breakdown</h3>
-            <ResponsiveContainer style={{background:'#ffebee'}} width="100%" height={300}>
-                <PieChart>
-                    <Pie data={pieChartData} dataKey="value" nameKey="name" outerRadius={100} label>
-                        {pieChartData.map((_, index) => (
-                            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
-            </ResponsiveContainer>
+                {/* Pie Chart: Order Status */}
+                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    <h3 className="text-lg font-semibold mb-4 text-gray-700">Order Status Breakdown</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={pieChartData}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                label={renderCustomizedLabel}
+                                outerRadius={90}
+                                fill="#8884d8"
+                                dataKey="value"
+                                nameKey="name"
+                            >
+                                {pieChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip 
+                                formatter={(value, name) => [`${value} orders`, name]}
+                                contentStyle={{ 
+                                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                    borderRadius: '6px',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                                    border: 'none'
+                                }}
+                            />
+                            <Legend 
+                                layout="horizontal" 
+                                verticalAlign="bottom" 
+                                align="center"
+                                wrapperStyle={{ paddingTop: '20px' }}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
         </div>
     );
 };
