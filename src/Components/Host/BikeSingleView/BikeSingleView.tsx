@@ -124,15 +124,17 @@ const BikeSingleView = () => {
 
                 {/* Main Content Card */}
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-                    {/* Image Gallery */}
+                    {/* Image Gallery - IMPROVED */}
                     <div className="relative">
                         <div className="h-96 overflow-hidden bg-gray-100">
                             {selectedImage && (
-                                <img
-                                    src={selectedImage}
-                                    alt="Selected bike view"
-                                    className="w-full h-full object-cover object-center"
-                                />
+                                <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                                    <img
+                                        src={selectedImage}
+                                        alt="Selected bike view"
+                                        className="max-h-full max-w-full object-contain"
+                                    />
+                                </div>
                             )}
                             {/* Price Badge */}
                             <div className="absolute top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg">
@@ -152,11 +154,13 @@ const BikeSingleView = () => {
                                             selectedImage === image ? 'ring-2 ring-blue-500 scale-105' : 'ring-1 ring-gray-200 opacity-80 hover:opacity-100'
                                         }`}
                                     >
-                                        <img
-                                            src={image}
-                                            alt={`Bike view ${index + 1}`}
-                                            className="w-full h-full object-cover"
-                                        />
+                                        <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                                            <img
+                                                src={image}
+                                                alt={`Bike view ${index + 1}`}
+                                                className="max-h-full max-w-full object-contain"
+                                            />
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -241,7 +245,7 @@ const BikeSingleView = () => {
                             </div>
                         </div>
 
-                        {/* Documents Section */}
+                        {/* Documents Section - IMPROVED */}
                         <div className="mb-8">
                             <h2 className="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">
                                 Document Images
@@ -250,11 +254,13 @@ const BikeSingleView = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div className="group relative">
                                     <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md bg-gray-100">
-                                        <img
-                                            src={bike?.rcImage}
-                                            alt="RC Document"
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <img
+                                                src={bike?.rcImage}
+                                                alt="RC Document"
+                                                className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        </div>
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                                             <span className="text-white font-medium p-3">RC Document</span>
                                         </div>
@@ -263,11 +269,13 @@ const BikeSingleView = () => {
                                 
                                 <div className="group relative">
                                     <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md bg-gray-100">
-                                        <img
-                                            src={bike?.insuranceImage}
-                                            alt="Insurance Document"
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <img
+                                                src={bike?.insuranceImage}
+                                                alt="Insurance Document"
+                                                className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        </div>
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                                             <span className="text-white font-medium p-3">Insurance Document</span>
                                         </div>
@@ -276,11 +284,13 @@ const BikeSingleView = () => {
                                 
                                 <div className="group relative">
                                     <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md bg-gray-100">
-                                        <img
-                                            src={bike?.PolutionImage}
-                                            alt="Pollution Document"
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <img
+                                                src={bike?.PolutionImage}
+                                                alt="Pollution Document"
+                                                className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        </div>
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                                             <span className="text-white font-medium p-3">Pollution Document</span>
                                         </div>
